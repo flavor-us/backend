@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select name</title>
+</head>
+<body>
+{% for name in name %}
+<form action="/admin/name/{{ name.name }}/{{ gpsDegree[0] }}/{{ gpsDegree[1] }}" name={{ name.name }} method="get">
+    <div>
+        <button type="submit" class="btn">{{ name.name }}</button>
+    </div>
+</form>
+{% endfor %}
+</body>
+</html>

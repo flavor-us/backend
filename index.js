@@ -2,8 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./models/index');
 const nunjucks = require('nunjucks');
-// const { get } = require('./controllers');
-// const sqEI = require('sequelize-import-export');
 
 class App {
     constructor () {
@@ -33,11 +31,6 @@ class App {
             });
         }
 
-        // var sync = async function() {
-        //     await db.sequelize.sync({ force: true });
-        // };
-
-        // sync();
         getViewEngine(this.app);
         // var getRouting = function() {
         this.app.use(require('./controllers'))

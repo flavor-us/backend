@@ -1,67 +1,89 @@
 const db = require('../../models');
-const {readFile} = require('fs').promises;
-const EXIF = require('exif-js');
-// console.log (models);
-//req.body.lat & req.body.lng
-exports.get_name = async ( req, res ) => {
-    let moe = 0.0000001;
-    var name_list;
-    console.log(req.body.photo)
-    // const Op = db.Sequelize.Op;
-    
-    // const name = await Promise.all([
-    //     db.InfoPk.findByPk(1)
-    //     // db.InfoPk.findOne ({
-    //     //     where : {
-    //     //         lat : {
-    //     //             [Op.gte] : req.body.lat - moe,
-    //     //             [Op.lte] : req.body.lat + moe
-    //     //         },
-    //     //         lng : {
-    //     //             [Op.gte] : req.body.lng - moe,
-    //     //             [Op.lte] : req.body.lng + moe
-    //     //         }
-    //     //     }
-    //     // })
-    // ])
-//     EXIF.getData(, function() {
-//         var make = EXIF.getTag(this, "Make"); //"Make" 항목만 확인
-//         console.log( make );
-//         var allMetaData = EXIF.getAllTags(this); //모든 EXIF정보
-//         console.log( JSON.stringify(allMetaData, null, "\t") );
-//    });
-//     (async () => {
-//         const exif = getExif(await readFile('../../uploads/foods.jpeg')).Exif;
-       
-//         // 33434: ID of the `ExposureTime` tag
-//         exif['33434']; //=> [1, 100]
-       
-//         // 36867: ID of the `DateTimeOriginal` tag
-//         exif['36867']; //=> '2017:11:19 08:47:19'
-//       })();
-    // let selectNameQuery = `SELECT name FROM InfoPk
-    //             WHERE 
-    //                 lat >= ? and lat <= ? and 
-    //                 lng >= ? and lat <= ?`
-    // var searchDB = function () { db.all(selectNameQuery, [
-    //     req.body.lat - moe,
-    //     req.body.lat + moe,
-    //     req.body.lng - moe,
-    //     req.body.lng + moe
-    //     ], (err, rows) => {      
-    //         if (err) {
-    //             throw err;
-    //         }
-    //         console.log(4);
-    //         return (rows)
-    //         // name_list =  JSON.parse(JSON.stringify(rows))
-    //     }
-    // )}
-    // moe *= 5;
+var ExifImage = require('exif').ExifImage;
+
+exports.getName = async ( req, res ) => {
+    let moe = 0.000001;
+    var name;
+    const selectNameQuery = `SELECT name FROM InfoPk
+                WHERE 
+                    lat >= ? and lat <= ? and 
+                    lng >= ? and lng <= ?`
     console.log(1);
-    // db.serialize( () => {
-    //     console.log(searchDB())
-    //     console.log(3)
-    // })
-    console.log(2)
+    function getExif(file) {
+        return new Promise(function (resolve, reject) {
+            try {
+                new ExifImage({ image : file }, function (error, exifData) {
+                    if (error)
+                        reject(console.log('Error: '+ error.message));
+                    else
+                        resolve([ exifData.gps.GPSLatitude ,exifData.gps.GPSLongitude ]);
+                });
+            } catch (error) {
+                reject(console.log('Error: ' + error.message));
+            }
+        })
+    }
+
+    function getName(Query, lat, lng) {
+        return new Promise(function(resolve, reject) {
+            db.all(Query, [
+                lat - moe,
+                lat + moe,
+                lng - moe,
+                lng + moe
+                ], (err, rows) => {      
+                    if (err) {
+                        throw err;
+                    }
+                    resolve(rows);
+                    reject(rows);
+                }
+            )
+        })
+    }
+
+    function convertLatLng (lat_DMS, lng_DMS){
+        if (lat_DMS && lng_DMS)
+        {
+            const lat_Degree = lat_DMS[0] + lat_DMS[1]/60 + lat_DMS[2]/3600;
+            const lng_Degree = lng_DMS[0] + lng_DMS[1]/60 + lng_DMS[2]/3600;
+            return ([lat_Degree, lng_Degree])
+        }
+        else
+            return (null);
+    }
+
+    const gpsDMS = await getExif(req.file.path)
+    .then(console.log(3))
+    .catch(function (error) {
+        console.log(error);
+    });
+    console.log("gpsDMS===============" + gpsDMS);
+    if (gpsDMS)
+    {
+        console.log(gpsDMS)
+        const gpsDegree = convertLatLng(gpsDMS[0], gpsDMS[1]);
+        console.log(gpsDegree);
+        if (gpsDegree)
+        { 
+            do {
+                name = await getName(selectNameQuery, gpsDegree[0], gpsDegree[1]);
+                console.log(moe);
+                moe *= 3
+            } while ( Object.keys(name).length < 1 )
+            console.log(name);
+            console.log(typeof(name))
+            console.log(gpsDegree)
+            console.log(typeof(gpsDegree))
+            res.render('admin/select.html', { name , gpsDegree });
+        }
+    }
+    else
+        res.send("Cannot get ExifData")
+}
+
+exports.showMap =  async (req, res) => {
+    console.log(req.params);
+    res.render('admin/name.html', { name : req.params.name , lat : req.params.lat , lng : req.params.lng });
+
 }
