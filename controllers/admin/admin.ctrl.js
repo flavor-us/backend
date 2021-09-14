@@ -58,7 +58,6 @@ exports.getName = async ( req, res ) => {
     .catch(function (error) {
         console.log(error);
     });
-    console.log("gpsDMS===============" + gpsDMS);
     if (gpsDMS)
     {
         console.log(gpsDMS)
@@ -72,9 +71,7 @@ exports.getName = async ( req, res ) => {
                 moe *= 3
             } while ( Object.keys(name).length < 1 )
             console.log(name);
-            console.log(typeof(name))
             console.log(gpsDegree)
-            console.log(typeof(gpsDegree))
             res.render('admin/select.html', { name , gpsDegree });
         }
     }
