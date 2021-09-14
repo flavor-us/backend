@@ -72,7 +72,8 @@ exports.getName = async ( req, res ) => {
             } while ( Object.keys(name).length < 3 )
             console.log(name);
             console.log(gpsDegree)
-            res.render('admin/select.html', { name , gpsDegree });
+            // res.render('admin/select.html', { name , gpsDegree });
+            res.send({ name : name });
         }
     }
     else
