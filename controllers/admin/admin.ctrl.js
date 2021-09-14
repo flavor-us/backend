@@ -2,13 +2,12 @@ const db = require('../../models');
 var ExifImage = require('exif').ExifImage;
 
 exports.getName = async ( req, res ) => {
-    let moe = 0.000001;
+    let moe = 0.00001;
     var name;
-    const selectNameQuery = `SELECT name FROM InfoPk
+    const selectNameQuery = `SELECT name FROM LocationDB
                 WHERE 
                     lat >= ? and lat <= ? and 
                     lng >= ? and lng <= ?`
-    console.log(1);
     function getExif(file) {
         return new Promise(function (resolve, reject) {
             try {
@@ -54,7 +53,6 @@ exports.getName = async ( req, res ) => {
     }
 
     const gpsDMS = await getExif(req.file.path)
-    .then(console.log(3))
     .catch(function (error) {
         console.log(error);
     });
@@ -68,8 +66,10 @@ exports.getName = async ( req, res ) => {
             do {
                 name = await getName(selectNameQuery, gpsDegree[0], gpsDegree[1]);
                 console.log(moe);
-                moe *= 3
-            } while ( Object.keys(name).length < 1 )
+                moe *= 2
+                if (moe > 0.01)
+                    break ;
+            } while ( Object.keys(name).length < 3 )
             console.log(name);
             console.log(gpsDegree)
             res.render('admin/select.html', { name , gpsDegree });

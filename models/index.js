@@ -9,7 +9,7 @@ const sqlite3 = require('sqlite3').verbose();
 const config = require(__dirname + '/../config/config.json')[env];
 let sequelize;
 
-let db = new sqlite3.Database('./db/Test.db', sqlite3.OPEN_READONLY, (e) => {
+let db = new sqlite3.Database('./db/LocationDB.db', sqlite3.OPEN_READONLY, (e) => {
   if (e) {
       console.error(e);
   }
