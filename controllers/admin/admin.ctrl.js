@@ -2,12 +2,13 @@ const db = require('../../models');
 var ExifImage = require('exif').ExifImage;
 
 exports.getName = async ( req, res ) => {
+    console.log("Post")
     let moe = 0.00001;
     var name;
     const selectNameQuery = `SELECT name FROM LocationDB
                 WHERE 
-                    lat >= ? and lat <= ? and 
-                    lng >= ? and lng <= ?`
+                    lat BETWEEN ? AND ? and
+                    lng BETWEEN ? AND ?`
     function getExif(file) {
         return new Promise(function (resolve, reject) {
             try {
@@ -66,22 +67,21 @@ exports.getName = async ( req, res ) => {
             do {
                 name = await getName(selectNameQuery, gpsDegree[0], gpsDegree[1]);
                 console.log(moe);
-                moe *= 2
+                moe *= 2;
                 if (moe > 0.01)
                     break ;
             } while ( Object.keys(name).length < 3 )
             console.log(name);
             console.log(gpsDegree)
-            // res.render('admin/select.html', { name , gpsDegree });
-            res.send({ name : name });
+            // res.render('admin/select.html', { name , gpsDegree }); // web
+            res.send({ name : name }); //  android
         }
     }
     else
-        res.send("Cannot get ExifData")
+        res.send("Error : Can't get ExifData")
 }
 
 exports.showMap =  async (req, res) => {
     console.log(req.params);
-    res.render('admin/name.html', { name : req.params.name , lat : req.params.lat , lng : req.params.lng });
-
+    res.render('admin/name.html', { name : req.query.name , lat : req.query.lat , lng : req.query.lng });
 }

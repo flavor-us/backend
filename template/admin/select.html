@@ -7,13 +7,22 @@
     <title>Select name</title>
 </head>
 <body>
+<div id="name_cnt"></div>
 {% for name in name %}
-<form action="/admin/name/{{ name.name }}/{{ gpsDegree[0] }}/{{ gpsDegree[1] }}" name={{ name.name }} method="get">
+<form action="/admin/name" name={{ name.name }} method="get">
     <div>
+        <input type="hidden" name = "name" value="{{name.name}}" />
+        <input type="hidden" name = "lat" value="{{gpsDegree[0]}}"/>
+        <input type="hidden" name = "lng" value="{{gpsDegree[1]}}"/>
         <button type="submit" class="btn">{{ name.name }}</button>
     </div>
     <hr>
 </form>
 {% endfor %}
 </body>
+<script>
+    var cnt = Object.keys(name).length;
+    document.getElementById(name_cnt).innerHTML = cnt;
+    console.log(cnt)
+</script>
 </html>
