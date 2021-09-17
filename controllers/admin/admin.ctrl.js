@@ -4,8 +4,8 @@ var ExifImage = require('exif').ExifImage;
 exports.getName = async ( req, res ) => {
     console.log("들어옴");
     let moe = 0.00001;
-    var DataArray;
-    const selectNameQuery = `SELECT name , type , lat , lng FROM LocationDB
+    var name;
+    const selectNameQuery = `SELECT name FROM LocationDB
                 WHERE 
                     lat BETWEEN ? AND ? AND 
                     lng BETWEEN ? AND ?`
@@ -68,23 +68,23 @@ exports.getName = async ( req, res ) => {
         { 
             console.log("들어옴4")
             do {
-                DataArray = await getName(selectNameQuery, gpsDegree[0], gpsDegree[1]);
-                console.log(typeof(DataArray))
+                name = await getName(selectNameQuery, gpsDegree[0], gpsDegree[1]);
+                console.log(typeof(name))
                 console.log(moe);
                 moe *= 2
                 if (moe > 0.01)
                     break ;
-            } while ( Object.keys(DataArray).length < 3 )
+            } while ( Object.keys(name).length < 3 )
 
-            arrayForDebug = DataArray.map((item) => {
+            arrayForDebug = name.map((item) => {
             return item.name
             })
 
             
             console.log(gpsDegree)
-            // res.render('admin/select.html', { DataArray , gpsDegree });
-            // res.send({ DataArray : arrayForDebug });
-            res.send({ DataArray });
+            // res.render('admin/select.html', { name , gpsDegree });
+            res.send({ name : arrayForDebug });
+            // res.send({ name });
         } else {
             res.send( {
                 name: [ "Not Found" ],
