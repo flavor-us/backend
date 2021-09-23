@@ -1,12 +1,12 @@
 const db = require('../../models');
 var ExifImage = require('exif').ExifImage;
+require("dotenv").config();
 
-exports.getName = async ( req, res ) => {
-    console.log("들어옴");
-    let moe = 0.00001;
-    var name;
-    const selectNameQuery = `SELECT name FROM LocationDB
-                WHERE 
+exports.getNames = async ( req, res ) => {
+    let moe = 0.00001; //1m 반경
+    var names;
+    const selectNameQuery = `SELECT name FROM Location_sk_DB
+                WHERE
                     lat BETWEEN ? AND ? AND 
                     lng BETWEEN ? AND ?`
     function getExif(file) {
@@ -59,31 +59,26 @@ exports.getName = async ( req, res ) => {
     });
     if (gpsDMS)
     {
-        console.log("들어옴2")
         console.log(gpsDMS)
         const gpsDegree = convertLatLng(gpsDMS[0], gpsDMS[1]);
         console.log(gpsDegree);
-        console.log("들어옴3")
         if (gpsDegree)
         { 
-            console.log("들어옴4")
             do {
-                name = await getName(selectNameQuery, gpsDegree[0], gpsDegree[1]);
-                console.log(typeof(name))
+                names = await getName(selectNameQuery, gpsDegree[0], gpsDegree[1]);
                 console.log(moe);
                 moe *= 2
-                if (moe > 0.01)
+                if (moe > 0.01) // 1km
                     break ;
-            } while ( Object.keys(name).length < 3 )
+            } while ( Object.keys(names).length < 3 )
 
-            arrayForDebug = name.map((item) => {
-            return item.name
+            nameArray = names.map((item) => {
+                return item.name
             })
 
-            
             console.log(gpsDegree)
-            // res.render('admin/select.html', { name , gpsDegree });
-            res.send({ name : arrayForDebug });
+            res.render('admin/select.html', { names : names , gpsDegree }); //web
+            // res.send({ name : nameArray }); //android
             // res.send({ name });
         } else {
             res.send( {
@@ -99,6 +94,6 @@ exports.getName = async ( req, res ) => {
 }
 
 exports.showMap =  async (req, res) => {
-    console.log(req.params);
-    res.render('admin/name.html', { name : req.params.name , lat : req.params.lat , lng : req.params.lng });
+    console.log(req.query);
+    res.render('admin/name.html', { name : req.query.name , lat : req.query.lat , lng : req.query.lng , KakaoApikey : KAKAO_KEY });
 }
