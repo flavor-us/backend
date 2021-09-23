@@ -2,22 +2,22 @@
   "development": {
     "username": "root",
     "password": "chan159263",
-    "database": "Test",
+    "database": "Rest_info",
     "host": "localhost",
-    "dialect": "sqlite"
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": "chan159263",
-    "database": "Test",
+    "database": "Rest_info",
     "host": "localhost",
-    "dialect": "sqlite"
+    "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": "chan159263",
-    "database": "Test",
+    "database": "Rest_info",
     "host": "localhost",
-    "dialect": "sqlite"
+    "dialect": "mysql"
   }
 }

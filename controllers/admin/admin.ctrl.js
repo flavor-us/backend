@@ -1,10 +1,12 @@
 const db = require('../../models');
 var ExifImage = require('exif').ExifImage;
 require("dotenv").config();
+const models = require('../../models');
 
 exports.getNames = async ( req, res ) => {
     let moe = 0.00001; //1m 반경
     var names;
+    const Op = db.Sequelize.Op;
     const selectNameQuery = `SELECT name FROM Location_sk_DB
                 WHERE
                     lat BETWEEN ? AND ? AND 
@@ -24,23 +26,36 @@ exports.getNames = async ( req, res ) => {
         })
     }
 
-    function getName(Query, lat, lng) {
-        return new Promise(function(resolve, reject) {
-            db.all(Query, [
-                lat - moe,
-                lat + moe,
-                lng - moe,
-                lng + moe
-                ], (err, rows) => {      
-                    if (err) {
-                        throw err;
-                    }
-                    resolve(rows);
-                    reject(rows);
-                }
-            )
+    async function getNameSequelize (lat, lng) {
+        const names = await models.Location.findAll({
+            attributes : ['name'],
+            where : {
+                lat : { [Op.between] : [ lat - moe, lat + moe ] },
+                lng : { [Op.between] : [ lng - moe, lng + moe ] }
+            }
         })
+        return names;
     }
+    
+    // names = getNameSequelize();
+    console.log(names);
+    // function getName(Query, lat, lng) {
+    //     return new Promise(function(resolve, reject) {
+    //         db.all(Query, [
+    //             lat - moe,
+    //             lat + moe,
+    //             lng - moe,
+    //             lng + moe
+    //             ], (err, rows) => {      
+    //                 if (err) {
+    //                     throw err;
+    //                 }
+    //                 resolve(rows);
+    //                 reject(rows);
+    //             }
+    //         )
+    //     })
+    // }
 
     function convertLatLng (lat_DMS, lng_DMS){
         if (lat_DMS && lng_DMS)
@@ -65,7 +80,8 @@ exports.getNames = async ( req, res ) => {
         if (gpsDegree)
         { 
             do {
-                names = await getName(selectNameQuery, gpsDegree[0], gpsDegree[1]);
+                // names = await getName(selectNameQuery, gpsDegree[0], gpsDegree[1]);
+                names = await getNameSequelize( gpsDegree[0], gpsDegree[1]);
                 console.log(moe);
                 moe *= 2
                 if (moe > 0.01) // 1km
@@ -73,11 +89,11 @@ exports.getNames = async ( req, res ) => {
             } while ( Object.keys(names).length < 3 )
 
             nameArray = names.map((item) => {
-                return item.name
+                return item.dataValues.name
             })
 
-            console.log(gpsDegree)
-            res.render('admin/select.html', { names : names , gpsDegree }); //web
+            console.log(nameArray)
+            res.render('admin/select.html', { names : nameArray , gpsDegree }); //web
             // res.send({ name : nameArray }); //android
             // res.send({ name });
         } else {
@@ -95,5 +111,5 @@ exports.getNames = async ( req, res ) => {
 
 exports.showMap =  async (req, res) => {
     console.log(req.query);
-    res.render('admin/name.html', { name : req.query.name , lat : req.query.lat , lng : req.query.lng , KakaoApikey : KAKAO_KEY });
+    res.render('admin/name.html', { name : req.query.name , lat : req.query.lat , lng : req.query.lng , KakaoApikey : process.env.KAKAO_KEY });
 }

@@ -7,13 +7,13 @@
     <title>Select name</title>
 </head>
 <body>
-        {% for name in names %}  
-<form action="/admin/name" name={{ names.name }} method="get">
+        {% for name in names %}
+<form action="/admin/name" name={{ name }} method="get">
     <div>
-            <input type="hidden" name = "name" value="{{names.name}}" />
+            <input type="hidden" name = "name" value="{{name}}" />
             <input type="hidden" name = "lat" value="{{gpsDegree[0]}}"/>
             <input type="hidden" name = "lng" value="{{gpsDegree[1]}}"/>
-        <button type="submit" class="btn">선택</button>
+        <button type="submit" class="btn">{{name}}</button>
     </div>
     <hr>
 </form>

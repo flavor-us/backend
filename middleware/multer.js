@@ -7,8 +7,8 @@ const storage = multer.diskStorage({
 		callback(null, uploadDir);
 	},
 	filename : (req, file, callback) => {
-		callback(null, 'foods-' + Date.now() + '.' + file.mimetype.split('/')[1]);
-		// callback(null, 'foods' + '.' + file.mimetype.split('/')[1] );
+		// callback(null, 'foods-' + Date.now() + '.' + file.mimetype.split('/')[1]);
+		callback(null, 'foods' + '.' + file.mimetype.split('/')[1] );
 	}
 });
 
