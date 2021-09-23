@@ -1,4 +1,4 @@
-const db = require('../../models');
+const nameModule = require('../../modules/getName');
 var ExifImage = require('exif').ExifImage;
 require("dotenv").config();
 const models = require('../../models');
@@ -6,7 +6,7 @@ const models = require('../../models');
 exports.getNames = async ( req, res ) => {
     let moe = 0.00001; //1m 반경
     var names;
-    const Op = db.Sequelize.Op;
+    const Op = models.Sequelize.Op;
     function getExif(file) {
         return new Promise(function (resolve, reject) {
             try {
@@ -64,20 +64,20 @@ exports.getNames = async ( req, res ) => {
             return (null);
     }
 
-    const gpsDMS = await getExif(req.file.path)
+    const gpsDMS = await nameModule.getExif(req.file.path)
     .catch(function (error) {
         console.log(error);
     });
     if (gpsDMS)
     {
         console.log(gpsDMS)
-        const gpsDegree = convertLatLng(gpsDMS[0], gpsDMS[1]);
+        const gpsDegree = nameModule.convertLatLng(gpsDMS[0], gpsDMS[1]);
         console.log(gpsDegree);
         if (gpsDegree)
         { 
             do {
                 // names = await getName(selectNameQuery, gpsDegree[0], gpsDegree[1]);
-                names = await getNameSequelize( gpsDegree[0], gpsDegree[1]);
+                names = await nameModule.getNameSequelize( gpsDegree[0], gpsDegree[1], moe);
                 console.log(names);
                 console.log(moe);
                 moe *= 2
@@ -90,7 +90,7 @@ exports.getNames = async ( req, res ) => {
             })
 
             console.log(nameArray)
-            res.render('admin/select.html', { nameArray : nameArray }); //web
+            res.render('web/select.html', { nameArray : nameArray }); //web
             // res.send({ name : nameArray }); //android
             // res.send({ name });
         } else {
@@ -108,5 +108,5 @@ exports.getNames = async ( req, res ) => {
 
 exports.showMap =  async (req, res) => {
     console.log(req.query);
-    res.render('admin/name.html', { name : req.query.name , lat : req.query.lat , lng : req.query.lng , KakaoApikey : process.env.KAKAO_KEY });
+    res.render('web/name.html', { name : req.query.name , lat : req.query.lat , lng : req.query.lng , KakaoApikey : process.env.KAKAO_KEY });
 }

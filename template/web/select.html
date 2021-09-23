@@ -8,7 +8,7 @@
 </head>
 <body>
         {% for RestInfo in nameArray %}
-<form action="/admin/name" name={{ nameArray.name }} method="get">
+<form action="/web/name" name={{ nameArray.name }} method="get">
     <div>
             <input type="hidden" name = "name" value="{{RestInfo.name}}" />
             <input type="hidden" name = "lat" value="{{RestInfo.lat}}"/>
