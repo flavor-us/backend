@@ -7,10 +7,6 @@ exports.getNames = async ( req, res ) => {
     let moe = 0.00001; //1m 반경
     var names;
     const Op = db.Sequelize.Op;
-    const selectNameQuery = `SELECT name FROM Location_sk_DB
-                WHERE
-                    lat BETWEEN ? AND ? AND 
-                    lng BETWEEN ? AND ?`
     function getExif(file) {
         return new Promise(function (resolve, reject) {
             try {
@@ -28,7 +24,7 @@ exports.getNames = async ( req, res ) => {
 
     async function getNameSequelize (lat, lng) {
         const names = await models.Location.findAll({
-            attributes : ['name'],
+            attributes : ['name', 'lat', 'lng'],
             where : {
                 lat : { [Op.between] : [ lat - moe, lat + moe ] },
                 lng : { [Op.between] : [ lng - moe, lng + moe ] }
@@ -82,6 +78,7 @@ exports.getNames = async ( req, res ) => {
             do {
                 // names = await getName(selectNameQuery, gpsDegree[0], gpsDegree[1]);
                 names = await getNameSequelize( gpsDegree[0], gpsDegree[1]);
+                console.log(names);
                 console.log(moe);
                 moe *= 2
                 if (moe > 0.01) // 1km
@@ -89,11 +86,11 @@ exports.getNames = async ( req, res ) => {
             } while ( Object.keys(names).length < 3 )
 
             nameArray = names.map((item) => {
-                return item.dataValues.name
+                return item.dataValues;
             })
 
             console.log(nameArray)
-            res.render('admin/select.html', { names : nameArray , gpsDegree }); //web
+            res.render('admin/select.html', { nameArray : nameArray }); //web
             // res.send({ name : nameArray }); //android
             // res.send({ name });
         } else {
