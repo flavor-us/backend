@@ -16,9 +16,9 @@ exports.getNames = async ( req, res ) => {
             do {
                 names = await nameModule.getNameSequelize( gpsDegree[0], gpsDegree[1], moe);
                 moe *= 2
-                if (moe > 0.01) // 1km
+                if (moe > 0.005) // 500m
                     break ;
-            } while ( Object.keys(names).length < 3 )
+            } while ( Object.keys(names).length < 6 )
             nameArray = names.map((item) => {
                 return item.dataValues;
             })
