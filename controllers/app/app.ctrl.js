@@ -36,6 +36,3 @@ exports.getNames = async ( req, res ) => {
          })
 }
 
-exports.showMap =  async (req, res) => {
-    res.render('admin/name.html', { name : req.query.name , lat : req.query.lat , lng : req.query.lng , KakaoApikey : process.env.KAKAO_KEY });
-}

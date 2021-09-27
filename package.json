@@ -11,6 +11,7 @@
   "author": "limchanyeop",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.995.0",
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "exif": "^0.6.0",
@@ -23,6 +24,7 @@
     "path": "^0.12.7",
     "sequelize": "^6.6.5",
     "sequelize-auto": "^0.8.4",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "uuid": "^8.3.2"
   }
 }
