@@ -1,10 +1,15 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Contents', {
+    id :{
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey : true,
+      autoIncrement : true
+    },
     userid: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      primaryKey: true
     },
     date:{
       type: DataTypes.DATE(),

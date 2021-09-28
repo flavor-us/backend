@@ -12,19 +12,18 @@ exports.uploadS3Bucket = async function(filepath , filetype){
         'Body': fs.createReadStream(filepath),
         'ContentType': filetype
     }
-    var putObjectPromise = s3.putObject(param).promise();
-    await putObjectPromise.then(function(data) {
-        console.log(data);
+    var putObjectPromise = s3.upload(param).promise();
+    var location = await putObjectPromise.then(function(data) {
+        return data.Location;
         }).catch(function(err) {
         console.log(err);
     });
-
+    return location;
 }
 
 exports.getLabel = async function(filename){
     const bucket = 'flavbucket' // the bucketname without s3://
     const photo  = filename // the name of file
-    var ret;
     const config = new AWS.Config({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -50,12 +49,12 @@ exports.getLabel = async function(filename){
             })
         })
     }
-    await detectLabelsPromise(params)
+    var labels = await detectLabelsPromise(params)
     .then((data)=>{
-        ret = data;
+        return data;
     })
     .catch((err)=>{
-        ret = err;
+        console.log(err);
     })
-    return (ret)
+    return (labels)
 }
