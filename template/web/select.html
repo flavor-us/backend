@@ -18,7 +18,11 @@
     <br>
     <button type="submit" class="btn">선택</button>
 </form>
+    <br><br>
     <hr>
+        {% for Label in data.Labels %}
+            NAME : {{ Label.Name }} | Confidence : {{ Label.Confidence }}% <br>
+        {% endfor %}
 </body>
 <script>
 function setLocation(latLng)

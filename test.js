@@ -5,8 +5,9 @@
 // Load the SDK
 var AWS = require('aws-sdk');
 AWS.config.update({region:'ap-northeast-2'});
+require("dotenv").config();
 const bucket = 'flavbucket' // the bucketname without s3://
-const photo  = 'foods-1632389247534.jpeg' // the name of file
+const photo  = 'uploadedfile.jpeg' // the name of file
 
  const config = new AWS.Config({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
