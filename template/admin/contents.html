@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content</title>
+</head>
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+</style>
+<body>
+    <table class="table">
+        <tr>
+            <th>Userid</th>
+            <th>Date</th>
+            <th>Filename</th>
+            <th>Lat</th>
+            <th>Lng</th>   
+        </tr>
+        {% for content in contents %}
+        <tr>
+            <td>
+                {{ content.userid }}
+            </td>
+            <td>
+                {{ content.date }}
+            </td>
+            <td>
+                {{ content.filename }}
+            </td>
+            <td>
+                {{ content.lat }}
+            </td>
+            <td>
+                {{ content.lng }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

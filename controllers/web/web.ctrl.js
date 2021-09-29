@@ -1,4 +1,3 @@
-const { uploadS3Bucket } = require('../../modules/awsUtils');
 const nameModule = require('../../modules/getName');
 require("dotenv").config();
 const awsUtils = require('../../modules/awsUtils');
