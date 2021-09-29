@@ -17,8 +17,7 @@
             <th>Userid</th>
             <th>Date</th>
             <th>Filename</th>
-            <th>Lat</th>
-            <th>Lng</th>   
+            <th>rekognition</th>
         </tr>
         {% for content in contents %}
         <tr>
@@ -32,10 +31,7 @@
                 {{ content.filename }}
             </td>
             <td>
-                {{ content.lat }}
-            </td>
-            <td>
-                {{ content.lng }}
+                {{ content.rekognition }}
             </td>
         </tr>
         {% endfor %}
