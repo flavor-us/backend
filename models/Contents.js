@@ -26,6 +26,10 @@ module.exports = function(sequelize, DataTypes) {
     lng: {
       type: DataTypes.DOUBLE,
       allowNull: true
+    },
+    rekognition: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,
