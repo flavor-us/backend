@@ -46,8 +46,6 @@ exports.dbUpload =  async (req, res) => {
         userid : req.body.user,
         date : new Date(),
         filename : `${req.body.name}-${req.body.fileLocation}`,
-        lat : parseFloat(req.body.lat) ,
-        lng : parseFloat(req.body.lng) ,
         rekognition : req.body.rekog
     }
     dbUploads.uploadContent(contents).catch((e)=>console.log(e))
