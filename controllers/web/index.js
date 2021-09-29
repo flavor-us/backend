@@ -4,6 +4,6 @@ const ctrl = require('./web.ctrl');
 const upload = require('../../middleware/multer');
 
 router.post('/name', upload.single('photo'), ctrl.getNames);
-router.get('/name', ctrl.showMap)
+router.post('/upload', ctrl.dbUpload)
 
 module.exports = router;

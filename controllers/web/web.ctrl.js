@@ -6,6 +6,7 @@ exports.getNames = async ( req, res ) => {
     let moe = 0.00001; // 1m 반경
     var names;
     const userId = 1;
+    console.log(req.file);
     const gpsDMS = await nameModule.getExif(req.file.path)
     .catch(function (error) {
         console.log(error);
@@ -40,14 +41,15 @@ exports.getNames = async ( req, res ) => {
          } )
 }
 
-exports.showMap =  async (req, res) => {
+exports.dbUpload =  async (req, res) => {
     var contents = {
-        userid : req.query.user,
+        userid : req.body.user,
         date : new Date(),
-        filename : `${req.query.name}-${req.query.fileLocation}`,
-        lat : req.query.lat ,
-        lng : req.query.lng
+        filename : `${req.body.name}-${req.body.fileLocation}`,
+        lat : parseFloat(req.body.lat) ,
+        lng : parseFloat(req.body.lng) ,
+        rekognition : req.body.rekog
     }
     dbUploads.uploadContent(contents).catch((e)=>console.log(e))
-    res.render('web/name.html', { name : req.query.name , lat : req.query.lat , lng : req.query.lng , KakaoApikey : process.env.KAKAO_KEY });
+    res.render('web/map.html', { name : req.body.name , lat : req.body.lat , lng : req.body.lng , KakaoApikey : process.env.KAKAO_KEY });
 }

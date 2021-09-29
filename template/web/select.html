@@ -7,11 +7,12 @@
     <title>Select name</title>
 </head>
 <body>
-<form action="/web/name" method="get">
+<form action="/web/upload" method="post">
     <input type="hidden" id="fileLocation" name = "fileLocation" value="{{ fileLocation }}"/>
     <input type="hidden" id="user" name="user" value="{{ userId }}"/>
     <input type="hidden" id="lat" name = "lat" value=""/>
     <input type="hidden" id="lng" name = "lng" value=""/>
+    <input type="hidden" id="rekog" name="rekog" value=""/>
     <select name="name" multiple size="4">
         {% for RestInfo in nameArray %}
       <option value="{{RestInfo.name}}" onclick="setLocation('{{RestInfo.lat}},{{RestInfo.lng}}')">{{RestInfo.name}}</option>
@@ -24,6 +25,9 @@
     <hr>
         {% for Label in data.Labels %}
             NAME : {{ Label.Name }} | Confidence : {{ Label.Confidence }}% <br>
+            <script>
+                document.getElementById('rekog').value = document.getElementById('rekog').value.concat(', {{ Label.Name }}');
+            </script>
         {% endfor %}
 </body>
 <script>
