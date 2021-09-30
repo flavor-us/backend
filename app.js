@@ -4,29 +4,29 @@ const db = require('./models/index');
 const nunjucks = require('nunjucks');
 
 class App {
-    constructor () {
+    constructor() {
         this.app = express();
 
-        const server = this.app.listen( 3000, function(){
+        const server = this.app.listen(3000, function () {
             console.log('Express listening on port : 3000');
         })
 
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
 
-        var dbConnection = function(){
+        var dbConnection = function () {
             // DB authentication
             db.sequelize.authenticate()
-            .then(() => {
-                console.log('Connection has been established successfully.');
-                return db.sequelize.sync();
-            })
-            .then(() => {
-                console.log('DB Sync complete.');
-            })
-            .catch(err => {
-                console.error('Unable to connect to the database:', err);
-            });
+                .then(() => {
+                    console.log('Connection has been established successfully.');
+                    return db.sequelize.sync();
+                })
+                .then(() => {
+                    console.log('DB Sync complete.');
+                })
+                .catch(err => {
+                    console.error('Unable to connect to the database:', err);
+                });
         }
 
         var getViewEngine = function (app) {

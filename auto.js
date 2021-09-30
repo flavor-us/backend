@@ -6,6 +6,6 @@ const auto = new SequelizeAuto("Rest_info", "root", "chan159263", {
 });
 
 auto.run(err => {
-    if(err) throw err;
+    if (err) throw err;
     console.log("complete!");
 })

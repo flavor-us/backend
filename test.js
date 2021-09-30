@@ -1,19 +1,18 @@
 //Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //PDX-License-Identifier: MIT-0 (For details, see https://github.com/awsdocs/amazon-rekognition-developer-guide/blob/master/LICENSE-SAMPLECODE.)
 
-
 // Load the SDK
 var AWS = require('aws-sdk');
-AWS.config.update({region:'ap-northeast-2'});
+AWS.config.update({ region: 'ap-northeast-2' });
 require("dotenv").config();
 const bucket = 'flavbucket' // the bucketname without s3://
-const photo  = 'uploadedfile.jpeg' // the name of file
+const photo = 'uploadedfile.jpeg' // the name of file
 
- const config = new AWS.Config({
+const config = new AWS.Config({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: process.env.AWS_REGION
-}) 
+})
 const client = new AWS.Rekognition();
 const params = {
   Image: {
@@ -24,7 +23,7 @@ const params = {
   },
   MaxLabels: 10
 }
-client.detectLabels(params, function(err, response) {
+client.detectLabels(params, function (err, response) {
   if (err) {
     console.log(err, err.stack); // if an error occurred
   } else {

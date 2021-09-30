@@ -15,9 +15,9 @@
     <input type="hidden" id="rekog" name="rekog" value=""/>
     <select name="name" multiple size="4">
         {% for RestInfo in nameArray %}
-      <option value="{{RestInfo.name}}" onclick="setLocation('{{RestInfo.lat}},{{RestInfo.lng}}')">{{RestInfo.name}}</option>
+            <option value="{{RestInfo.name}}" onclick="setLocation('{{RestInfo.lat}},{{RestInfo.lng}}')">{{RestInfo.name}}</option>
         {% endfor %}
-  </select>
+    </select>
     <br>
     <button type="submit" class="btn">선택</button>
 </form>
@@ -26,7 +26,10 @@
         {% for Label in data.Labels %}
             NAME : {{ Label.Name }} | Confidence : {{ Label.Confidence }}% <br>
             <script>
-                document.getElementById('rekog').value = document.getElementById('rekog').value.concat(', {{ Label.Name }}');
+                if (document.getElementById('rekog').value == "")
+                    document.getElementById('rekog').value = "{{ Label.Name }}"
+                else
+                    document.getElementById('rekog').value = document.getElementById('rekog').value.concat(', {{ Label.Name }}');
             </script>
         {% endfor %}
 </body>

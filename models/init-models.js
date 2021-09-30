@@ -4,9 +4,8 @@ var _Location = require("./Location");
 function initModels(sequelize) {
   var Location = _Location(sequelize, DataTypes);
 
-
   return {
-    Location,
+    Location
   };
 }
 module.exports = initModels;
