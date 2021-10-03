@@ -24,9 +24,9 @@ exports.getNames = async (req, res) => {
             nameArray = names.map((item) => {
                 return item.dataValues;
             })
-            var location = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype)
-            var data = await awsUtils.getLabel('uploadedfile.jpeg');
-            res.render('web/select.html', { nameArray: nameArray, data: data, fileLocation: location, userId: userId });
+            var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype)
+            var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
+            res.render('web/select.html', { nameArray: nameArray, rekogData: rekogData, fileLocation: uploadedFileInfo.location, userId: userId });
         } else {
             res.send({
                 name: ["Not Found"],

@@ -23,7 +23,7 @@
 </form>
     <br><br>
     <hr>
-        {% for Label in data.Labels %}
+        {% for Label in rekogData.Labels %}
             NAME : {{ Label.Name }} | Confidence : {{ Label.Confidence }}% <br>
             <script>
                 if (document.getElementById('rekog').value == "")
