@@ -1,9 +1,9 @@
-const { Router } = require('express');
+const { Router } = require("express");
 const router = Router();
-const ctrl = require('./web.ctrl');
-const upload = require('../../middleware/multer');
+const ctrl = require("./web.ctrl");
+const upload = require("../../middleware/multer");
 
-router.post('/name', upload.single('photo'), ctrl.getNames);
-router.post('/upload', ctrl.dbUpload)
+router.post("/name", upload.single("photo"), ctrl.getNames);
+router.post("/upload", ctrl.dbUpload);
 
 module.exports = router;
