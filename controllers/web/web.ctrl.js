@@ -26,7 +26,7 @@ exports.getNames = async (req, res) => {
 			});
 			var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
 			var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
-			res.render("web/select.html", { nameArray: nameArray, rekogData: rekogData, fileLocation: uploadedFileInfo.location, userId: userId });
+			res.render("web/select.html", { nameArray: nameArray, rekogData: rekogData, filename: uploadedFileInfo.key, userId: userId });
 		} else {
 			res.send({
 				name: ["Not Found"],
@@ -43,7 +43,7 @@ exports.dbUpload = async (req, res) => {
 	var contents = {
 		userid: req.body.user,
 		date: new Date(),
-		filename: `${req.body.name}-${req.body.fileLocation}`,
+		filename: `${req.body.filename}`,
 		rekognition: req.body.rekog,
 	};
 	dbUploads.uploadContent(contents).catch((e) => console.log(e));
