@@ -23,7 +23,7 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: true,
 			},
 			rekognition: {
-				type: DataTypes.TEXT,
+				type: DataTypes.JSON,
 				allowNull: true,
 			},
 		},

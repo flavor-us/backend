@@ -6,24 +6,24 @@ module.exports = function (sequelize, DataTypes) {
 		{
 			id: {
 				type: DataTypes.INTEGER,
-				allowNull: true,
+				allowNull: false,
 				primaryKey: true,
 			},
 			name: {
 				type: DataTypes.TEXT,
-				allowNull: true,
+				allowNull: false,
 			},
 			type: {
 				type: DataTypes.TEXT,
 				allowNull: true,
 			},
 			lat: {
-				type: DataTypes.DOUBLE,
-				allowNull: true,
+				type: DataTypes.DECIMAL(20, 17),
+				allowNull: false,
 			},
 			lng: {
-				type: DataTypes.DOUBLE,
-				allowNull: true,
+				type: DataTypes.DECIMAL(20, 17),
+				allowNull: false,
 			},
 		},
 		{

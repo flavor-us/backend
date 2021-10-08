@@ -9,11 +9,11 @@ module.exports = {
 		 * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
 		 */
 		return queryInterface.addColumn("Contents", "rekognition", {
-			type: Sequelize.DataTypes.TEXT,
+			type: Sequelize.DataTypes.JSON,
 		});
 	},
 
-	down: async (queryInterface, Sequelize) => {
+	down: async (queryInterface, _) => {
 		/**
 		 * Add reverting commands here.
 		 *

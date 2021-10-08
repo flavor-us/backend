@@ -24,8 +24,11 @@ exports.getNames = async (req, res) => {
 			nameArray = names.map((item) => {
 				return item.dataValues;
 			});
+			console.log(nameArray);
 			var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
 			var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
+			console.log(rekogData);
+			console.log(uploadedFileInfo);
 			res.render("web/select.html", { nameArray: nameArray, rekogData: rekogData, filename: uploadedFileInfo.key, userId: userId });
 		} else {
 			res.send({

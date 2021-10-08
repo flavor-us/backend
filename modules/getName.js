@@ -1,7 +1,8 @@
 var ExifImage = require("exif").ExifImage;
 require("dotenv").config();
+const Sequelize = require("sequelize");
 const models = require("../models");
-const Op = models.Sequelize.Op;
+const Op = Sequelize.Op;
 
 exports.getExif = function (file) {
 	return new Promise(function (resolve, reject) {

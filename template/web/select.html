@@ -7,28 +7,34 @@
 		<title>Select name</title>
 	</head>
 	<body>
-		<form action="/web/upload" method="post">
+		<form action="/web/upload" id="postForm" method="post">
 			<input type="hidden" id="filename" name="filename" value="{{ filename }}" />
 			<input type="hidden" id="user" name="user" value="{{ userId }}" />
 			<input type="hidden" id="lat" name="lat" value="" />
 			<input type="hidden" id="lng" name="lng" value="" />
-			<input type="hidden" id="rekog" name="rekog" value="" />
+			<input type="hidden" id="rekog" name="rekog" value="{{ rekogData.Labels }}" />
 			<select name="name" multiple size="4">
 				{% for RestInfo in nameArray %}
 				<option value="{{RestInfo.name}}" onclick="setLocation('{{RestInfo.lat}},{{RestInfo.lng}}')">{{RestInfo.name}}</option>
 				{% endfor %}
 			</select>
 			<br />
-			<button type="submit" class="btn">선택</button>
+			<button class="btn" onclick="submit()">선택</button>
 		</form>
 		<br /><br />
 		<hr />
-		{% for Label in rekogData.Labels %} NAME : {{ Label.Name }} | Confidence : {{ Label.Confidence }}% <br />
+		<script>
+			function submit() {
+				if (document.getElementById("lat") == "") alert("식당을 클릭해주세요.");
+				else document.getElementById("postForm").submit();
+			}
+		</script>
+		{# {% for Label in rekogData.Labels %} NAME : {{ Label.Name }} | Confidence : {{ Label.Confidence }}% <br />
 		<script>
 			if (document.getElementById("rekog").value == "") document.getElementById("rekog").value = "{{ Label.Name }}";
 			else document.getElementById("rekog").value = document.getElementById("rekog").value.concat(", {{ Label.Name }}");
 		</script>
-		{% endfor %}
+		{% endfor %} #}
 	</body>
 	<script>
 		function setLocation(latLng) {
