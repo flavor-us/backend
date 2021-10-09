@@ -1,5 +1,4 @@
 const models = require("../../models");
-const paginate = require("express-paginate");
 
 exports.getContents = async (req, res) => {
 	try {
