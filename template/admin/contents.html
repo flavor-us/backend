@@ -10,8 +10,24 @@
     table, th, td {
       border:1px solid black;
     }
+    .input-box {
+        text-align: right;
+        padding: 20px;
+    }
+    button {
+        background-color: #1b5ac2;
+        color: white;
+    }
 </style>
-<body>
+    <div class="input-box">
+        <select id="col">
+            <option id="filename" value="filename">filename</option>
+            <option id="rekognition" value="rekognition">rekognition</option>
+        </select>
+        <form id="search" action="">
+            <input type="text" id="keyword" name="name" placeholder="검색어 입력">
+            <button type="submit" onclick="search()">검색</button>
+        </form>
     </div>
     <table class="table">
         <tr>
@@ -39,5 +55,23 @@
     </table>
 </body>
 <script>
+function search(e){
+    var keyword = document.getElementById("keyword").value;
+    console.log("keyword = " + keyword);
+    if (keyword == "")
+        alert("검색어를 입력하세요")
+    else
+    {
+        var sel = document.getElementById("col");
+        console.log(sel.options[sel.selectedIndex].value);
+
+        if (sel.options[sel.selectedIndex].value == "filename")
+            document.getElementById("keyword").name = "filename"
+        else if (sel.options[sel.selectedIndex].value == "rekognition")
+            document.getElementById("keyword").name = "rekognition"
+        document.getElementById("search").method = "get";
+        document.getElementById("search").submit();
+    }
+}
 </script>
 </html>

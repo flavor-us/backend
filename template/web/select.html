@@ -12,7 +12,7 @@
 			<input type="hidden" id="user" name="user" value="{{ userId }}" />
 			<input type="hidden" id="lat" name="lat" value="" />
 			<input type="hidden" id="lng" name="lng" value="" />
-			<input type="hidden" id="rekog" name="rekog" value="{{ rekogData.Labels }}" />
+			<input type="hidden" id="rekog" name="rekog" value="{{ rekogData }}" />
 			<select name="name" multiple size="4">
 				{% for RestInfo in nameArray %}
 				<option value="{{RestInfo.name}}" onclick="setLocation('{{RestInfo.lat}},{{RestInfo.lng}}')">{{RestInfo.name}}</option>

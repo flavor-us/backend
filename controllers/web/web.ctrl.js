@@ -29,7 +29,7 @@ exports.getNames = async (req, res) => {
 			var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
 			console.log(rekogData);
 			console.log(uploadedFileInfo);
-			res.render("web/select.html", { nameArray: nameArray, rekogData: rekogData, filename: uploadedFileInfo.key, userId: userId });
+			res.render("web/select.html", { nameArray: nameArray, rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
 		} else {
 			res.send({
 				name: ["Not Found"],
