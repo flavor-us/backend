@@ -5,58 +5,63 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 </head>
 <style>
-    table, th, td {
-      border:1px solid black;
-    }
     .input-box {
         text-align: right;
         padding: 20px;
-    }
-    button {
-        background-color: #1b5ac2;
-        color: white;
     }
 </style>
     <div class="input-box">
         <select id="col">
             <option id="filename" value="filename">filename</option>
+            <option id="userid" value="userid">userid</option>
             <option id="restname" value="restname">restname</option>
         </select>
         <form id="search" action="">
             <input type="text" id="keyword" name="name" placeholder="검색어 입력">
-            <button type="submit" onclick="search()">검색</button>
+            <button class="btn btn-primary" type="submit" onclick="search()">검색</button>
         </form>
     </div>
-    <table class="table">
-        <tr>
-            <th>Userid</th>
-            <th>Date</th>
-            <th>Filename</th>
-            <th>Restname</th>
-            <th>rekognition</th>
-        </tr>
-        {% for content in contents %}
-        <tr>
-            <td>
-                {{ content.userid }}
-            </td>
-            <td>
-                {{ content.date }}
-            </td>
-            <td>
-                {{ content.filename }}
-            </td>
-            <td>
-                {{ content.restname }}
-            </td>
-            <td>
-                {{ content.rekognition }}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="panel panel-success">
+        <div class="panel-heading">Contents 테이블</div>
+        <div class="panel-body">
+            <p>Userid : 1번은 Admin입니다.</p>
+            <p>Date : 사진 업로드 날짜 및 시간입니다.</p>
+            <p>filename : 업로드 시간을 기준으로 만들어진 파일명으로, S3 버킷에 올라간 파일명과 동일합니다.</p>
+            <p>restname : 선택한 식당의 이름입니다.</p>
+            <p>rekognition : AWS Rekognition 서비스로 판단한 사진의 인공지능 인식 값입니다.</p>
+        </div>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>Userid</th>
+                <th>Date</th>
+                <th>Filename</th>
+                <th>Restname</th>
+                <th>rekognition</th>
+            </tr>
+            {% for content in contents %}
+            <tr>
+                <td>
+                    {{ content.userid }}
+                </td>
+                <td>
+                    {{ content.date }}
+                </td>
+                <td>
+                    {{ content.filename }}
+                </td>
+                <td>
+                    {{ content.restname }}
+                </td>
+                <td>
+                    {{ content.rekognition }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>
 <script>
 function search(e){
@@ -69,10 +74,10 @@ function search(e){
         var sel = document.getElementById("col");
         if (sel.options[sel.selectedIndex].value == "filename")
             document.getElementById("keyword").name = "filename"
-        //else if (sel.options[sel.selectedIndex].value == "rekognition")
-        //  document.getElementById("keyword").name = "rekognition"
         else if (sel.options[sel.selectedIndex].value == "restname")
             document.getElementById("keyword").name = "restname"
+        else if (sel.options[sel.selectedIndex].value == "userid")
+            document.getElementById("keyword").name = "userid"
         document.getElementById("search").method = "get";
         document.getElementById("search").submit();
     }

@@ -7,11 +7,14 @@ exports.getContents = async (req, res) => {
 		const [contents] = await Promise.all([models.Contents.findAll({
 			where: {
 				[Op.and]: {
+					restname: {
+						[Op.like]: req.query.restname ? ("%" + req.query.restname + "%") : "%" + '' + "%"
+					},
 					filename: {
 						[Op.like]: req.query.filename ? ("%" + req.query.filename + "%") : "%" + '' + "%"
 					},
-					restname: {
-						[Op.like]: req.query.restname ? ("%" + req.query.restname + "%") : "%" + '' + "%"
+					userid: {
+						[Op.like]: req.query.userid ? req.query.userid : "%" + '' + "%"
 					}
 				}
 			}
