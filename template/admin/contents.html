@@ -22,7 +22,7 @@
     <div class="input-box">
         <select id="col">
             <option id="filename" value="filename">filename</option>
-            <option id="rekognition" value="rekognition">rekognition</option>
+            <option id="restname" value="restname">restname</option>
         </select>
         <form id="search" action="">
             <input type="text" id="keyword" name="name" placeholder="검색어 입력">
@@ -34,6 +34,7 @@
             <th>Userid</th>
             <th>Date</th>
             <th>Filename</th>
+            <th>Restname</th>
             <th>rekognition</th>
         </tr>
         {% for content in contents %}
@@ -46,6 +47,9 @@
             </td>
             <td>
                 {{ content.filename }}
+            </td>
+            <td>
+                {{ content.restname }}
             </td>
             <td>
                 {{ content.rekognition }}
@@ -63,12 +67,12 @@ function search(e){
     else
     {
         var sel = document.getElementById("col");
-        console.log(sel.options[sel.selectedIndex].value);
-
         if (sel.options[sel.selectedIndex].value == "filename")
             document.getElementById("keyword").name = "filename"
-        else if (sel.options[sel.selectedIndex].value == "rekognition")
-            document.getElementById("keyword").name = "rekognition"
+        //else if (sel.options[sel.selectedIndex].value == "rekognition")
+        //  document.getElementById("keyword").name = "rekognition"
+        else if (sel.options[sel.selectedIndex].value == "restname")
+            document.getElementById("keyword").name = "restname"
         document.getElementById("search").method = "get";
         document.getElementById("search").submit();
     }

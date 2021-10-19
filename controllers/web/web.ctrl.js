@@ -4,7 +4,7 @@ const awsUtils = require("../../modules/awsUtils");
 const dbUploads = require("../../modules/dbUploads");
 
 exports.getNames = async (req, res) => {
-	let moe = 0.00001; // 1m 반경
+	let moe = 0.0001; // 10m 반경
 	var names;
 	const userId = 1;
 	console.log(req.file);
@@ -48,6 +48,7 @@ exports.dbUpload = async (req, res) => {
 		date: new Date(),
 		filename: `${req.body.filename}`,
 		rekognition: req.body.rekog,
+		restname: req.body.name
 	};
 	dbUploads.uploadContent(contents).catch((e) => console.log(e));
 	res.render("web/map.html", { name: req.body.name, lat: req.body.lat, lng: req.body.lng, KakaoApikey: process.env.KAKAO_KEY });

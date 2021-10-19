@@ -22,6 +22,10 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.TEXT,
 				allowNull: true,
 			},
+			restname: {
+				type: DataTypes.TEXT,
+				allowNull: true,
+			},
 			rekognition: {
 				type: DataTypes.JSON,
 				allowNull: true,
