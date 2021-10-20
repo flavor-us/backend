@@ -10,6 +10,10 @@ exports.getNames = async (req, res) => {
 	console.log(req.file);
 	const gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
 		console.log(error);
+		res.send({
+			name: ["Not Found"],
+			msg: "EXIF 정보를 추출할 수 없습니다."
+		})
 	});
 	if (gpsDMS) {
 		const gpsDegree = nameModule.convertLatLng(gpsDMS[0], gpsDMS[1]);
