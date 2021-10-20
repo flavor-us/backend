@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proof of Concept 1</title>
-</head>
-<body>
-    <br>    
-    <form action="/web/name" method="post" enctype="multipart/form-data">
-        <div class="button">
-            <h1 label for="photo">
-                [사진 선택]
-            </label>
-        </div>
-        <input type="file" id="photo" name="photo" accept="image/*"><br><br>
-        <hr>
-            <input type="submit" class="btn" onclick="submit()" ></button>
-    </form>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>flavorusMVP</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+	</head>
+	<body>
+		<br />
+		<form action="/web/name" method="post" enctype="multipart/form-data">
+			<div class="panel panel-success">
+            <div class="panel-heading">사진을 선택하세요.</div>
+            <div class="panel-body">
+			<input class="btn btn-default" type="file" id="photo" name="photo" accept="image/*" /><br />
+			<hr />
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+			<button class="btn btn-primary" type="submit" class="btn" onclick="submit()">제출</button>
+            </div>
+        </form>
+	</body>
 </html>
-<script>
-</script>
+<script></script>
