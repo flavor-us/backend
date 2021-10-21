@@ -1,4 +1,6 @@
 const nameModule = require("../../modules/getName");
+const awsUtils = require("../../modules/awsUtils");
+const dbUploads = require("../../modules/dbUploads");
 require("dotenv").config();
 
 exports.getNames = async (req, res) => {
@@ -31,4 +33,20 @@ exports.getNames = async (req, res) => {
 		res.send({
 			msg: "Cannot get ExifData",
 		});
+};
+
+exports.getRekog = async (req, res) => {
+	const userId = 1;
+	if (req.file) {
+		var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
+		var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
+		console.log(rekogData);
+		console.log(uploadedFileInfo);
+		res.send({ rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
+	} else {
+		res.send({
+			name: ["Not Found"],
+			msg: "파일을 찾을 수 없습니다.",
+		});
+	}
 };
