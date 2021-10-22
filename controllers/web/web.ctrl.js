@@ -2,19 +2,28 @@ const nameModule = require("../../modules/getName");
 require("dotenv").config();
 const awsUtils = require("../../modules/awsUtils");
 const dbUploads = require("../../modules/dbUploads");
+console.log(error);
 
 exports.getNames = async (req, res) => {
 	let moe = 0.0001; // 10m 반경
 	var names;
 	const userId = 1;
-	console.log(req.file);
-	const gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
-		console.log(error);
+	var gpsDMS;
+
+	if (req.file) {
+		gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
+			console.log(error);
+			res.send({
+				name: ["Not Found"],
+				msg: "EXIF 정보를 추출할 수 없습니다."
+			})
+		});
+	} else {
 		res.send({
 			name: ["Not Found"],
-			msg: "EXIF 정보를 추출할 수 없습니다."
-		})
-	});
+			msg: "파일을 찾을 수 없습니다.",
+		});
+	}
 	if (gpsDMS) {
 		const gpsDegree = nameModule.convertLatLng(gpsDMS[0], gpsDMS[1]);
 		if (gpsDegree) {
@@ -28,7 +37,6 @@ exports.getNames = async (req, res) => {
 			nameArray = names.map((item) => {
 				return item.dataValues;
 			});
-			console.log(nameArray);
 			var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
 			var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
 			console.log(rekogData);

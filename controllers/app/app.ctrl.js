@@ -6,9 +6,17 @@ require("dotenv").config();
 exports.getNames = async (req, res) => {
 	let moe = 0.00001; //1m 반경
 	var names;
-	const gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
-		console.log(error);
-	});
+	const gpsDMS;
+	if (req.file) {
+		const gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
+			console.log(error);
+		});
+	} else {
+		res.send({
+			name: ["Not Found"],
+			msg: "파일을 찾을 수 없습니다.",
+		});
+	}
 	if (gpsDMS) {
 		const gpsDegree = nameModule.convertLatLng(gpsDMS[0], gpsDMS[1]);
 		if (gpsDegree) {
