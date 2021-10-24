@@ -18,13 +18,18 @@ exports.getExif = function (file) {
 };
 
 exports.getNameSequelize = async function (lat, lng, moe) {
-	const names = await models.Location.findAll({
-		attributes: ["name", "lat", "lng"],
-		where: {
-			lat: { [Op.between]: [lat - moe, lat + moe] },
-			lng: { [Op.between]: [lng - moe, lng + moe] },
-		},
-	});
+	var names;
+	try {
+		names = await models.Location.findAll({
+			attributes: ["name", "lat", "lng"],
+			where: {
+				lat: { [Op.between]: [lat - moe, lat + moe] },
+				lng: { [Op.between]: [lng - moe, lng + moe] },
+			},
+		});
+	} catch (error) {
+		console.log(error);
+	}
 	return names;
 };
 
@@ -33,5 +38,8 @@ exports.convertLatLng = function (lat_DMS, lng_DMS) {
 		const lat_Degree = lat_DMS[0] + lat_DMS[1] / 60 + lat_DMS[2] / 3600;
 		const lng_Degree = lng_DMS[0] + lng_DMS[1] / 60 + lng_DMS[2] / 3600;
 		return [lat_Degree, lng_Degree];
-	} else return null;
+	} else {
+		console.log("error : something wrong in lat_DMS , lng_DMS")
+		return null;
+	}
 };
