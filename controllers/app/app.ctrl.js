@@ -6,9 +6,9 @@ require("dotenv").config();
 exports.getNames = async (req, res) => {
 	let moe = 0.00001; //1m 반경
 	var names;
-	const gpsDMS;
+	var gpsDMS;
 	if (req.file) {
-		const gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
+		var gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
 			console.log(error);
 		});
 	} else {
@@ -30,7 +30,9 @@ exports.getNames = async (req, res) => {
 			nameArray = names.map((item) => {
 				return item.dataValues;
 			});
-			res.send({ name: nameArray });
+			console.log("타입은 " + typeof (nameArray))
+			console.log(nameArray)
+			res.json({ name: nameArray });
 		} else {
 			res.send({
 				name: ["Not Found"],

@@ -2,7 +2,6 @@ const nameModule = require("../../modules/getName");
 require("dotenv").config();
 const awsUtils = require("../../modules/awsUtils");
 const dbUploads = require("../../modules/dbUploads");
-console.log(error);
 
 exports.getNames = async (req, res) => {
 	let moe = 0.0001; // 10m 반경
@@ -37,6 +36,8 @@ exports.getNames = async (req, res) => {
 			nameArray = names.map((item) => {
 				return item.dataValues;
 			});
+			console.log("타입은 " + typeof (nameArray))
+			console.log(nameArray)
 			var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
 			var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
 			console.log(rekogData);
