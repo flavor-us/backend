@@ -30,19 +30,19 @@ exports.getNames = async (req, res) => {
 				names = await nameModule.getNameSequelize(gpsDegree[0], gpsDegree[1], moe);
 				moe *= 2;
 				if (moe > 0.005)
-					// 1000m
+					// 500m
 					break;
 			} while (Object.keys(names).length < 3);
-			nameArray = names.map((item) => {
+			restData = names.map((item) => {
 				return item.dataValues;
 			});
-			console.log("타입은 " + typeof (nameArray))
-			console.log(nameArray)
+			console.log("TYPE of restData = " + typeof (restData))
+			console.log(restData)
 			var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
 			var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
-			console.log(rekogData);
-			console.log(uploadedFileInfo);
-			res.render("web/select.html", { nameArray: nameArray, rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
+			console.log("rekogData = " + rekogData);
+			console.log("uploadedFileInfo" + uploadedFileInfo);
+			res.render("web/select.html", { restData: restData, rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
 		} else {
 			res.send({
 				name: ["Not Found"],

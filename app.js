@@ -7,7 +7,7 @@ class App {
 	constructor() {
 		this.app = express();
 
-		const server = this.app.listen(3000, function () {
+		this.app.listen(3000, function () {
 			console.log("Express listening on port : 3000");
 		});
 

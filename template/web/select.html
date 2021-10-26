@@ -15,8 +15,8 @@
 			<input type="hidden" id="rekog" name="rekog" value="{{ rekogData }}" />
 			<input type="hidden" id="restname" name="rekog" value="" />
 			<select name="name" multiple size="4">
-				{% for RestInfo in nameArray %}
-				<option value="{{RestInfo.name}}" onclick="setLocation('{{RestInfo.lat}},{{RestInfo.lng}}')">{{RestInfo.name}}</option>
+				{% for restData in restData %}
+				<option value="{{restData.name}}" onclick="setLocation('{{restData.lat}},{{restData.lng}}')">{{restData.name}}</option>
 				{% endfor %}
 			</select>
 			<br />

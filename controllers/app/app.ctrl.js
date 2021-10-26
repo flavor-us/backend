@@ -1,12 +1,12 @@
 const nameModule = require("../../modules/getName");
 const awsUtils = require("../../modules/awsUtils");
-const dbUploads = require("../../modules/dbUploads");
 require("dotenv").config();
 
 exports.getNames = async (req, res) => {
-	let moe = 0.00001; //1m 반경
+	let moe = 0.0001; //10m 반경
 	var names;
 	var gpsDMS;
+	console.log(req.file)
 	if (req.file) {
 		var gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
 			console.log(error);
@@ -23,16 +23,15 @@ exports.getNames = async (req, res) => {
 			do {
 				names = await nameModule.getNameSequelize(gpsDegree[0], gpsDegree[1], moe);
 				moe *= 2;
-				if (moe > 0.01)
-					// 1km
+				if (moe > 0.005)
+					// 500m
 					break;
 			} while (Object.keys(names).length < 3);
-			nameArray = names.map((item) => {
+			restData = names.map((item) => {
 				return item.dataValues;
 			});
-			console.log("타입은 " + typeof (nameArray))
-			console.log(nameArray)
-			res.json({ name: nameArray });
+			console.log(restData);
+			res.json({ restData: restData });
 		} else {
 			res.send({
 				name: ["Not Found"],
