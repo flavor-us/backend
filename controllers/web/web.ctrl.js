@@ -41,7 +41,7 @@ exports.getNames = async (req, res) => {
 			var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
 			var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
 			console.log("rekogData = " + rekogData);
-			console.log("uploadedFileInfo" + uploadedFileInfo);
+			console.log(uploadedFileInfo);
 			res.render("web/select.html", { restData: restData, rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
 		} else {
 			res.send({
