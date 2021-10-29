@@ -1,7 +1,5 @@
-const Sequelize = require("sequelize");
-
 module.exports = function (sequelize, DataTypes) {
-	return sequelize.define(
+	const Location = sequelize.define(
 		"Location",
 		{
 			id: {
@@ -32,4 +30,14 @@ module.exports = function (sequelize, DataTypes) {
 			timestamps: false,
 		}
 	);
+
+	Location.associate = (models) => {
+		Location.hasMany(models.Contents, {
+			foreignKey: "rest_id",
+			sourceKey: "id",
+			unique: false,
+		})
+	}
+
+	return Location;
 };

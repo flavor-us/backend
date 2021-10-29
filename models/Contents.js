@@ -1,7 +1,5 @@
-const Sequelize = require("sequelize");
-
 module.exports = function (sequelize, DataTypes) {
-	return sequelize.define(
+	const Contents = sequelize.define(
 		"Contents",
 		{
 			id: {
@@ -9,10 +7,6 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: false,
 				primaryKey: true,
 				autoIncrement: true,
-			},
-			userid: {
-				type: DataTypes.INTEGER,
-				allowNull: true,
 			},
 			date: {
 				type: DataTypes.DATE(),
@@ -35,6 +29,32 @@ module.exports = function (sequelize, DataTypes) {
 			sequelize,
 			tableName: "Contents",
 			timestamps: false,
-		}
-	);
+		});
+	Contents.associate = (models) => {
+		Contents.belongsTo(models.Location, {
+			foreignKey: "restid",
+			targetKey: "id",
+			unique: false,
+		})
+
+		Contents.belongsToMany(models.Tag, {
+			through: {
+				model: "TagContents",
+				unique: false,
+			},
+			foreignKey: {
+				name: "content",
+				type: DataTypes.INTEGER,
+			},
+			primaryKey: false,
+			sourceKey: "id",
+		})
+
+		Contents.belongsTo(models.User, {
+			foreignKey: "userid",
+			targetKey: "uid"
+		})
+	}
+
+	return Contents;
 };
