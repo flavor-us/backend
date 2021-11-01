@@ -32,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
 		});
 	Contents.associate = (models) => {
 		Contents.belongsTo(models.Location, {
-			foreignKey: "restid",
+			foreignKey: "rest_id",
 			targetKey: "id",
 			unique: false,
 		})
@@ -43,18 +43,16 @@ module.exports = function (sequelize, DataTypes) {
 				unique: false,
 			},
 			foreignKey: {
-				name: "content",
+				name: "content_id",
 				type: DataTypes.INTEGER,
 			},
-			primaryKey: false,
 			sourceKey: "id",
 		})
 
 		Contents.belongsTo(models.User, {
-			foreignKey: "userid",
+			foreignKey: "user_id",
 			targetKey: "uid"
 		})
 	}
-
 	return Contents;
 };

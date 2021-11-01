@@ -9,7 +9,8 @@ module.exports = function (sequelize, DataTypes) {
                 autoIncrement: true,
             },
             tagname: {
-                type: DataTypes.TEXT,
+                type: DataTypes.STRING,
+                unique: true,
                 allowNull: false,
             },
         },
@@ -24,11 +25,10 @@ module.exports = function (sequelize, DataTypes) {
         Tag.belongsToMany(models.Contents, {
             through: {
                 model: "TagContents",
-                unique: false,
+                unique: true,
             },
-            primaryKey: false,
             foreignKey: "tag",
-            sourceKey: "id",
+            sourceKey: "tagname",
         })
     }
     return Tag;

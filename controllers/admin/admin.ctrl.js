@@ -13,8 +13,8 @@ exports.getContents = async (req, res) => {
 					filename: {
 						[Op.like]: req.query.filename ? ("%" + req.query.filename + "%") : "%" + '' + "%"
 					},
-					userid: {
-						[Op.like]: req.query.userid ? req.query.userid : "%" + '' + "%"
+					user_id: {
+						[Op.like]: req.query.user_id ? req.query.user_id : "%" + '' + "%"
 					}
 				}
 			}

@@ -57,7 +57,7 @@ exports.getNames = async (req, res) => {
 
 exports.dbUpload = async (req, res) => {
 	var contents = {
-		userid: req.body.user,
+		user_id: req.body.user,
 		date: new Date(),
 		filename: `${req.body.filename}`,
 		rekognition: req.body.rekog,
