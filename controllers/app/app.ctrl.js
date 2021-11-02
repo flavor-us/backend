@@ -1,18 +1,18 @@
 const nameModule = require("../../modules/getName");
 const awsUtils = require("../../modules/awsUtils");
+const dbUploads = require("../../modules/dbUploads");
 require("dotenv").config();
 
 exports.getNames = async (req, res) => {
 	let moe = 0.0001; //10m 반경
 	var names;
 	var gpsDMS;
-	console.log(req.file)
 	if (req.file) {
 		var gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
 			console.log(error);
 		});
 	} else {
-		res.send({
+		res.status(400).send({
 			name: ["Not Found"],
 			msg: "파일을 찾을 수 없습니다.",
 		});
@@ -30,16 +30,15 @@ exports.getNames = async (req, res) => {
 			restData = names.map((item) => {
 				return item.dataValues;
 			});
-			console.log(restData);
-			res.json({ restData: restData });
+			res.status(200).json({ restData: restData });
 		} else {
-			res.send({
+			res.status(400).send({
 				name: ["Not Found"],
 				msg: "EXIF 데이터가 있으나, 위도 경도 정보는 찾을 수 없었습니다.",
 			});
 		}
 	} else
-		res.send({
+		res.status(400).send({
 			msg: "Cannot get ExifData",
 		});
 };
@@ -49,13 +48,26 @@ exports.getRekog = async (req, res) => {
 	if (req.file) {
 		var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
 		var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
-		console.log(rekogData);
-		console.log(uploadedFileInfo);
-		res.send({ rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
+		res.status(200).send({ rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
 	} else {
-		res.send({
+		res.status(400).send({
 			name: ["Not Found"],
 			msg: "파일을 찾을 수 없습니다.",
 		});
 	}
 };
+
+exports.dbupload = async (req, res) => {
+	var contents = {
+		user_id: req.body.user,
+		date: new Date(),
+		filename: `${req.body.filename}`,
+		rekognition: req.body.rekog,
+		restname: req.body.restname
+	};
+	dbUploads.uploadContent(contents).catch((e) => {
+		console.log(e);
+		res.status(400).send({ msg: "Contents를 업로드 하지 못했습니다." })
+	});
+	res.status(201).send({ msg: "Content를 성공적으로 업로드했습니다." });
+}

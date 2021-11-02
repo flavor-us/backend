@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const db = require("./models/index");
 const nunjucks = require("nunjucks");
+const { swaggerUi, specs } = require('./modules/swagger');
 
 class App {
 	constructor() {
@@ -11,16 +12,23 @@ class App {
 			console.log("Express listening on port : 3000");
 		});
 
+		this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+		// this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 		this.app.use(bodyParser.json());
 		this.app.use(bodyParser.urlencoded({ extended: false }));
 
+
+		this.app.get("/test", (req, res) => {
+			console.log("test")
+			res.send(200).send("Complete");
+		})
 		var dbConnection = function () {
 			// DB authentication
 			db.sequelize
 				.authenticate()
 				.then(() => {
 					console.log("Connection has been established successfully.");
-					return db.sequelize.sync({ alter: true });
+					// return db.sequelize.sync({ alter: true });
 				})
 				.then(() => {
 					console.log("DB Sync complete.");

@@ -8,7 +8,6 @@ exports.getNames = async (req, res) => {
 	var names;
 	const userId = 1;
 	var gpsDMS;
-
 	if (req.file) {
 		gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
 			console.log(error);
@@ -36,12 +35,8 @@ exports.getNames = async (req, res) => {
 			restData = names.map((item) => {
 				return item.dataValues;
 			});
-			console.log("TYPE of restData = " + typeof (restData))
-			console.log(restData)
 			var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
 			var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
-			console.log("rekogData = " + rekogData);
-			console.log(uploadedFileInfo);
 			res.render("web/select.html", { restData: restData, rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
 		} else {
 			res.send({
@@ -61,8 +56,8 @@ exports.dbUpload = async (req, res) => {
 		date: new Date(),
 		filename: `${req.body.filename}`,
 		rekognition: req.body.rekog,
-		restname: req.body.name
+		restname: req.body.restname
 	};
 	dbUploads.uploadContent(contents).catch((e) => console.log(e));
-	res.render("web/map.html", { name: req.body.name, lat: req.body.lat, lng: req.body.lng, KakaoApikey: process.env.KAKAO_KEY });
+	res.render("web/map.html", { name: req.body.restname, lat: req.body.lat, lng: req.body.lng, KakaoApikey: process.env.KAKAO_KEY });
 };
