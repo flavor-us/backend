@@ -65,6 +65,7 @@ components:
             example:
                 msg: "Contents를 업로드 하지 못했습니다."
         dbupload_request:
+            type: object
             required:
                 - user
                 - filename
@@ -88,3 +89,10 @@ components:
                 filename: "202111012342.jpeg"
                 rekog: '"rekogData": { "Labels": [ { "Name": "Noodle", "Confidence": 96.59749603271484, "Instances": [], "Parents": [ { "Name": "Pasta" }, { "Name": "Food" } ] }, { "Name": "Food", "Confidence": 96.59749603271484, "Instances": [], "Parents": [] }, { "Name": "Pasta", "Confidence": 96.59749603271484, "Instances": [], "Parents": [ { "Name": "Food" } ] }, { "Name": "Vermicelli", "Confidence": 72.3548583984375, "Instances": [], "Parents": [ { "Name": "Noodle" }, { "Name": "Pasta" }, { "Name": "Food" } ] }, { "Name": "Plant", "Confidence": 57.7856330871582, "Instances": [], "Parents": [] }, { "Name": "Spaghetti", "Confidence": 57.40068817138672, "Instances": [], "Parents": [ { "Name": "Pasta" }, { "Name": "Food" } ] } ], "LabelModelVersion": "2.0" } }'
                 restname: "테스트 식당"
+        s3upload_response:
+            properties:
+                filename:
+                    type: string
+                    description: s3에 업로드 된 사진 파일명
+            example:
+                filename: "202111012342.jpeg"

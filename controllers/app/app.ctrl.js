@@ -3,6 +3,7 @@ const awsUtils = require("../../modules/awsUtils");
 const dbUploads = require("../../modules/dbUploads");
 require("dotenv").config();
 
+//행위는 get 메소드는 post (req.file 받기 위해)
 exports.getNames = async (req, res) => {
 	let moe = 0.0001; //10m 반경
 	var names;
@@ -43,21 +44,51 @@ exports.getNames = async (req, res) => {
 		});
 };
 
-exports.getRekog = async (req, res) => {
-	const userId = 1;
-	if (req.file) {
-		var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
-		var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
-		res.status(200).send({ rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
+// exports.getRekog = async (req, res) => {
+// 	const userId = 1;
+// 	if (req.file) {
+// 		var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
+// 		var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
+// 		res.status(200).send({ rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
+// 	} else {
+// 		res.status(400).send({
+// 			name: ["Not Found"],
+// 			msg: "파일을 찾을 수 없습니다.",
+// 		});
+// 	}
+// };
+
+exports.s3Upload = async (req, res) => {
+	const userId = req.param.id;
+	if (req.file && userId) {
+		var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype, userId).catch(e => {
+			res.status(400).send({
+				name: ["Not Found"],
+				msg: "s3 버킷에 업로드 할 수 없습니다.",
+			});
+		});
+		res.status(201).send({ filename: uploadedFileInfo.key });
 	} else {
 		res.status(400).send({
 			name: ["Not Found"],
-			msg: "파일을 찾을 수 없습니다.",
+			msg: "s3 버킷에 업로드 할 수 없습니다.",
 		});
 	}
-};
+}
 
-exports.dbupload = async (req, res) => {
+exports.getRekog = async (req, res) => {
+	const key = req.query.s3ImageKey;
+	const rekogData = await awsUtils.getLabel(key).catch(e => {
+		console.log(e)
+		res.status(400).send({
+			name: ["Not Found"],
+			msg: "s3버킷에서 이미지 정보를 추출할 수 없습니다"
+		});
+	});
+	res.status(200).send({ rekogData: JSON.stringify(rekogData) })
+}
+
+exports.dbContentsUpload = async (req, res) => {
 	var contents = {
 		user_id: req.body.user,
 		date: new Date(),

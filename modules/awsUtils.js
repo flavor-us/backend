@@ -2,7 +2,7 @@ var AWS = require("aws-sdk");
 var fs = require("fs");
 require("dotenv").config();
 
-exports.uploadS3Bucket = async function (filepath, filetype) {
+exports.uploadS3Bucket = async function (filepath, filetype, userId) {
 	AWS.config.region = process.env.AWS_REGION;
 	var s3 = new AWS.S3();
 	const fileExtension = filetype.split("/")[1];
@@ -12,7 +12,7 @@ exports.uploadS3Bucket = async function (filepath, filetype) {
 	};
 	var param = {
 		Bucket: process.env.BUCKET_NAME,
-		Key: `${Date.now()}.${fileExtension}`,
+		Key: `${userId}_${Date.now()}.${fileExtension}`,
 		ACL: "public-read",
 		Body: fs.createReadStream(filepath),
 		ContentType: filetype,
