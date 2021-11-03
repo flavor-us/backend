@@ -1,6 +1,8 @@
 const nameModule = require("../../modules/getName");
 const awsUtils = require("../../modules/awsUtils");
-const dbUploads = require("../../modules/dbUploads");
+const dbUpload = require("../../modules/dbUpload");
+const models = require("../../models");
+
 require("dotenv").config();
 
 //행위는 get 메소드는 post (req.file 받기 위해)
@@ -59,7 +61,7 @@ exports.getNames = async (req, res) => {
 // };
 
 exports.s3Upload = async (req, res) => {
-	const userId = req.param.id;
+	const userId = req.param.user_id;
 	if (req.file && userId) {
 		var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype, userId).catch(e => {
 			res.status(400).send({
@@ -78,27 +80,83 @@ exports.s3Upload = async (req, res) => {
 
 exports.getRekog = async (req, res) => {
 	const key = req.query.s3ImageKey;
-	const rekogData = await awsUtils.getLabel(key).catch(e => {
+	const rekogData = await awsUtils.getLabel(key).catch((e) => {
 		console.log(e)
 		res.status(400).send({
 			name: ["Not Found"],
 			msg: "s3버킷에서 이미지 정보를 추출할 수 없습니다"
 		});
 	});
-	res.status(200).send({ rekogData: JSON.stringify(rekogData) })
+	if (rekogData)
+		res.status(200).send({ rekogData: JSON.stringify(rekogData) })
+	else
+		res.status(400).send({
+			msg: "s3버킷에서 이미지 정보를 추출할 수 없습니다"
+		});
 }
 
-exports.dbContentsUpload = async (req, res) => {
-	var contents = {
+exports.uploadContents = async (req, res) => {
+	const content = {
 		user_id: req.body.user,
 		date: new Date(),
 		filename: `${req.body.filename}`,
 		rekognition: req.body.rekog,
 		restname: req.body.restname
 	};
-	dbUploads.uploadContent(contents).catch((e) => {
+	await dbUpload.uploadContent(content).then((contentId) => {
+		res.status(201).send({ msg: "Content를 성공적으로 업로드했습니다.", contentId: contentId });
+	}).catch((e) => {
 		console.log(e);
-		res.status(400).send({ msg: "Contents를 업로드 하지 못했습니다." })
+		res.status(400).send({ msg: "Content를 업로드 하지 못했습니다." })
 	});
-	res.status(201).send({ msg: "Content를 성공적으로 업로드했습니다." });
+}
+
+exports.deleteContents = async (req, res) => {
+	var content;
+	try {
+		content = await models.Contents.destroy({
+			where: {
+				id: req.params.content_id
+			}
+		});
+	} catch (e) {
+		console.log(e);
+		res.status(400).send({ msg: "Content를 지우지 못했습니다." })
+	}
+	if (content)
+		res.send({ msg: "Content를 성공적으로 지웠습니다.", contentId: req.params.content_id }).status(204);
+	else
+		res.status(400).send("해당하는 content_id가 없습니다.")
+}
+
+exports.addUser = async (req, res) => {
+	const user = {
+		signupdate: new Date(),
+		email: req.body.email,
+		username: req.body.username
+	}
+	await dbUpload.uploadUser(user).then((uid) => {
+		res.status(201).send({ msg: "User를 성공적으로 업로드했습니다.", userId: uid })
+	}).catch((e) => {
+		console.log(e);
+		res.status(400).send({ msg: "User를 업로드 하지 못했습니다." })
+	});
+}
+
+exports.deleteUser = async (req, res) => {
+	var user;
+	try {
+		user = await models.User.destroy({
+			where: {
+				uid: req.params.user_id
+			}
+		});
+	} catch (e) {
+		console.log(e);
+		res.status(400).send({ msg: "user를 지우지 못했습니다." })
+	}
+	if (user)
+		res.send({ msg: "user를 성공적으로 지웠습니다.", userId: req.params.user_id }).status(204);
+	else
+		res.status(400).send("해당하는 uid가 없습니다.")
 }

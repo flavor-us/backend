@@ -45,7 +45,7 @@ const upload = require("../../middleware/multer");
  *         description: 에러메시지
  *       example:
  *        msg: "s3버킷에서 이미지 정보를 추출할 수 없습니다"
- * /app/s3/{id}:
+ * /app/s3/{user_id}:
  *  post:
  *   description: s3 버킷에 이미지를 업로드합니다. 인공지능 인식 결과(rekogData)를 얻기 위한 필수 절차입니다. 
  *   parameters:
@@ -86,11 +86,121 @@ const upload = require("../../middleware/multer");
  *      description: 제약 조건을 지키지 못해 Contents 를 업로드 하지 못한 경우입니다.
  *      schema: 
  *       $ref: '#/components/schemas/dbupload_fail'
+ * /app/contents/{content_id}:
+ *  delete:
+ *   description: 데이터베이스의 Contents 테이블에 Column을 Delete 합니다.
+ *   parameters:
+ *   - in: params
+ *     name: content_id
+ *     description: Contents 테이블에서 삭제할 Content의 id 입니다.
+ *     required: true
+ *   responses:
+ *     '204':
+ *      description: Contents 테이블에 Column을 성공적으로 제거한 경우입니다.
+ *      schema: 
+ *       properties:
+ *        msg:
+ *         type: string
+ *         description: 성공 메시지
+ *        deletedId:
+ *         type: integer
+ *         description: 제거된 Content의 아이디
+ *       example:
+ *        msg: "Content를 성공적으로 지웠습니다."
+ *        deletedId: 42
+ *     '400':
+ *      description: 제약 조건을 지키지 못해 Content를 제거 하지 못한 경우입니다.
+ *      schema: 
+ *       properties:
+ *        msg:
+ *         type: string
+ *         description: 에러 메시지
+ *       example:
+ *        msg: "Content를 지우지 못했습니다."
+ * /app/user:
+ *  post:
+ *   description: 데이터베이스의 User 테이블에 Column을 Insert 합니다.
+ *   parameters:
+ *   - in: body
+ *     name: user
+ *     description: User 테이블에 삽입될 내용입니다.
+ *     required: true
+ *     schema:
+ *      properties:
+ *       email:
+ *        type: string
+ *        description: 이메일
+ *       username:
+ *        type: string
+ *        description: 유저 이름
+ *      example:
+ *        email : "example@naver.com"
+ *        username: "example"
+ *   responses:
+ *     '204':
+ *      description: User 테이블에 Column을 성공적으로 추가한 경우입니다.
+ *      schema: 
+ *       properties:
+ *        msg:
+ *         type: string
+ *         description: 성공 메시지
+ *        userId:
+ *         type: string
+ *         description: 추가된 유저의 uid
+ *       example:
+ *        msg: "User를 성공적으로 업로드했습니다."
+ *        userId: "42"
+ *     '400':
+ *      description: 제약 조건을 지키지 못해 user를 업로드 하지 못한 경우입니다.
+ *      schema: 
+ *       properties:
+ *        msg:
+ *         type: string
+ *         description: 에러 메시지
+ *       example:
+ *        msg: "User를 업로드 하지 못했습니다." 
+ * /app/user/{user_id}:
+ *  delete:
+ *   description: 데이터베이스의 User 테이블에 Column을 Delete 합니다.
+ *   parameters:
+ *   - in: params
+ *     name: user_id
+ *     description: User 테이블에서 삭제할 user의 id 입니다.
+ *     required: true
+ *   responses:
+ *     '204':
+ *      description: User 테이블에 Column을 성공적으로 제거한 경우입니다.
+ *      schema: 
+ *       properties:
+ *        msg:
+ *         type: string
+ *         description: 성공 메시지
+ *        userId:
+ *         type: integer
+ *         description: 제거된 User의 아이디
+ *       example:
+ *        msg: "user를 성공적으로 지웠습니다."
+ *        userId: 42
+ *     '400':
+ *      description: 제약 조건을 지키지 못해 user를 제거 하지 못한 경우입니다.
+ *      schema: 
+ *       properties:
+ *        msg:
+ *         type: string
+ *         description: 에러 메시지
+ *       example:
+ *        msg: "user를 지우지 못했습니다."
  */
 router.post("/name", upload.single("photo"), ctrl.getNames);
-router.post("/contents", ctrl.dbContentsUpload);
+
+router.post("/contents", ctrl.uploadContents);
+router.delete("/contents/:content_id", ctrl.deleteContents);
+
+router.post("/user", ctrl.addUser);
+router.delete("/user/:user_id", ctrl.deleteUser);
+
 // router.post("/rekog", upload.single("photo"), ctrl.getRekog);
-router.post("/s3/{id}", upload.single("photo"), ctrl.s3Upload);
+router.post("/s3/:user_id", upload.single("photo"), ctrl.s3Upload);
 router.get("/rekog", ctrl.getRekog);
 
 module.exports = router;

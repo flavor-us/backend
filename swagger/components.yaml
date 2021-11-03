@@ -55,8 +55,12 @@ components:
                 msg:
                     type: string
                     description: 완료 메시지
+                contentId:
+                    type: integer
+                    description: 업로드된 content의 id
             example:
                 msg: "Content를 성공적으로 업로드했습니다."
+                contentId: 42
         dbupload_fail:
             properties:
                 msg:

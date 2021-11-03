@@ -1,7 +1,7 @@
 const nameModule = require("../../modules/getName");
 require("dotenv").config();
 const awsUtils = require("../../modules/awsUtils");
-const dbUploads = require("../../modules/dbUploads");
+const dbUploads = require("../../modules/dbUpload");
 
 exports.getNames = async (req, res) => {
 	let moe = 0.0001; // 10m 반경
@@ -35,7 +35,7 @@ exports.getNames = async (req, res) => {
 			restData = names.map((item) => {
 				return item.dataValues;
 			});
-			var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
+			var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype, userId);
 			var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
 			res.render("web/select.html", { restData: restData, rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
 		} else {
