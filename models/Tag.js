@@ -22,14 +22,13 @@ module.exports = function (sequelize, DataTypes) {
     );
 
     Tag.associate = (models) => {
+
         Tag.belongsToMany(models.Contents, {
-            through: {
-                model: "TagContents",
-                unique: true,
-            },
-            foreignKey: "tag",
-            sourceKey: "tagname",
-        })
+            as: "Content",
+            through: "TagContents",
+            foreignKey: "tag_id"
+        });
+
     }
     return Tag;
 };

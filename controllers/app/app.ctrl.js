@@ -2,6 +2,8 @@ const nameModule = require("../../modules/getName");
 const awsUtils = require("../../modules/awsUtils");
 const dbUpload = require("../../modules/dbUpload");
 const models = require("../../models");
+const errorMsg = require("../../message/error");
+const { renderString } = require("nunjucks");
 
 require("dotenv").config();
 
@@ -103,7 +105,8 @@ exports.uploadContents = async (req, res) => {
 		rekognition: req.body.rekog,
 		restname: req.body.restname
 	};
-	await dbUpload.uploadContent(content).then((contentId) => {
+	const tagId = req.body.tagId;
+	await dbUpload.uploadContent(content, tagId).then((contentId) => {
 		res.status(201).send({ msg: "Content를 성공적으로 업로드했습니다.", contentId: contentId });
 	}).catch((e) => {
 		console.log(e);
@@ -130,6 +133,8 @@ exports.deleteContents = async (req, res) => {
 }
 
 exports.addUser = async (req, res) => {
+	if (!req.body.email || !req.body.username)
+		return res.send(errorMsg.notEnoughReq);
 	const user = {
 		signupdate: new Date(),
 		email: req.body.email,
@@ -159,4 +164,22 @@ exports.deleteUser = async (req, res) => {
 		res.send({ msg: "user를 성공적으로 지웠습니다.", userId: req.params.user_id }).status(204);
 	else
 		res.status(400).send("해당하는 uid가 없습니다.")
+
+}
+exports.makeRelation = async (req, res) => {
+	const followerId = req.body.followerId;
+	const followingId = req.body.followingId;
+	if (!followerId || !followingId)
+		return errorMsg.notEnoughReq;
+	const follower = await models.User.findOne({
+		where: {
+			id: followerId
+		}
+	})
+	const following = await models.User.findOne({
+		where: {
+			id: followingId
+		}
+	})
+	follower.addFollowing(following);
 }

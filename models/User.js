@@ -33,7 +33,21 @@ module.exports = function (sequelize, DataTypes) {
             foreignKey: "user_id",
             sourceKey: "uid",
         })
-    }
+
+        User.belongsToMany(User, {
+            as: "Following",
+            through: "Relation",
+            foreignKey: "following_id"
+        });
+
+        User.belongsToMany(User, {
+            as: "Followed",
+            through: "Relation",
+            foreignKey: "followed_id"
+        })
+
+    };
+
 
     return User;
 };

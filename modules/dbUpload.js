@@ -1,12 +1,20 @@
 const models = require("../models");
 
-exports.uploadContent = async function (content) {
-	const contentId = await models.Contents.create(content).then((uploadedColumn) => {
-		return uploadedColumn.dataValues.id;
+exports.uploadContent = async function (content, tagId) {
+	const newContent = await models.Contents.create(content).then((uploadedColumn) => {
+		return uploadedColumn;
 	}).catch((err) => {
 		console.log(err);
 	});
-	return contentId;
+	if (tagId) {
+		const tag = await models.Tag.findOne({
+			where: {
+				id: tagId
+			}
+		});
+		await newContent.addTag(tag);
+	}
+	return (newContent.dataValues.id);
 }
 
 exports.uploadUser = async function (user) {
@@ -15,6 +23,7 @@ exports.uploadUser = async function (user) {
 		return uploadedColumn.dataValues.uid;
 	}).catch((err) => {
 		console.log(err);
+		throw err;
 	});
 	return uid;
 }

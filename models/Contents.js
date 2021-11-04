@@ -38,15 +38,9 @@ module.exports = function (sequelize, DataTypes) {
 		})
 
 		Contents.belongsToMany(models.Tag, {
-			through: {
-				model: "TagContents",
-				unique: false,
-			},
-			foreignKey: {
-				name: "content_id",
-				type: DataTypes.INTEGER,
-			},
-			sourceKey: "id",
+			as: "Tag",
+			through: "TagContents",
+			foreignKey: "content_id"
 		})
 
 		Contents.belongsTo(models.User, {

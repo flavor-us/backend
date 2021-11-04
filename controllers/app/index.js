@@ -203,4 +203,6 @@ router.delete("/user/:user_id", ctrl.deleteUser);
 router.post("/s3/:user_id", upload.single("photo"), ctrl.s3Upload);
 router.get("/rekog", ctrl.getRekog);
 
+router.post("/relation", ctrl.makeRelation)
+
 module.exports = router;
