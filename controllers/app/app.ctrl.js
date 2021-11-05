@@ -3,7 +3,7 @@ const awsUtils = require("../../modules/awsUtils");
 const dbUpload = require("../../modules/dbUpload");
 const models = require("../../models");
 const errorMsg = require("../../message/error");
-const { renderString } = require("nunjucks");
+const completeMsg = require("../../message/complete");
 
 require("dotenv").config();
 
@@ -134,7 +134,7 @@ exports.deleteContents = async (req, res) => {
 
 exports.addUser = async (req, res) => {
 	if (!req.body.email || !req.body.username)
-		return res.send(errorMsg.notEnoughReq);
+		return res.status(400).send(errorMsg.notEnoughReq);
 	const user = {
 		signupdate: new Date(),
 		email: req.body.email,
@@ -170,16 +170,17 @@ exports.makeRelation = async (req, res) => {
 	const followerId = req.body.followerId;
 	const followingId = req.body.followingId;
 	if (!followerId || !followingId)
-		return errorMsg.notEnoughReq;
+		return res.status(400).send(errorMsg.notEnoughReq);
 	const follower = await models.User.findOne({
 		where: {
-			id: followerId
+			uid: followerId
 		}
 	})
 	const following = await models.User.findOne({
 		where: {
-			id: followingId
+			uid: followingId
 		}
 	})
-	follower.addFollowing(following);
+	await follower.addFollowing(following);
+	res.status(201).send(completeMsg.complete);
 }

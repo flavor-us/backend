@@ -190,6 +190,33 @@ const upload = require("../../middleware/multer");
  *         description: 에러 메시지
  *       example:
  *        msg: "user를 지우지 못했습니다."
+ * /app/relation:
+ *  post:
+ *   description: 데이터베이스의 User 테이블에 Column을 Delete 합니다.
+ *   parameters:
+ *   - in: body
+ *     followingId: 팔로잉 아이디 (친구 신청을 하는 유저)
+ *     followedId: 팔로워 아이디 (친구 신청을 받는 유저)
+ *     required: true
+ *   responses:
+ *     '201':
+ *      description: Relation 테이블에 Column을 성공적으로 추가한 경우입니다.
+ *      schema: 
+ *       properties:
+ *        msg:
+ *         type: string
+ *         description: 성공 메시지
+ *       example:
+ *        msg: "요청을 성공적으로 추가했습니다."
+ *     '400':
+ *      description: 제약 조건을 지키지 못해 relation을 추가하지 못했습니다.
+ *      schema: 
+ *       properties:
+ *        msg:
+ *         type: string
+ *         description: 에러 메시지
+ *       example:
+ *        msg: "필수 requirement가 충족되지 못했습니다. api를 다시 확인해주세요"
  */
 router.post("/name", upload.single("photo"), ctrl.getNames);
 
@@ -203,6 +230,6 @@ router.delete("/user/:user_id", ctrl.deleteUser);
 router.post("/s3/:user_id", upload.single("photo"), ctrl.s3Upload);
 router.get("/rekog", ctrl.getRekog);
 
-router.post("/relation", ctrl.makeRelation)
+router.post("/relation", ctrl.makeRelation);
 
 module.exports = router;

@@ -23,7 +23,7 @@ exports.uploadUser = async function (user) {
 		return uploadedColumn.dataValues.uid;
 	}).catch((err) => {
 		console.log(err);
-		throw err;
+		throw new Error("유저를 업로드하지 못했습니다.");
 	});
 	return uid;
 }
