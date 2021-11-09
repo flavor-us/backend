@@ -2,11 +2,15 @@ module.exports = function (sequelize, DataTypes) {
     const User = sequelize.define(
         "User",
         {
-            uid: {
+            id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 primaryKey: true,
                 autoIncrement: true,
+            },
+            uuid: {
+                type: DataTypes.TEXT,
+                allowNull: false,
             },
             signupdate: {
                 type: DataTypes.DATE(),
@@ -31,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
     User.associate = (models) => {
         User.hasMany(models.Contents, {
             foreignKey: "user_id",
-            sourceKey: "uid",
+            sourceKey: "id",
         })
 
         User.belongsToMany(User, {
@@ -47,7 +51,6 @@ module.exports = function (sequelize, DataTypes) {
         })
 
     };
-
 
     return User;
 };

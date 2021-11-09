@@ -4,6 +4,7 @@ const dbUpload = require("../../modules/dbUpload");
 const models = require("../../models");
 const errorMsg = require("../../message/error");
 const completeMsg = require("../../message/complete");
+const { v4: uuidv4 } = require('uuid');
 
 require("dotenv").config();
 
@@ -136,12 +137,13 @@ exports.addUser = async (req, res) => {
 	if (!req.body.email || !req.body.username)
 		return res.status(400).send(errorMsg.notEnoughReq);
 	const user = {
+		uuid: uuidv4(),
 		signupdate: new Date(),
 		email: req.body.email,
 		username: req.body.username
 	}
-	await dbUpload.uploadUser(user).then((uid) => {
-		res.status(201).send({ msg: "User를 성공적으로 업로드했습니다.", userId: uid })
+	await dbUpload.uploadUser(user).then((id) => {
+		res.status(201).send({ msg: "User를 성공적으로 업로드했습니다.", userId: id })
 	}).catch((e) => {
 		console.log(e);
 		res.status(400).send({ msg: "User를 업로드 하지 못했습니다." })
@@ -153,7 +155,7 @@ exports.deleteUser = async (req, res) => {
 	try {
 		user = await models.User.destroy({
 			where: {
-				uid: req.params.user_id
+				id: req.params.user_id
 			}
 		});
 	} catch (e) {
@@ -163,7 +165,7 @@ exports.deleteUser = async (req, res) => {
 	if (user)
 		res.send({ msg: "user를 성공적으로 지웠습니다.", userId: req.params.user_id }).status(204);
 	else
-		res.status(400).send("해당하는 uid가 없습니다.")
+		res.status(400).send("해당하는 id가 없습니다.")
 
 }
 exports.makeRelation = async (req, res) => {
@@ -173,12 +175,12 @@ exports.makeRelation = async (req, res) => {
 		return res.status(400).send(errorMsg.notEnoughReq);
 	const follower = await models.User.findOne({
 		where: {
-			uid: followerId
+			id: followerId
 		}
 	})
 	const following = await models.User.findOne({
 		where: {
-			uid: followingId
+			id: followingId
 		}
 	})
 	await follower.addFollowing(following);

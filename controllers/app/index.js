@@ -146,7 +146,7 @@ const upload = require("../../middleware/multer");
  *         description: 성공 메시지
  *        userId:
  *         type: string
- *         description: 추가된 유저의 uid
+ *         description: 추가된 유저의 id
  *       example:
  *        msg: "User를 성공적으로 업로드했습니다."
  *        userId: "42"

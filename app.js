@@ -28,7 +28,7 @@ class App {
 				.authenticate()
 				.then(() => {
 					console.log("Connection has been established successfully.");
-					// return db.sequelize.sync({ alter: true });
+					return db.sequelize.sync({ alter: true });
 				})
 				.then(() => {
 					console.log("DB Sync complete.");
