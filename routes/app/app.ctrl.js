@@ -19,8 +19,7 @@ exports.getNames = async (req, res) => {
 		});
 	} else {
 		res.status(400).send({
-			name: ["Not Found"],
-			msg: "파일을 찾을 수 없습니다.",
+			msg: "파일을 찾을 수 없습니다."
 		});
 	}
 	if (gpsDMS) {
@@ -39,8 +38,7 @@ exports.getNames = async (req, res) => {
 			res.status(200).json({ restData: restData });
 		} else {
 			res.status(400).send({
-				name: ["Not Found"],
-				msg: "EXIF 데이터가 있으나, 위도 경도 정보는 찾을 수 없었습니다.",
+				msg: "EXIF 데이터가 있으나, 위도 경도 정보는 찾을 수 없었습니다."
 			});
 		}
 	} else
@@ -68,14 +66,12 @@ exports.s3Upload = async (req, res) => {
 	if (req.file && userId) {
 		var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype, userId).catch(e => {
 			res.status(400).send({
-				name: ["Not Found"],
 				msg: "s3 버킷에 업로드 할 수 없습니다.",
 			});
 		});
 		res.status(201).send({ filename: uploadedFileInfo.key });
 	} else {
 		res.status(400).send({
-			name: ["Not Found"],
 			msg: "s3 버킷에 업로드 할 수 없습니다.",
 		});
 	}
@@ -86,7 +82,6 @@ exports.getRekog = async (req, res) => {
 	const rekogData = await awsUtils.getLabel(key).catch((e) => {
 		console.log(e)
 		res.status(400).send({
-			name: ["Not Found"],
 			msg: "s3버킷에서 이미지 정보를 추출할 수 없습니다"
 		});
 	});
@@ -185,4 +180,52 @@ exports.makeRelation = async (req, res) => {
 	})
 	await follower.addFollowing(following);
 	res.status(201).send(completeMsg.complete);
+}
+
+exports.delete = async (req, res) => {
+	var attr;
+	try {
+		attr = await models.attr.destroy({
+			where: {
+				id: req.params.id
+			}
+		});
+	} catch (e) {
+		console.log(e);
+		res.status(400).send({ msg: "attr를 지우지 못했습니다." })
+	}
+	if (user)
+		res.send({ msg: "attr를 성공적으로 지웠습니다.", userId: req.params.user_id }).status(204);
+	else
+		res.status(400).send("해당하는 id가 없습니다.")
+}
+
+exports.update = async (req, res) => {
+	var attr;
+	try {
+		attr = await models.attr.findOne({
+			where: {
+				id: req.params.id
+			}
+		});
+	} catch (e) {
+		console.log(e);
+		res.status(400).send({ msg: "attr를 찾지 못했습니다." })
+	}
+	//update
+}
+
+exports.read = async (req, res) => {
+	var attr;
+	try {
+		attr = await models.attr.findAll({
+			where: {
+
+			}
+		})
+	} catch (e) {
+		console.log(e);
+		res.status(400).send({ msg: "" })
+	}
+	//read
 }
