@@ -2,3 +2,34 @@ exports.notEnoughReq = {
     msg: "필수 requirement가 충족되지 못했습니다. api를 다시 확인해주세요"
 }
 
+exports.noFile = {
+    msg: "파일을 찾을 수 없습니다."
+}
+
+exports.noLatLng = {
+    msg: "위도 경도 정보를 찾을 수 없습니다."
+}
+
+exports.s3UploadFail = {
+    msg: "s3 업로드에 실패했습니다."
+}
+
+exports.rekogFail = {
+    msg: "s3 버킷에서 rekognition 정보를 얻어오지 못했습니다."
+}
+
+exports.uploadFail = {
+    msg: "데이터를 업로드하지 못했습니다."
+}
+
+exports.readFail = {
+    msg: "데이터를 읽어오지 못했습니다."
+}
+
+exports.updateFail = {
+    msg: "데이터를 수정하지 못했습니다."
+}
+
+exports.deleteFail = {
+    msg: "데이터를 제거하지 못했습니다."
+}

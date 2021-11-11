@@ -18,9 +18,7 @@ exports.getNames = async (req, res) => {
 			console.log(error);
 		});
 	} else {
-		res.status(400).send({
-			msg: "파일을 찾을 수 없습니다."
-		});
+		res.status(400).send(errorMsg.noFile);
 	}
 	if (gpsDMS) {
 		const gpsDegree = nameModule.convertLatLng(gpsDMS[0], gpsDMS[1]);
@@ -37,14 +35,10 @@ exports.getNames = async (req, res) => {
 			});
 			res.status(200).json({ restData: restData });
 		} else {
-			res.status(400).send({
-				msg: "EXIF 데이터가 있으나, 위도 경도 정보는 찾을 수 없었습니다."
-			});
+			res.status(400).send(errorMsg.noLatLng);
 		}
 	} else
-		res.status(400).send({
-			msg: "Cannot get ExifData",
-		});
+		res.status(400).send(errorMsg.noLatLng);
 };
 
 // exports.getRekog = async (req, res) => {
@@ -65,15 +59,11 @@ exports.s3Upload = async (req, res) => {
 	const userId = req.param.user_id;
 	if (req.file && userId) {
 		var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype, userId).catch(e => {
-			res.status(400).send({
-				msg: "s3 버킷에 업로드 할 수 없습니다.",
-			});
+			res.status(400).send(errorMsg.s3UploadFail);
 		});
 		res.status(201).send({ filename: uploadedFileInfo.key });
 	} else {
-		res.status(400).send({
-			msg: "s3 버킷에 업로드 할 수 없습니다.",
-		});
+		res.status(400).send(errorMsg.s3UploadFail);
 	}
 }
 
@@ -81,16 +71,12 @@ exports.getRekog = async (req, res) => {
 	const key = req.query.s3ImageKey;
 	const rekogData = await awsUtils.getLabel(key).catch((e) => {
 		console.log(e)
-		res.status(400).send({
-			msg: "s3버킷에서 이미지 정보를 추출할 수 없습니다"
-		});
+		res.status(400).send(errorMsg.rekogFail);
 	});
 	if (rekogData)
 		res.status(200).send({ rekogData: JSON.stringify(rekogData) })
 	else
-		res.status(400).send({
-			msg: "s3버킷에서 이미지 정보를 추출할 수 없습니다"
-		});
+		res.status(400).send(errorMsg.rekogFail);
 }
 
 exports.uploadContents = async (req, res) => {
@@ -103,10 +89,10 @@ exports.uploadContents = async (req, res) => {
 	};
 	const tagId = req.body.tagId;
 	await dbUpload.uploadContent(content, tagId).then((contentId) => {
-		res.status(201).send({ msg: "Content를 성공적으로 업로드했습니다.", contentId: contentId });
+		res.status(201).send(completeMsg.uploadComplete, { contentId: contentId });
 	}).catch((e) => {
 		console.log(e);
-		res.status(400).send({ msg: "Content를 업로드 하지 못했습니다." })
+		res.status(400).send(errorMsg.uploadFail)
 	});
 }
 
@@ -120,12 +106,12 @@ exports.deleteContents = async (req, res) => {
 		});
 	} catch (e) {
 		console.log(e);
-		res.status(400).send({ msg: "Content를 지우지 못했습니다." })
+		res.status(400).send(errorMsg.deleteFail)
 	}
 	if (content)
-		res.send({ msg: "Content를 성공적으로 지웠습니다.", contentId: req.params.content_id }).status(204);
+		res.send(completeMsg.deleteComplete, { contentId: req.params.content_id }).status(204);
 	else
-		res.status(400).send("해당하는 content_id가 없습니다.")
+		res.status(400).send(errorMsg.deleteFail)
 }
 
 exports.addUser = async (req, res) => {
@@ -138,10 +124,10 @@ exports.addUser = async (req, res) => {
 		username: req.body.username
 	}
 	await dbUpload.uploadUser(user).then((id) => {
-		res.status(201).send({ msg: "User를 성공적으로 업로드했습니다.", userId: id })
+		res.status(201).send(completeMsg.uploadComplete, { userId: id })
 	}).catch((e) => {
 		console.log(e);
-		res.status(400).send({ msg: "User를 업로드 하지 못했습니다." })
+		res.status(400).send(errorMsg.uploadFail)
 	});
 }
 
@@ -155,12 +141,12 @@ exports.deleteUser = async (req, res) => {
 		});
 	} catch (e) {
 		console.log(e);
-		res.status(400).send({ msg: "user를 지우지 못했습니다." })
+		res.status(400).send(errorMsg.deleteFail)
 	}
 	if (user)
-		res.send({ msg: "user를 성공적으로 지웠습니다.", userId: req.params.user_id }).status(204);
+		res.send(completeMsg.deleteComplete, { userId: req.params.user_id }).status(204);
 	else
-		res.status(400).send("해당하는 id가 없습니다.")
+		res.status(400).send(errorMsg.deleteFail)
 
 }
 exports.makeRelation = async (req, res) => {
@@ -192,12 +178,12 @@ exports.delete = async (req, res) => {
 		});
 	} catch (e) {
 		console.log(e);
-		res.status(400).send({ msg: "attr를 지우지 못했습니다." })
+		res.status(400).send(errorMsg.deleteFail)
 	}
 	if (user)
-		res.send({ msg: "attr를 성공적으로 지웠습니다.", userId: req.params.user_id }).status(204);
+		res.send(completeMsg.deleteComplete, { userId: req.params.user_id }).status(204);
 	else
-		res.status(400).send("해당하는 id가 없습니다.")
+		res.status(400).send(errorMsg.deleteFail)
 }
 
 exports.update = async (req, res) => {
@@ -210,7 +196,7 @@ exports.update = async (req, res) => {
 		});
 	} catch (e) {
 		console.log(e);
-		res.status(400).send({ msg: "attr를 찾지 못했습니다." })
+		res.status(400).send(errorMsg.updateFail)
 	}
 	//update
 }
