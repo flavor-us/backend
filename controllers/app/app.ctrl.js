@@ -6,6 +6,7 @@ const errorMsg = require("../../message/error");
 const completeMsg = require("../../message/complete");
 const { v4: uuidv4 } = require('uuid');
 const Sequelize = require("sequelize");
+const uuidConvert = require("../../modules/uuidConvert");
 const Op = Sequelize.Op;
 require("dotenv").config();
 
@@ -42,20 +43,6 @@ exports.getNames = async (req, res) => {
 		res.status(400).send(errorMsg.noLatLng);
 };
 
-// exports.getRekog = async (req, res) => {
-// 	const userId = 1;
-// 	if (req.file) {
-// 		var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype);
-// 		var rekogData = await awsUtils.getLabel(uploadedFileInfo.key);
-// 		res.status(200).send({ rekogData: JSON.stringify(rekogData), filename: uploadedFileInfo.key, userId: userId });
-// 	} else {
-// 		res.status(400).send({
-// 			name: ["Not Found"],
-// 			msg: "파일을 찾을 수 없습니다.",
-// 		});
-// 	}
-// };
-
 exports.s3Upload = async (req, res) => {
 	const userId = req.param.user_id;
 	if (req.file && userId) {
@@ -90,7 +77,7 @@ exports.uploadContents = async (req, res) => {
 	};
 	const tagId = req.body.tagId;
 	await dbUpload.uploadContent(content, tagId).then((contentId) => {
-		res.status(201).send(completeMsg.uploadComplete, { contentId: contentId });
+		res.status(201).send([completeMsg.uploadComplete, { contentId: contentId }]);
 	}).catch((e) => {
 		console.log(e);
 		res.status(400).send(errorMsg.uploadFail)
@@ -125,7 +112,7 @@ exports.addUser = async (req, res) => {
 		username: req.body.username
 	}
 	await dbUpload.uploadUser(user).then((id) => {
-		res.status(201).send(completeMsg.uploadComplete, { userId: id })
+		res.status(201).send([completeMsg.uploadComplete, { userId: id }])
 	}).catch((e) => {
 		console.log(e);
 		res.status(400).send(errorMsg.uploadFail)
@@ -145,7 +132,7 @@ exports.deleteUser = async (req, res) => {
 		res.status(400).send(errorMsg.deleteFail)
 	}
 	if (user)
-		res.send(completeMsg.deleteComplete, { userId: req.params.user_id }).status(204);
+		res.send([completeMsg.deleteComplete, { userId: req.params.user_id }]).status(204);
 	else
 		res.status(400).send(errorMsg.deleteFail)
 
@@ -182,7 +169,7 @@ exports.delete = async (req, res) => {
 		res.status(400).send(errorMsg.deleteFail)
 	}
 	if (user)
-		res.send(completeMsg.deleteComplete, { userId: req.params.user_id }).status(204);
+		res.send([completeMsg.deleteComplete, { userId: req.params.user_id }]).status(204);
 	else
 		res.status(400).send(errorMsg.deleteFail)
 }
@@ -218,16 +205,11 @@ exports.read = async (req, res) => {
 }
 
 exports.getFeedsContents = async (req, res) => {
-	const userUUID = req.params.user_uuid;
-	const user = await models.User.findOne({
-		where: {
-			uuid: userUUID
-		}
-	}).catch((e) => console.log(e));
+	const user_id = await uuidConvert.getIdFromUuid(req.params.user_uuid);
 	const friends = await models.Relation.findAll({
 		attributes: ['followed_id'],
 		where: {
-			following_id: user.id
+			following_id: user_id
 		}
 	}).catch((e) => console.log(e))
 	const friendList = friends.map((item) => {
@@ -250,7 +232,53 @@ exports.getMyContents = async (req, res) => {
 	const contents = await models.Contents.findAll({
 		where: { user_id: user_id }
 	})
-	console.log(user + " / " + user.id);
-	console.log(contents);
 	res.status(200).json(contents)
+}
+
+exports.getFollower = async (req, res) => {
+	await models.User.findOne({
+		where: {
+			uuid: req.params.user_uuid
+		}
+	}).then(async (user) => {
+		const followed = await models.Relation.findAll({
+			attributes: ["following_id"],
+			where: {
+				followed_id: user.id
+			}
+		})
+		const followerList = followed.map((item) => {
+			return item.dataValues.following_id;
+		})
+		return followerList;
+	}).then((followerList) => {
+		res.status(200).send(followerList);
+	}).catch((err) => {
+		console.log(err);
+		res.status(400).send(err);
+	})
+}
+
+exports.getFollowing = async (req, res) => {
+	await models.User.findOne({
+		where: {
+			uuid: req.params.user_uuid
+		}
+	}).then(async (user) => {
+		const following = await models.Relation.findAll({
+			attributes: ["followed_id"],
+			where: {
+				following_id: user.id
+			}
+		}).catch((e) => console.log(e));
+		const followingList = following.map((item) => {
+			return item.dataValues.followed_id;
+		})
+		return followingList
+	}).then((followingList) => {
+		res.status(200).send(followingList);
+	}).catch((err) => {
+		console.log(err);
+		res.status(400).send(err);
+	})
 }

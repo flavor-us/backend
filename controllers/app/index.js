@@ -231,6 +231,9 @@ router.post("/s3/:user_id", upload.single("photo"), ctrl.s3Upload);
 router.get("/rekog", ctrl.getRekog);
 
 router.post("/relation", ctrl.makeRelation);
+router.get("/relation/follower/:user_uuid", ctrl.getFollower);
+router.get("/relation/following/:user_uuid", ctrl.getFollowing)
+
 router.get("/feeds/:user_uuid", ctrl.getFeedsContents); //added
 
 
