@@ -5,7 +5,8 @@ const models = require("../../models");
 const errorMsg = require("../../message/error");
 const completeMsg = require("../../message/complete");
 const { v4: uuidv4 } = require('uuid');
-
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 require("dotenv").config();
 
 //행위는 get 메소드는 post (req.file 받기 위해)
@@ -214,4 +215,42 @@ exports.read = async (req, res) => {
 		res.status(400).send({ msg: "" })
 	}
 	//read
+}
+
+exports.getFeedsContents = async (req, res) => {
+	const userUUID = req.params.user_uuid;
+	const user = await models.User.findOne({
+		where: {
+			uuid: userUUID
+		}
+	}).catch((e) => console.log(e));
+	const friends = await models.Relation.findAll({
+		attributes: ['followed_id'],
+		where: {
+			following_id: user.id
+		}
+	}).catch((e) => console.log(e))
+	const friendList = friends.map((item) => {
+		return item.dataValues.followed_id;
+	})
+	const contents = await models.Contents.findAll({
+		where: { user_id: { [Op.in]: friendList } }
+	})
+	res.status(200).send(contents);
+}
+
+exports.getMyContents = async (req, res) => {
+	const userUUID = req.params.user_uuid;
+	const user = await models.User.findOne({
+		where: {
+			uuid: userUUID
+		}
+	}).catch((e) => console.log(e));
+	const user_id = user.id;
+	const contents = await models.Contents.findAll({
+		where: { user_id: user_id }
+	})
+	console.log(user + " / " + user.id);
+	console.log(contents);
+	res.status(200).json(contents)
 }

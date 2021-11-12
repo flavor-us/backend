@@ -222,14 +222,16 @@ router.post("/name", upload.single("photo"), ctrl.getNames);
 
 router.post("/contents", ctrl.uploadContents);
 router.delete("/contents/:content_id", ctrl.deleteContents);
+router.get("/contents/:user_uuid", ctrl.getMyContents); //added
 
 router.post("/user", ctrl.addUser);
 router.delete("/user/:user_id", ctrl.deleteUser);
 
-// router.post("/rekog", upload.single("photo"), ctrl.getRekog);
 router.post("/s3/:user_id", upload.single("photo"), ctrl.s3Upload);
 router.get("/rekog", ctrl.getRekog);
 
 router.post("/relation", ctrl.makeRelation);
+router.get("/feeds/:user_uuid", ctrl.getFeedsContents); //added
+
 
 module.exports = router;
