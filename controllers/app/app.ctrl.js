@@ -282,3 +282,22 @@ exports.getFollowing = async (req, res) => {
 		res.status(400).send(err);
 	})
 }
+exports.deleteFollowing = async (req, res) => {
+	await models.User.findOne({
+		where: {
+			uuid: req.params.user_uuid
+		}
+	}).then(async (user) => {
+		await models.Relation.destroy({
+			where: {
+				follower_id: user.id,
+				followed_id: req.params.delete_id
+			}
+		}).catch((e) => console.log(e));
+	}).then(() => {
+		res.status(204).send();
+	}).catch((err) => {
+		console.log(err);
+		res.status(400).send(err);
+	})
+}
