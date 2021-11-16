@@ -4,7 +4,7 @@
 	"description": "flavorus_mvp",
 	"main": "app.js",
 	"scripts": {
-		"test": "jest --forceExit",
+		"test": "jest --setupFiles dotenv/config --forceExit",
 		"start": "nodemon app --trace-warningsc",
 		"auto": "node auto"
 	},

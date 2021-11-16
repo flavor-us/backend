@@ -33,6 +33,8 @@ exports.getNames = async (req, res) => {
 					break;
 			} while (Object.keys(names).length < 3);
 			restData = names.map((item) => {
+				console.log(item.dataValues.lat);
+				console.log(typeof (item.dataValues.lat));
 				return item.dataValues;
 			});
 			res.status(200).json({ restData: restData });
@@ -44,9 +46,9 @@ exports.getNames = async (req, res) => {
 };
 
 exports.s3Upload = async (req, res) => {
-	const userId = req.param.user_id;
-	if (req.file && userId) {
-		var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype, userId).catch(e => {
+	const user_id = req.param.user_id;
+	if (req.file && user_id) {
+		var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype, user_id).catch(e => {
 			res.status(400).send(errorMsg.s3UploadFail);
 		});
 		res.status(201).send({ filename: uploadedFileInfo.key });
@@ -74,10 +76,10 @@ exports.uploadContents = async (req, res) => {
 		filename: `${req.body.filename}`,
 		rekognition: req.body.rekog,
 		restname: req.body.restname
-	};
-	const tagId = req.body.tagId;
-	await dbUpload.uploadContent(content, tagId).then((contentId) => {
-		res.status(201).send([completeMsg.uploadComplete, { contentId: contentId }]);
+	}
+	const tag_id = req.body.tag_id;
+	await dbUpload.uploadContent(content, tag_id).then((content_id) => {
+		res.status(201).send([completeMsg.uploadComplete, { content_id: content_id }]);
 	}).catch((e) => {
 		console.log(e);
 		res.status(400).send(errorMsg.uploadFail)
@@ -97,7 +99,7 @@ exports.deleteContents = async (req, res) => {
 		res.status(400).send(errorMsg.deleteFail)
 	}
 	if (content)
-		res.send(completeMsg.deleteComplete, { contentId: req.params.content_id }).status(204);
+		res.status(204).send();
 	else
 		res.status(400).send(errorMsg.deleteFail)
 }
@@ -112,7 +114,7 @@ exports.addUser = async (req, res) => {
 		username: req.body.username
 	}
 	await dbUpload.uploadUser(user).then((id) => {
-		res.status(201).send([completeMsg.uploadComplete, { userId: id }])
+		res.status(201).send([completeMsg.uploadComplete, { user_id: id }])
 	}).catch((e) => {
 		console.log(e);
 		res.status(400).send(errorMsg.uploadFail)
@@ -132,27 +134,27 @@ exports.deleteUser = async (req, res) => {
 		res.status(400).send(errorMsg.deleteFail)
 	}
 	if (user)
-		res.send([completeMsg.deleteComplete, { userId: req.params.user_id }]).status(204);
+		res.status(204).send();
 	else
 		res.status(400).send(errorMsg.deleteFail)
 
 }
 exports.makeRelation = async (req, res) => {
-	const followerId = req.body.followerId;
-	const followingId = req.body.followingId;
-	if (!followerId || !followingId)
+	const followed_id = req.body.followed_id;
+	const following_id = req.body.following_id;
+	if (!followed_id || !following_id)
 		return res.status(400).send(errorMsg.notEnoughReq);
-	const follower = await models.User.findOne({
+	const followed = await models.User.findOne({
 		where: {
-			id: followerId
+			id: followed_id
 		}
 	})
 	const following = await models.User.findOne({
 		where: {
-			id: followingId
+			id: following_id
 		}
 	})
-	await follower.addFollowing(following);
+	await followed.addFollowing(following);
 	res.status(201).send(completeMsg.complete);
 }
 
@@ -169,7 +171,7 @@ exports.delete = async (req, res) => {
 		res.status(400).send(errorMsg.deleteFail)
 	}
 	if (user)
-		res.send([completeMsg.deleteComplete, { userId: req.params.user_id }]).status(204);
+		res.status(204).send();
 	else
 		res.status(400).send(errorMsg.deleteFail)
 }
@@ -211,7 +213,10 @@ exports.getFeedsContents = async (req, res) => {
 		where: {
 			following_id: user_id
 		}
-	}).catch((e) => console.log(e))
+	}).catch((e) => {
+		console.log(e);
+		res.status(400).send(errorMsg.readFail)
+	})
 	const friendList = friends.map((item) => {
 		return item.dataValues.followed_id;
 	})
@@ -227,7 +232,10 @@ exports.getMyContents = async (req, res) => {
 		where: {
 			uuid: userUUID
 		}
-	}).catch((e) => console.log(e));
+	}).catch((e) => {
+		console.log(e)
+		res.status(400).send(errorMsg.readFail);
+	});
 	const user_id = user.id;
 	const contents = await models.Contents.findAll({
 		where: { user_id: user_id }
@@ -252,10 +260,10 @@ exports.getFollower = async (req, res) => {
 		})
 		return followerList;
 	}).then((followerList) => {
-		res.status(200).send(followerList);
+		res.status(200).send({ followerList: followerList });
 	}).catch((err) => {
 		console.log(err);
-		res.status(400).send(err);
+		res.status(400).send(errorMsg.readFail);
 	})
 }
 
@@ -276,10 +284,10 @@ exports.getFollowing = async (req, res) => {
 		})
 		return followingList
 	}).then((followingList) => {
-		res.status(200).send(followingList);
+		res.status(200).send({ followingList: followingList });
 	}).catch((err) => {
 		console.log(err);
-		res.status(400).send(err);
+		res.status(400).send(errorMsg.readFail);
 	})
 }
 exports.deleteFollowing = async (req, res) => {
@@ -298,6 +306,6 @@ exports.deleteFollowing = async (req, res) => {
 		res.status(204).send();
 	}).catch((err) => {
 		console.log(err);
-		res.status(400).send(err);
+		res.status(400).send(errorMsg.deleteFail);
 	})
 }

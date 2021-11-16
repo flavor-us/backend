@@ -1,15 +1,15 @@
 const models = require("../models");
 
-exports.uploadContent = async function (content, tagId) {
+exports.uploadContent = async function (content, tag_id) {
 	const newContent = await models.Contents.create(content).then((uploadedColumn) => {
 		return uploadedColumn;
 	}).catch((err) => {
 		console.log(err);
 	});
-	if (tagId) {
+	if (tag_id) {
 		const tag = await models.Tag.findOne({
 			where: {
-				id: tagId
+				id: tag_id
 			}
 		});
 		await newContent.addTag(tag);

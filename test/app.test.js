@@ -33,14 +33,14 @@ describe("POST /user", () => {
 })
 
 describe("POST /content", () => {
-    describe("given full requirement, include tagId", () => {
+    describe("given full requirement, include tag_id", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/contents").send({
                 user_id: "1",
                 filename: "file_jest",
                 rekog: { jest: jest },
                 restname: "jestrest",
-                tagId: "1"
+                tag_id: "1"
             })
             expect(response.statusCode).toBe(201);
         })
@@ -62,7 +62,7 @@ describe("POST /relation", () => {
     describe("given full requirement", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/relation").send({
-                followerId: "2",
+                followedId: "2",
                 followingId: "3"
             })
             expect(response.statusCode).toBe(201);

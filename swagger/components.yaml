@@ -88,7 +88,7 @@ components:
                 restname:
                     type: string
                     description: 식당명
-                tagId:
+                tag_id:
                     type: integer
                     description: 태그 아이디
             example:
