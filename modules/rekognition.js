@@ -1,4 +1,4 @@
-module.exports = function foodOrNot(rekog) {
+exports.foodOrNot = function (rekog) {
     for (var i = 0; i < rekog.Labels.length; i++) {
         if (rekog.Labels[i].Name == "Food") {
             if (rekog.Labels[i].Confidence < 85)

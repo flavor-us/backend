@@ -8,6 +8,7 @@ const { v4: uuidv4 } = require('uuid');
 const Sequelize = require("sequelize");
 const uuidConvert = require("../../modules/uuidConvert");
 const Op = Sequelize.Op;
+const rekognition = require("../../modules/rekognition");
 require("dotenv").config();
 
 //행위는 get 메소드는 post (req.file 받기 위해)
@@ -63,8 +64,11 @@ exports.getRekog = async (req, res) => {
 		console.log(e)
 		res.status(400).send(errorMsg.rekogFail);
 	});
-	if (rekogData)
-		res.status(200).send({ rekogData: JSON.stringify(rekogData) })
+	if (rekogData) {
+		const is_food = rekognition.foodOrNot(rekogData)
+		rekogData.is_food = is_food;
+		res.status(200).json({ rekogData })
+	}
 	else
 		res.status(400).send(errorMsg.rekogFail);
 }
