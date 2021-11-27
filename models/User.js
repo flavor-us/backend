@@ -24,6 +24,9 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.TEXT,
                 allowNull: true,
             },
+            Kakaotoken: {
+                type: DataTypes.TEXT
+            }
         },
         {
             sequelize,

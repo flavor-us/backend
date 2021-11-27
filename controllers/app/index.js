@@ -21,6 +21,6 @@ router.get("/relation/following/:user_uuid", ctrl.getFollowing)
 router.post("/relation", ctrl.makeRelation);
 
 router.get("/feeds/:user_uuid", ctrl.getFeedsContents); //added
-
+router.post("/kakao", ctrl.login);
 
 module.exports = router;
