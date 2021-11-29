@@ -1,5 +1,3 @@
-
-
 exports.restaurantsCtrl = require("./restaurants/restaurants.ctrl");
 exports.userCtrl = require("./user/user.ctrl");
 exports.rekognitionCtrl = require("./rekognition/rekognition.ctrl");

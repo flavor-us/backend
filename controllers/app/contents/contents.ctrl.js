@@ -9,14 +9,14 @@ exports.uploadContents = async (req, res) => {
         date: new Date(),
         filename: `${req.body.filename}`,
         rekognition: req.body.rekog,
-        restname: req.body.restname
+        restname: req.body.restname,
+        tagList: req.body.tagList
     }
-    const tag_id = req.body.tag_id;
-    await dbUpload.uploadContent(content, tag_id).then((content_id) => {
+    await dbUpload.uploadContent(content).then((content_id) => {
         res.status(201).send([completeMsg.uploadComplete, { content_id: content_id }]);
     }).catch((e) => {
         console.log(e);
-        res.status(400).send(errorMsg.uploadFail)
+        res.status(400).send(errorMsg.uploadFail);
     });
 }
 

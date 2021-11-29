@@ -21,14 +21,12 @@ module.exports = function (sequelize, DataTypes) {
         }
     );
 
-    Tag.associate = (models) => {
-
-        Tag.belongsToMany(models.Contents, {
-            as: "Content",
-            through: "TagContents",
-            foreignKey: "tag_id"
-        });
-
-    }
+    // Tag.associate = (models) => {
+    //     Tag.belongsToMany(models.Contents, {
+    //         as: "Content",
+    //         through: "TagContents",
+    //         foreignKey: "tag_id"
+    //     });
+    // }
     return Tag;
 };

@@ -1,6 +1,5 @@
 const nameModule = require("../../../modules/getName");
 const errorMsg = require("../../../message/error");
-require("dotenv").config();
 
 exports.getNames = async (req, res) => {
     let moe = 0.0001; //10m 반경

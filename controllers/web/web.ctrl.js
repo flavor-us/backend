@@ -1,7 +1,7 @@
 const nameModule = require("../../modules/getName");
-require("dotenv").config();
 const awsUtils = require("../../modules/awsUtils");
 const dbUploads = require("../../modules/dbUpload");
+require("dotenv").config();
 
 exports.getNames = async (req, res) => {
 	let moe = 0.0001; // 10m 반경

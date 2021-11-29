@@ -3,7 +3,6 @@ const errorMsg = require("../../../message/error");
 const Sequelize = require("sequelize");
 const uuidConvert = require("../../../modules/uuidConvert");
 const Op = Sequelize.Op;
-require("dotenv").config();
 
 exports.getFeedsContents = async (req, res) => {
     const user_id = await uuidConvert.getIdFromUuid(req.params.user_uuid);

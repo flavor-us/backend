@@ -29,6 +29,11 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: true,
 				comment: "AWS rekognition의 json 결과 값입니다."
 			},
+			tagList: {
+				type: DataTypes.JSON,
+				allowNull: true,
+				comment: "필수로 1~3개를 선택해야하는 태그의 json 리스트입니다."
+			}
 		},
 		{
 			sequelize,
@@ -43,12 +48,12 @@ module.exports = function (sequelize, DataTypes) {
 			comment: "Location 테이블 식당 id의 외래키입니다."
 		})
 
-		Contents.belongsToMany(models.Tag, {
-			as: "Tag",
-			through: "TagContents",
-			foreignKey: "content_id",
-			comment: "TagContents 테이블에서 컨텐츠를 매핑하는 외래키입니다."
-		})
+		// Contents.belongsToMany(models.Tag, {
+		// 	as: "Tag",
+		// 	through: "TagContents",
+		// 	foreignKey: "content_id",
+		// 	comment: "TagContents 테이블에서 컨텐츠를 매핑하는 외래키입니다."
+		// })
 
 		Contents.belongsTo(models.User, {
 			foreignKey: "user_id",

@@ -33,25 +33,16 @@ describe("POST /user", () => {
 })
 
 describe("POST /content", () => {
-    describe("given full requirement, include tag_id", () => {
+    describe("given full requirement, include tagList", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/contents").send({
                 user_id: "1",
                 filename: "file_jest",
                 rekog: { jest: jest },
                 restname: "jestrest",
-                tag_id: "1"
-            })
-            expect(response.statusCode).toBe(201);
-        })
-    })
-    describe("given full requirement, except tagId", () => {
-        test("should respond with a status 201", async () => {
-            const response = await request(app).post("/app/contents").send({
-                user_id: "1",
-                filename: "file_jest",
-                rekog: { jest: jest },
-                restname: "jestrest"
+                tagList: {
+                    "tag_id": ["1", "2", "3"]
+                }
             })
             expect(response.statusCode).toBe(201);
         })
@@ -62,8 +53,8 @@ describe("POST /relation", () => {
     describe("given full requirement", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/relation").send({
-                followedId: "2",
-                followingId: "3"
+                followed_id: "2",
+                following_id: "3"
             })
             expect(response.statusCode).toBe(201);
         })
@@ -71,7 +62,7 @@ describe("POST /relation", () => {
     describe("given only followerId", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/relation").send({
-                followerId: "2"
+                follower_id: "2"
             })
             expect(response.statusCode).toBe(400);
         })

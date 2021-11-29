@@ -1,5 +1,4 @@
 var ExifImage = require("exif").ExifImage;
-require("dotenv").config();
 const Sequelize = require("sequelize");
 const models = require("../models");
 const Op = Sequelize.Op;

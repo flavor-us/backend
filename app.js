@@ -11,11 +11,9 @@ class App {
 		this.app.listen(3000, function () {
 			console.log("Express listening on port : 3000");
 		});
-
 		this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 		this.app.use(bodyParser.json());
 		this.app.use(bodyParser.urlencoded({ extended: false }));
-
 
 		this.app.get("/test", (req, res) => {
 			console.log("test")

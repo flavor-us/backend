@@ -1,6 +1,7 @@
 const models = require("../../../models");
 const kakaoAuth = require('../../../modules/kakaoAuth');
 const jwt = require('jsonwebtoken');
+require("dotenv").config();
 
 exports.login = async (req, res) => {
     try {
