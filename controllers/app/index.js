@@ -1,26 +1,27 @@
 const { Router } = require("express");
 const router = Router();
-const ctrl = require("./app.ctrl");
+const app = require("./app.ctrl");
 const upload = require("../../middleware/multer");
 
-router.post("/name", upload.single("photo"), ctrl.getNames);
+router.post("/name", upload.single("photo"), app.restaurantsCtrl.getNames);
 
-router.delete("/contents/:content_id", ctrl.deleteContents);
-router.get("/contents/:user_uuid", ctrl.getMyContents); //added
-router.post("/contents", ctrl.uploadContents);
+router.delete("/contents/:content_id", app.contentsCtrl.deleteContents);
+router.get("/contents/:user_uuid", app.contentsCtrl.getMyContents);
+router.post("/contents", app.contentsCtrl.uploadContents);
 
-router.delete("/user/:user_id", ctrl.deleteUser);
-router.post("/user", ctrl.addUser);
+router.delete("/user/:user_id", app.userCtrl.deleteUser);
+router.post("/user", app.userCtrl.addUser);
 
-router.post("/s3/:user_id", upload.single("photo"), ctrl.s3Upload);
-router.get("/rekog", ctrl.getRekog);
+router.post("/s3/:user_id", upload.single("photo"), app.rekognitionCtrl.s3Upload);
+router.get("/rekog", app.rekognitionCtrl.getRekog);
 
-router.delete("/relation/following/:user_uuid/:delete_id", ctrl.deleteFollowing)
-router.get("/relation/follower/:user_uuid", ctrl.getFollower);
-router.get("/relation/following/:user_uuid", ctrl.getFollowing)
-router.post("/relation", ctrl.makeRelation);
+router.delete("/relation/following/:user_uuid/:delete_id", app.relationCtrl.deleteFollowing)
+router.get("/relation/follower/:user_uuid", app.relationCtrl.getFollower);
+router.get("/relation/following/:user_uuid", app.relationCtrl.getFollowing)
+router.post("/relation", app.relationCtrl.makeRelation);
 
-router.get("/feeds/:user_uuid", ctrl.getFeedsContents); //added
-router.post("/kakao", ctrl.login);
+router.get("/feeds/:user_uuid", app.feedsCtrl.getFeedsContents); //added
+
+router.post("/kakao", app.authCtrl.login);
 
 module.exports = router;

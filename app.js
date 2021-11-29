@@ -13,7 +13,6 @@ class App {
 		});
 
 		this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-		// this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 		this.app.use(bodyParser.json());
 		this.app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -28,7 +27,7 @@ class App {
 				.authenticate()
 				.then(() => {
 					console.log("Connection has been established successfully.");
-					// return db.sequelize.sync({ alter: true });
+					return db.sequelize.sync();
 				})
 				.then(() => {
 					console.log("DB Sync complete.");
