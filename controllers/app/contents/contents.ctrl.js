@@ -6,6 +6,7 @@ const completeMsg = require("../../../message/complete");
 exports.uploadContents = async (req, res) => {
     const content = {
         user_id: req.body.user,
+        rest_id: req.body.rest,
         date: new Date(),
         filename: `${req.body.filename}`,
         rekognition: req.body.rekog,
@@ -13,10 +14,10 @@ exports.uploadContents = async (req, res) => {
         tagList: req.body.tagList
     }
     await dbUpload.uploadContent(content).then((content_id) => {
-        res.status(201).send([completeMsg.uploadComplete, { content_id: content_id }]);
+        res.status(201).send([completeMsg.updateComplete, { content_id: content_id }]);
     }).catch((e) => {
         console.log(e);
-        res.status(400).send(errorMsg.uploadFail);
+        res.status(400).send(errorMsg.updateFail);
     });
 }
 

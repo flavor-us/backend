@@ -20,7 +20,7 @@ exports.getNameSequelize = async function (lat, lng, moe) {
 	var names;
 	try {
 		names = await models.Location.findAll({
-			attributes: ["name", "lat", "lng"],
+			attributes: ["name", "lat", "lng", "id"],
 			where: {
 				lat: { [Op.between]: [lat - moe, lat + moe] },
 				lng: { [Op.between]: [lng - moe, lng + moe] },
