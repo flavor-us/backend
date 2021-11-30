@@ -9,13 +9,13 @@ exports.getFollower = async (req, res) => {
         }
     }).then(async (user) => {
         const followed = await models.Relation.findAll({
-            attributes: ["following_id"],
+            attributes: ["follower_id"],
             where: {
                 followed_id: user.id
             }
         })
         const followerList = followed.map((item) => {
-            return item.dataValues.following_id;
+            return item.dataValues.follower_id;
         })
         return followerList;
     }).then((followerList) => {
@@ -26,30 +26,30 @@ exports.getFollower = async (req, res) => {
     })
 }
 
-exports.getFollowing = async (req, res) => {
+exports.getFollower = async (req, res) => {
     await models.User.findOne({
         where: {
             uuid: req.params.user_uuid
         }
     }).then(async (user) => {
-        const following = await models.Relation.findAll({
+        const follower = await models.Relation.findAll({
             attributes: ["followed_id"],
             where: {
-                following_id: user.id
+                follower_id: user.id
             }
         }).catch((e) => console.log(e));
-        const followingList = following.map((item) => {
+        const followerList = follower.map((item) => {
             return item.dataValues.followed_id;
         })
-        return followingList
-    }).then((followingList) => {
-        res.status(200).send({ followingList: followingList });
+        return followerList
+    }).then((followerList) => {
+        res.status(200).send({ followerList: followerList });
     }).catch((err) => {
         console.log(err);
         res.status(400).send(errorMsg.readFail);
     })
 }
-exports.deleteFollowing = async (req, res) => {
+exports.deleteFollower = async (req, res) => {
     await models.User.findOne({
         where: {
             uuid: req.params.user_uuid
@@ -71,19 +71,21 @@ exports.deleteFollowing = async (req, res) => {
 
 exports.makeRelation = async (req, res) => {
     const followed_id = req.body.followed_id;
-    const following_id = req.body.following_id;
-    if (!followed_id || !following_id)
+    const follower_id = req.body.follower_id;
+    if (!followed_id || !follower_id)
         return res.status(400).send(errorMsg.notEnoughReq);
     const followed = await models.User.findOne({
         where: {
             id: followed_id
         }
     })
-    const following = await models.User.findOne({
+    const follower = await models.User.findOne({
         where: {
-            id: following_id
+            id: follower_id
         }
     })
-    await followed.addFollowing(following);
+    if (!followed || !follower)
+        return res.status(400).send(errorMsg.noUser);
+    await followed.addFollower(follower);
     res.status(201).send(completeMsg.complete);
 }

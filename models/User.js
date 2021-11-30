@@ -24,7 +24,7 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.TEXT,
                 allowNull: true,
             },
-            Kakaotoken: {
+            kakaoToken: {
                 type: DataTypes.TEXT
             }
         },
@@ -42,9 +42,9 @@ module.exports = function (sequelize, DataTypes) {
         })
 
         User.belongsToMany(User, {
-            as: "Following",
+            as: "Follower",
             through: "Relation",
-            foreignKey: "following_id"
+            foreignKey: "follower_id"
         });
 
         User.belongsToMany(User, {

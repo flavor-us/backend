@@ -9,7 +9,7 @@ exports.getFeedsContents = async (req, res) => {
     const friends = await models.Relation.findAll({
         attributes: ['followed_id'],
         where: {
-            following_id: user_id
+            follower_id: user_id
         }
     }).catch((e) => {
         console.log(e);

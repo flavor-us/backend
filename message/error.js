@@ -33,3 +33,7 @@ exports.updateFail = {
 exports.deleteFail = {
     msg: "데이터를 제거하지 못했습니다."
 }
+
+exports.noUser = {
+    msg: "해당하는 유저가 없습니다."
+}

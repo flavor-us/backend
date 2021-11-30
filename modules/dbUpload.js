@@ -6,16 +6,22 @@ exports.uploadContent = async function (content) {
 	}).catch((err) => {
 		console.log(err);
 	});
-	for (tag in content.tagList) {
-		console.log(tag);
-		// const tag = await models.Tag.findOne({
-		// 	where: {
-		// 		id: tagList
-		// 	}
-		// });
-		// await newContent.addTag(tag);
-	}
 	return (newContent.dataValues.id);
+}
+
+exports.updateContents = async function (content, content_id) {
+	const targetcontent = await models.Contents.findOne({
+		where: { id: content_id }
+	})
+	targetcontent.set({
+		user_id: content.user_id,
+		filename: content.filename,
+		rekognition: content.rekognition,
+		restname: content.restname,
+		tagList: content.tagList
+	})
+	await targetcontent.save();
+	return (targetcontent.dataValues.id);
 }
 
 exports.uploadUser = async function (user) {

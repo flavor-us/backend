@@ -6,7 +6,7 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            following_id: {
+            follower_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             }
@@ -17,6 +17,5 @@ module.exports = function (sequelize, DataTypes) {
             timestamps: false,
         }
     );
-
     return Relation;
 };

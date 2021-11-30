@@ -2,7 +2,7 @@ const nameModule = require("../../../modules/getName");
 const errorMsg = require("../../../message/error");
 
 exports.getNames = async (req, res) => {
-    let moe = 0.0001; //10m 반경
+    let moe = 0.00001; //10m 반경
     var names;
     var gpsDMS;
     if (req.file) {
@@ -17,14 +17,12 @@ exports.getNames = async (req, res) => {
         if (gpsDegree) {
             do {
                 names = await nameModule.getNameSequelize(gpsDegree[0], gpsDegree[1], moe);
-                moe *= 2;
+                moe *= 4;
                 if (moe > 0.005)
                     // 500m
                     break;
             } while (Object.keys(names).length < 3);
             restData = names.map((item) => {
-                console.log(item.dataValues.lat);
-                console.log(typeof (item.dataValues.lat));
                 return item.dataValues;
             });
             res.status(200).json({ restData: restData });

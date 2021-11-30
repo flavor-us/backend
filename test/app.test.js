@@ -54,7 +54,7 @@ describe("POST /relation", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/relation").send({
                 followed_id: "2",
-                following_id: "3"
+                follower_id: "3"
             })
             expect(response.statusCode).toBe(201);
         })
@@ -108,22 +108,22 @@ describe("GET /relation/follower/:user_uuid", () => {
     })
 })
 
-describe("GET /relation/following/:user_uuid", () => {
+describe("GET /relation/follower/:user_uuid", () => {
     describe("올바른 user_UUID 제공", () => {
         const user_uuid = "054bc6ee-779a-40c2-8aee-d686e159f7c5";//user_id = 45
         test("should respond with statusCode 200", async () => {
-            const response = await request(app).get("/app/relation/following/" + user_uuid).send()
+            const response = await request(app).get("/app/relation/follower/" + user_uuid).send()
             expect(response.statusCode).toBe(200);
         })
     })
 })
 
-describe("DELETE /relation/following/:user_uuid/:delete_id", () => {
+describe("DELETE /relation/follower/:user_uuid/:delete_id", () => {
     describe("올바른 user_UUID 제공 45 -> 44 제거", () => {
         const user_uuid = "054bc6ee-779a-40c2-8aee-d686e159f7c5";//user_id = 45
         const delete_id = 44;
         test("should respond with statusCode 204", async () => {
-            const response = await request(app).delete("/app/relation/following/" + user_uuid + "/" + delete_id).send()
+            const response = await request(app).delete("/app/relation/follower/" + user_uuid + "/" + delete_id).send()
             expect(response.statusCode).toBe(204);
         })
     })
