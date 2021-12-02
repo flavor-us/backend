@@ -53,7 +53,18 @@ module.exports = function (sequelize, DataTypes) {
             foreignKey: "followed_id"
         })
 
-    };
+        User.belongsToMany(User, {
+            as: "Request",
+            through: "Appointment",
+            foreignKey: "request_id"
+        });
 
+        User.belongsToMany(User, {
+            as: "Requested",
+            through: "Appointment",
+            foreignKey: "requested_id"
+        })
+
+    };
     return User;
 };

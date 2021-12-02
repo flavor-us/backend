@@ -14,10 +14,6 @@ exports.updateContents = async function (content, content_id) {
 		where: { id: content_id }
 	})
 	targetcontent.set({
-		user_id: content.user_id,
-		filename: content.filename,
-		rekognition: content.rekognition,
-		restname: content.restname,
 		tagList: content.tagList
 	})
 	await targetcontent.save();
