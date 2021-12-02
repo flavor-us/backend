@@ -32,6 +32,19 @@ describe("POST /user", () => {
     })
 })
 
+describe("PATCH /user", () => {
+    describe("올바른 값 -> 프로필 정보 수정", () => {
+        test("정상 수정", async () => {
+            const response = await request(app).patch("/app/user").send({
+                user: 1,
+                username: "admin",
+                profileImgPath: "/test"
+            })
+            expect(response.statusCode).toBe(201);
+        })
+    })
+})
+
 describe("POST /content", () => {
     describe("given full requirement, include tagList", () => {
         test("should respond with a status 201", async () => {
@@ -82,7 +95,7 @@ describe("admin Contents 테이블", () => {
 
 describe("GET /feeds/:user_uuid", () => {
     describe("올바른 user_UUID 제공", () => {
-        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba"//user_id = 45
+        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba"//user_id = 1
         test("should respond with statusCode 200", async () => {
             const response = await request(app).get("/app/feeds/" + user_uuid).send()
             expect(response.statusCode).toBe(200);
@@ -92,7 +105,7 @@ describe("GET /feeds/:user_uuid", () => {
 
 describe("GET /contents/:user_uuid", () => {
     describe("올바른 user_UUID 제공", () => {
-        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 45
+        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 1
         test("should respond with statusCode 200", async () => {
             const response = await request(app).get("/app/contents/" + user_uuid).send()
             expect(response.statusCode).toBe(200);
@@ -102,7 +115,7 @@ describe("GET /contents/:user_uuid", () => {
 
 describe("GET /relation/follower/:user_uuid", () => {
     describe("올바른 user_UUID 제공", () => {
-        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 45
+        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 1
         test("should respond with statusCode 200", async () => {
             const response = await request(app).get("/app/relation/follower/" + user_uuid).send()
             expect(response.statusCode).toBe(200);
@@ -112,7 +125,7 @@ describe("GET /relation/follower/:user_uuid", () => {
 
 describe("GET /relation/follower/:user_uuid", () => {
     describe("올바른 user_UUID 제공", () => {
-        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 45
+        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 1
         test("should respond with statusCode 200", async () => {
             const response = await request(app).get("/app/relation/follower/" + user_uuid).send()
             expect(response.statusCode).toBe(200);
@@ -121,8 +134,8 @@ describe("GET /relation/follower/:user_uuid", () => {
 })
 
 describe("DELETE /relation/follower/:user_uuid/:delete_id", () => {
-    describe("올바른 user_UUID 제공 45 -> 44 제거", () => {
-        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 45
+    describe("올바른 user_UUID 제공 1 -> 44 제거", () => {
+        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 1
         const delete_id = 44;
         test("should respond with statusCode 204", async () => {
             const response = await request(app).delete("/app/relation/follower/" + user_uuid + "/" + delete_id).send()
@@ -133,14 +146,50 @@ describe("DELETE /relation/follower/:user_uuid/:delete_id", () => {
 
 describe("PUT /contents/:content_id", () => {
     describe("올바른 value 제공 -> 컨텐츠 수정", () => {
-        test("예상 반환 값", async () => {
+        test("정상 수정", async () => {
             const content_id = 2;
             const response = await request(app).put("/app/contents/" + content_id).send({
-                "tagList": {
+                tagList: {
                     "tag_id": [1, 2, 4]
                 }
             })
             expect(response.statusCode).toBe(201);
+        })
+    })
+})
+
+
+describe("POST /appointment", () => {
+    describe("올바른 값 -> 약속 생성", () => {
+        test("정상 업로드", async () => {
+            const response = await request(app).post("/app/appointment").send({
+                request: 1,
+                requested: 2,
+                restname: "약속의 식당"
+            })
+            expect(response.statusCode).toBe(201);
+        })
+    })
+})
+
+describe("GET /appointment", () => {
+    describe("올바른 값 ->약속 신청 읽어오기", () => {
+        test("정상 GET", async () => {
+            const response = await request(app).get("/app/appointment").send({
+                user: 2
+            })
+            expect(response.statusCode).toBe(200);
+        })
+    })
+})
+
+describe("DELETE /appointment", () => {
+    describe("올바른 값 ->약속 리스트 제거", () => {
+        test("정상 GET", async () => {
+            const response = await request(app).delete("/app/appointment").send({
+                user: 2
+            })
+            expect(response.statusCode).toBe(204);
         })
     })
 })

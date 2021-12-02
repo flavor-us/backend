@@ -26,6 +26,9 @@ module.exports = function (sequelize, DataTypes) {
             },
             kakaoToken: {
                 type: DataTypes.TEXT
+            },
+            profileImgPath: {
+                type: DataTypes.TEXT
             }
         },
         {
@@ -64,7 +67,6 @@ module.exports = function (sequelize, DataTypes) {
             through: "Appointment",
             foreignKey: "requested_id"
         })
-
     };
     return User;
 };

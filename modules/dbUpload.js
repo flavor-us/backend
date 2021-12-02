@@ -1,6 +1,6 @@
 const models = require("../models");
 
-exports.uploadContent = async function (content) {
+exports.uploadContent = async (content) => {
 	const newContent = await models.Contents.create(content).then((uploadedColumn) => {
 		return uploadedColumn;
 	}).catch((err) => {
@@ -9,7 +9,7 @@ exports.uploadContent = async function (content) {
 	return (newContent.dataValues.id);
 }
 
-exports.updateContents = async function (content, content_id) {
+exports.updateContents = async (content, content_id) => {
 	const targetcontent = await models.Contents.findOne({
 		where: { id: content_id }
 	})
@@ -20,7 +20,7 @@ exports.updateContents = async function (content, content_id) {
 	return (targetcontent.dataValues.id);
 }
 
-exports.uploadUser = async function (user) {
+exports.uploadUser = async (user) => {
 	const id = await models.User.create(user).then((uploadedColumn) => {
 		console.log(uploadedColumn.dataValues.uid)
 		return uploadedColumn.dataValues.id;
@@ -29,4 +29,22 @@ exports.uploadUser = async function (user) {
 		throw new Error("유저를 업로드하지 못했습니다.");
 	});
 	return id;
+}
+
+exports.updateProfile = async (profile, user_id) => {
+	const user = await models.User.findOne({
+		where: { id: user_id }
+	})
+	if (profile.profileImgPath) {
+		console.log(user.set({
+			username: profile.username,
+			profileImgPath: profile.profileImgPath
+		}))
+	} else {
+		user.set({
+			username: profile.username
+		})
+	}
+	await user.save();
+	return (user.dataValues.id);
 }

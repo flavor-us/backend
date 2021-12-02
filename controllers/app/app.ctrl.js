@@ -5,7 +5,7 @@ exports.relationCtrl = require("./relation/relation.ctrl");
 exports.authCtrl = require("./auth/auth.ctrl");
 exports.feedsCtrl = require("./feeds/feeds.ctrl");
 exports.contentsCtrl = require("./contents/contents.ctrl");
-
+exports.appointmentCtrl = require("./appointment/appointment.ctrl")
 // exports.delete = async (req, res) => {
 // 	var attr;
 // 	try {

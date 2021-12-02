@@ -9,6 +9,10 @@ module.exports = function (sequelize, DataTypes) {
             requested_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
+            },
+            restname: {
+                type: DataTypes.TEXT,
+                allowNull: false
             }
         },
         {

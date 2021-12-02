@@ -23,9 +23,9 @@ exports.addUser = async (req, res) => {
 }
 
 exports.deleteUser = async (req, res) => {
-    var user;
+    var result;
     try {
-        user = await models.User.destroy({
+        result = await models.User.destroy({
             where: {
                 id: req.params.user_id
             }
@@ -34,9 +34,27 @@ exports.deleteUser = async (req, res) => {
         console.log(e);
         res.status(400).send(errorMsg.deleteFail)
     }
-    if (user)
+    if (result)
         res.status(204).send();
     else
         res.status(400).send(errorMsg.deleteFail)
 
+}
+
+exports.editProfile = async (req, res) => {
+    var profile, user_id;
+    profile = {
+        username: req.body.username,
+        profileImgPath: req.body.profileImgPath
+    }
+    if (req.body.user) {
+        user_id = req.body.user;
+    } else {
+        res.status(400).send(errorMsg.notEnoughReq);
+    }
+    const id = await dbUpload.updateProfile(profile, user_id).catch((e) => {
+        console.log(e);
+        res.status(400).send(errorMsg.updateFail);
+    })
+    res.status(201).send(completeMsg.updateComplete)
 }
