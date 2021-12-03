@@ -1,5 +1,3 @@
-const request = require('request');
-
 module.exports = function getProfile(accessToken) {
     return new Promise((resolve, reject) => {
         request(
