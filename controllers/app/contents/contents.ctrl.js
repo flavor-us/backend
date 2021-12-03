@@ -14,7 +14,7 @@ exports.uploadContents = async (req, res) => {
         tagList: req.body.tagList
     }
     await dbUpload.uploadContent(content).then((content_id) => {
-        res.status(201).send([completeMsg.uploadComplete, { content_id: content_id }]);
+        res.status(201).send({ msg: completeMsg.uploadComplete.msg, content_id: content_id });
     }).catch((e) => {
         console.log(e);
         res.status(400).send(errorMsg.uploadFail);
@@ -26,7 +26,7 @@ exports.updateContents = async (req, res) => {
         tagList: req.body.tagList
     }
     await dbUpload.updateContents(content, req.params.content_id).then((content_id) => {
-        res.status(201).send([completeMsg.updateComplete, { content_id: content_id }]);
+        res.status(201).send({ msg: completeMsg.updateComplete.msg, content_id: content_id });
     }).catch((e) => {
         console.log(e);
         res.status(400).send(errorMsg.updateFail);

@@ -15,7 +15,7 @@ exports.addUser = async (req, res) => {
         username: req.body.username
     }
     await dbUpload.uploadUser(user).then((id) => {
-        res.status(201).send([completeMsg.uploadComplete, { user_id: id }])
+        res.status(201).send({ msg: completeMsg.uploadComplete.msg, user_id: id });
     }).catch((e) => {
         console.log(e);
         res.status(400).send(errorMsg.uploadFail)
