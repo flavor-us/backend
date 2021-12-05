@@ -19,7 +19,8 @@ exports.getFeedsContents = async (req, res) => {
         return item.dataValues.followed_id;
     })
     const contents = await models.Contents.findAll({
-        where: { user_id: { [Op.in]: friendList } }
+        where: { [Op.or]: [{ user_id: { [Op.in]: friendList } }, { user_id: user_id }] },
+        order: [['date', 'DESC']],
     })
     res.status(200).send(contents);
 }
