@@ -47,8 +47,8 @@ exports.editProfile = async (req, res) => {
         username: req.body.username,
         profileImgPath: req.body.profileImgPath
     }
-    if (req.body.user) {
-        user_id = req.body.user;
+    if (req.body.user_id) {
+        user_id = req.body.user_id;
     } else {
         res.status(400).send(errorMsg.notEnoughReq);
     }

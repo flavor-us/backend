@@ -1,6 +1,6 @@
 module.exports = function (sequelize, DataTypes) {
-    const Tag = sequelize.define(
-        "Tag",
+    const Tag_FirstAdj = sequelize.define(
+        "Tag_FirstAdj",
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -16,17 +16,16 @@ module.exports = function (sequelize, DataTypes) {
         },
         {
             sequelize,
-            tableName: "Tag",
+            tableName: "Tag_FirstAdj",
             timestamps: false,
         }
     );
 
-    // Tag.associate = (models) => {
-    //     Tag.belongsToMany(models.Contents, {
-    //         as: "Content",
-    //         through: "TagContents",
-    //         foreignKey: "tag_id"
-    //     });
-    // }
-    return Tag;
+    Tag_FirstAdj.associate = (models) => {
+        Tag_FirstAdj.hasMany(models.Contents, {
+            foreignKey: "adj1_id",
+            sourceKey: "id"
+        });
+    }
+    return Tag_FirstAdj;
 };

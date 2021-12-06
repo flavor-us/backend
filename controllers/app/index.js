@@ -6,9 +6,10 @@ const upload = require("../../middleware/multer");
 router.post("/name", upload.single("photo"), app.restaurantsCtrl.getNames);
 
 router.delete("/contents/:content_id", app.contentsCtrl.deleteContents);
-router.put("/contents/:content_id", app.contentsCtrl.updateContents);//needs to update on api-docs
+router.put("/contents/:content_id", app.contentsCtrl.updateContents);
 router.get("/contents/:user_uuid", app.contentsCtrl.getMyContents);
 router.post("/contents", app.contentsCtrl.uploadContents);
+router.get("/contents/relevant/:user_uuid", app.contentsCtrl.getRelevantContents);
 
 router.delete("/user/:user_id", app.userCtrl.deleteUser);
 router.post("/user", app.userCtrl.addUser);
@@ -22,12 +23,16 @@ router.get("/relation/follower/:user_uuid", app.relationCtrl.getFollower);
 router.get("/relation/follower/:user_uuid", app.relationCtrl.getFollower)
 router.post("/relation", app.relationCtrl.makeRelation);
 
-router.get("/feeds/:user_uuid", app.feedsCtrl.getFeedsContents);
-
 router.post("/kakao", app.authCtrl.login);
 
 router.post("/appointment", app.appointmentCtrl.requestAppointment);
 router.get("/appointment", app.appointmentCtrl.checkRequested);
 router.delete("/appointment", app.appointmentCtrl.removeAppointment);
+
+router.get("/uuid", app.uuidCtrl.getUuidById);
+
+router.get("/tag/adj1", app.tagCtrl.getadj1);
+router.get("/tag/adj2", app.tagCtrl.getadj2);
+router.get("/tag/locationtag", app.tagCtrl.getlocationtag);
 
 module.exports = router;

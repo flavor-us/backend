@@ -19,7 +19,7 @@ exports.getExif = function (file) {
 exports.getNameSequelize = async function (lat, lng, moe) {
 	var names;
 	try {
-		names = await models.Location.findAll({
+		names = await models.Restaurants.findAll({
 			attributes: ["name", "lat", "lng", "id"],
 			where: {
 				lat: { [Op.between]: [lat - moe, lat + moe] },

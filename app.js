@@ -15,17 +15,13 @@ class App {
 		this.app.use(bodyParser.json());
 		this.app.use(bodyParser.urlencoded({ extended: false }));
 
-		this.app.get("/test", (req, res) => {
-			console.log("test")
-			res.send(200).send("Complete");
-		})
 		var dbConnection = function () {
 			// DB authentication
 			db.sequelize
 				.authenticate()
 				.then(() => {
 					console.log("Connection has been established successfully.");
-					return db.sequelize.sync();
+					// return db.sequelize.sync({ alter: true });
 				})
 				.then(() => {
 					console.log("DB Sync complete.");

@@ -36,7 +36,7 @@ describe("PATCH /user", () => {
     describe("올바른 값 -> 프로필 정보 수정", () => {
         test("정상 수정", async () => {
             const response = await request(app).patch("/app/user").send({
-                user: 1,
+                user_id: 1,
                 username: "admin",
                 profileImgPath: "/test"
             })
@@ -46,18 +46,19 @@ describe("PATCH /user", () => {
 })
 
 describe("POST /content", () => {
-    describe("given full requirement, include tagList", () => {
+    describe("given full requirement, include tag", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/contents").send({
-                user: 1,
-                rest: 10000,
+                user_id: 1,
+                rest_id: 10000,
                 filename: "file_jest",
                 rekog: { Labels: { "jest": "jest" } },
                 restname: "jestrest",
-                tagList: {
-                    "tag_id": [1, 2, 3]
-                }
-
+                adj1_id: 1,
+                adj2_id: 1,
+                locationtag_id: 1,
+                lat: 127.1,
+                lng: 37.1
             })
             expect(response.statusCode).toBe(201);
         })
@@ -93,11 +94,11 @@ describe("admin Contents 테이블", () => {
     })
 })
 
-describe("GET /feeds/:user_uuid", () => {
+describe("GET /contents/relevant/:user_uuid", () => {
     describe("올바른 user_UUID 제공", () => {
         const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba"//user_id = 1
         test("should respond with statusCode 200", async () => {
-            const response = await request(app).get("/app/feeds/" + user_uuid).send()
+            const response = await request(app).get("/app/contents/relevant/" + user_uuid).send()
             expect(response.statusCode).toBe(200);
         })
     })
@@ -149,9 +150,9 @@ describe("PUT /contents/:content_id", () => {
         test("정상 수정", async () => {
             const content_id = 2;
             const response = await request(app).put("/app/contents/" + content_id).send({
-                tagList: {
-                    "tag_id": [1, 2, 4]
-                }
+                adj1_id: 1,
+                adj2_id: 1,
+                locationtag_id: 1
             })
             expect(response.statusCode).toBe(201);
         })
@@ -176,7 +177,7 @@ describe("GET /appointment", () => {
     describe("올바른 값 ->약속 신청 읽어오기", () => {
         test("정상 GET", async () => {
             const response = await request(app).get("/app/appointment").send({
-                user: 2
+                user_id: 2
             })
             expect(response.statusCode).toBe(200);
         })
@@ -187,7 +188,7 @@ describe("DELETE /appointment", () => {
     describe("올바른 값 ->약속 리스트 제거", () => {
         test("정상 GET", async () => {
             const response = await request(app).delete("/app/appointment").send({
-                user: 2
+                user_id: 2
             })
             expect(response.statusCode).toBe(204);
         })

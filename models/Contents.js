@@ -29,11 +29,14 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: true,
 				comment: "AWS rekognition의 json 결과 값입니다."
 			},
-			tagList: {
-				type: DataTypes.JSON,
-				allowNull: true,
-				comment: "필수로 1~3개를 선택해야하는 태그의 json 리스트입니다."
-			}
+			lat: {
+				type: DataTypes.DECIMAL(20, 17),
+				allowNull: false,
+			},
+			lng: {
+				type: DataTypes.DECIMAL(20, 17),
+				allowNull: false,
+			},
 		},
 		{
 			sequelize,
@@ -41,11 +44,11 @@ module.exports = function (sequelize, DataTypes) {
 			timestamps: false,
 		});
 	Contents.associate = (models) => {
-		Contents.belongsTo(models.Location, {
+		Contents.belongsTo(models.Restaurants, {
 			foreignKey: "rest_id",
 			targetKey: "id",
 			unique: false,
-			comment: "Location 테이블 식당 id의 외래키입니다."
+			comment: "Restaurants 테이블 식당 id의 외래키입니다."
 		})
 
 		// Contents.belongsToMany(models.Tag, {

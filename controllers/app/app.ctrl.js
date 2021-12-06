@@ -3,9 +3,10 @@ exports.userCtrl = require("./user/user.ctrl");
 exports.rekognitionCtrl = require("./rekognition/rekognition.ctrl");
 exports.relationCtrl = require("./relation/relation.ctrl");
 exports.authCtrl = require("./auth/auth.ctrl");
-exports.feedsCtrl = require("./feeds/feeds.ctrl");
 exports.contentsCtrl = require("./contents/contents.ctrl");
-exports.appointmentCtrl = require("./appointment/appointment.ctrl")
+exports.appointmentCtrl = require("./appointment/appointment.ctrl");
+exports.uuidCtrl = require("./uuid/uuid.ctrl");
+exports.tagCtrl = require("./tag/tag.ctrl");
 // exports.delete = async (req, res) => {
 // 	var attr;
 // 	try {

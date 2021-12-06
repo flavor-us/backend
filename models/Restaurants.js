@@ -1,6 +1,6 @@
 module.exports = function (sequelize, DataTypes) {
-	const Location = sequelize.define(
-		"Location",
+	const Restaurants = sequelize.define(
+		"Restaurants",
 		{
 			id: {
 				type: DataTypes.INTEGER,
@@ -27,18 +27,18 @@ module.exports = function (sequelize, DataTypes) {
 		},
 		{
 			sequelize,
-			tableName: "Location",
+			tableName: "Restaurants",
 			timestamps: false,
 		}
 	);
 
-	Location.associate = (models) => {
-		Location.hasMany(models.Contents, {
+	Restaurants.associate = (models) => {
+		Restaurants.hasMany(models.Contents, {
 			foreignKey: "rest_id",
 			sourceKey: "id",
 			unique: false,
 		})
 	}
 
-	return Location;
+	return Restaurants;
 };

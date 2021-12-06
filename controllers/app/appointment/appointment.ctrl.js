@@ -28,7 +28,7 @@ exports.requestAppointment = async (req, res) => {
 exports.checkRequested = async (req, res) => {
     const user = await models.User.findOne({
         where: {
-            id: req.body.user
+            id: req.body.user_id
         }
     }).catch((e) => {
         console.log(e);
@@ -50,7 +50,7 @@ exports.checkRequested = async (req, res) => {
 exports.removeAppointment = async (req, res) => {
     const user = await models.User.findOne({
         where: {
-            id: req.body.user
+            id: req.body.user_id
         }
     })
     if (!user)
