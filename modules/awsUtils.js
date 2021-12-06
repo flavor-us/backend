@@ -12,7 +12,7 @@ exports.uploadS3Bucket = async function (filepath, filetype, userId) {
 	};
 	var param = {
 		Bucket: process.env.BUCKET_NAME,
-		Key: `${userId}_${Date.now()}.${fileExtension}`,
+		Key: `${userId}/${Date.now()}.${fileExtension}`,
 		ACL: "public-read",
 		Body: fs.createReadStream(filepath),
 		ContentType: filetype,
