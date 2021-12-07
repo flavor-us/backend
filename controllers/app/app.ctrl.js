@@ -7,6 +7,7 @@ exports.contentsCtrl = require("./contents/contents.ctrl");
 exports.appointmentCtrl = require("./appointment/appointment.ctrl");
 exports.uuidCtrl = require("./uuid/uuid.ctrl");
 exports.tagCtrl = require("./tag/tag.ctrl");
+exports.kakaoCtrl = require("./kakao/kakao.ctrl");
 // exports.delete = async (req, res) => {
 // 	var attr;
 // 	try {

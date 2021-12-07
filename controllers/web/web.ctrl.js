@@ -59,5 +59,5 @@ exports.dbUpload = async (req, res) => {
 		restname: req.body.restname
 	};
 	dbUploads.uploadContent(contents).catch((e) => console.log(e));
-	res.render("web/map.html", { name: req.body.restname, lat: req.body.lat, lng: req.body.lng, KakaoApikey: process.env.KAKAO_KEY });
+	res.render("web/map.html", { name: req.body.restname, lat: req.body.lat, lng: req.body.lng, KakaoApikey: process.env.KAKAO_JAVASCRIPT_KEY });
 };

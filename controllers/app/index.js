@@ -35,4 +35,7 @@ router.get("/tag/adj1", app.tagCtrl.getadj1);
 router.get("/tag/adj2", app.tagCtrl.getadj2);
 router.get("/tag/locationtag", app.tagCtrl.getlocationtag);
 
+// router.get("/kakao", app.kakaoCtrl.testApi);
+router.patch("/kakao/token/:user_uuid", app.kakaoCtrl.updateToken);
+
 module.exports = router;
