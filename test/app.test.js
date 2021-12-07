@@ -17,7 +17,8 @@ describe("POST /user", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/user").send({
                 username: "jesttest1",
-                email: "jest@jest.com"
+                email: "jest@jest.com",
+                kakaotoken: "testtoken"
             })
             expect(response.statusCode).toBe(201);
         })

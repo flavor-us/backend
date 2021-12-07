@@ -12,7 +12,8 @@ exports.addUser = async (req, res) => {
         uuid: uuidv4(),
         signupdate: new Date(),
         email: req.body.email,
-        username: req.body.username
+        username: req.body.username,
+        kakaoToken: req.body.kakaotoken
     }
     await dbUpload.uploadUser(user).then((id) => {
         res.status(201).send({ msg: completeMsg.uploadComplete.msg, user_id: id });
