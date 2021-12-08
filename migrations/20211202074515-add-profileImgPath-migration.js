@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.addColumn("User", "profileImgPath", {
+    return queryInterface.addColumn("User", "profileimg_path", {
       type: Sequelize.STRING,
     })
     /**
@@ -14,7 +14,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.removeColumn("User", "profileImgPath")
+    return queryInterface.removeColumn("User", "profileimg_path")
     /**
      * Add reverting commands here.
      *

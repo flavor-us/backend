@@ -24,10 +24,10 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.TEXT,
                 allowNull: true,
             },
-            kakaoToken: {
+            kakaotoken: {
                 type: DataTypes.TEXT
             },
-            profileImgPath: {
+            profileimg_path: {
                 type: DataTypes.TEXT
             }
         },

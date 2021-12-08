@@ -24,7 +24,7 @@ exports.login = async (req, res) => {
             where: { email: userEmail },
             defaults: {
                 username: userNickName,
-                kakaoToken: req.body.access_token
+                kakaotoken: req.body.access_token
             },
             attributes: ['id', 'username'],
         });

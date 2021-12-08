@@ -13,7 +13,7 @@ exports.addUser = async (req, res) => {
         signupdate: new Date(),
         email: req.body.email,
         username: req.body.username,
-        kakaoToken: req.body.kakaotoken
+        kakaotoken: req.body.kakaotoken
     }
     await dbUpload.uploadUser(user).then((id) => {
         res.status(201).send({ msg: completeMsg.uploadComplete.msg, user_id: id });
@@ -46,7 +46,7 @@ exports.editProfile = async (req, res) => {
     var profile, user_id;
     profile = {
         username: req.body.username,
-        profileImgPath: req.body.profileImgPath
+        profileimg_path: req.body.profileimg_path
     }
     if (req.body.user_id) {
         user_id = req.body.user_id;

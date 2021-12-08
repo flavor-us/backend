@@ -37,10 +37,10 @@ exports.updateProfile = async (profile, user_id) => {
 	const user = await models.User.findOne({
 		where: { id: user_id }
 	})
-	if (profile.profileImgPath) {
+	if (profile.profileimg_path) {
 		console.log(user.set({
 			username: profile.username,
-			profileImgPath: profile.profileImgPath
+			profileimg_path: profile.profileimg_path
 		}))
 	} else {
 		user.set({
