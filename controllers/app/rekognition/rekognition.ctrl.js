@@ -10,7 +10,7 @@ exports.s3Upload = async (req, res) => {
             console.log(e);
             res.status(400).send(errorMsg.s3UploadFail);
         });
-        res.status(201).send({ filename: uploadedFileInfo.key });
+        res.status(201).send({ filename: uploadedFileInfo.key.split("/")[1] });
     } else {
         res.status(400).send(errorMsg.s3UploadFail);
     }
