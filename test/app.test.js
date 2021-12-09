@@ -1,6 +1,7 @@
 const app = require('../app')
 const request = require('supertest');
-
+const mocking = require("../modules/mocking");
+const uuidConvert = require("../modules/uuidConvert")
 // describe("URL", () => {
 //     describe("조건", () => {
 //         test("예상 반환 값", async () => {
@@ -12,11 +13,23 @@ const request = require('supertest');
 //     })
 // })
 
+const id = beforeAll(() => {
+    const id = await mocking.makeMock();
+    id.user_uuid = await uuidConvert.getIdFromUuid(id.user);
+    return id;
+    //mockData 생성
+})
+afterAll(() => {
+    await mocking.deleteMock();
+    //Delete mockData & Test made Data
+})
+
+
 describe("POST /user", () => {
     describe("given a username & email", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/user").send({
-                username: "jesttest1",
+                username: "jest",
                 email: "jest@jest.com",
                 kakaotoken: "testtoken"
             })
@@ -37,8 +50,8 @@ describe("PATCH /user", () => {
     describe("올바른 값 -> 프로필 정보 수정", () => {
         test("정상 수정", async () => {
             const response = await request(app).patch("/app/user").send({
-                user_id: 1,
-                username: "admin",
+                user_id: id.user,
+                username: "jest",
                 profileImgPath: "/test"
             })
             expect(response.statusCode).toBe(201);
@@ -52,7 +65,7 @@ describe("POST /content", () => {
             const response = await request(app).post("/app/contents").send({
                 user_id: 1,
                 rest_id: 10000,
-                filename: "file_jest",
+                filename: "jest",
                 rekog: { Labels: { "jest": "jest" } },
                 restname: "jestrest",
                 adj1_id: 1,
@@ -70,8 +83,8 @@ describe("POST /relation", () => {
     describe("given full requirement", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/relation").send({
-                followed_id: 2,
-                follower_id: 3
+                followed_id: 1,
+                follower_id: id.user
             })
             expect(response.statusCode).toBe(201);
         })
@@ -79,7 +92,7 @@ describe("POST /relation", () => {
     describe("given only followerId", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/relation").send({
-                follower_id: 2
+                follower_id: id.user
             })
             expect(response.statusCode).toBe(400);
         })
@@ -97,9 +110,8 @@ describe("admin Contents 테이블", () => {
 
 describe("GET /contents/relevant/:user_uuid", () => {
     describe("올바른 user_UUID 제공", () => {
-        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba"//user_id = 1
         test("should respond with statusCode 200", async () => {
-            const response = await request(app).get("/app/contents/relevant/" + user_uuid).send()
+            const response = await request(app).get("/app/contents/relevant/" + id.user_uuid).send()
             expect(response.statusCode).toBe(200);
         })
     })
@@ -107,9 +119,8 @@ describe("GET /contents/relevant/:user_uuid", () => {
 
 describe("GET /contents/:user_uuid", () => {
     describe("올바른 user_UUID 제공", () => {
-        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 1
         test("should respond with statusCode 200", async () => {
-            const response = await request(app).get("/app/contents/" + user_uuid).send()
+            const response = await request(app).get("/app/contents/" + id.user_uuid).send()
             expect(response.statusCode).toBe(200);
         })
     })
@@ -117,9 +128,8 @@ describe("GET /contents/:user_uuid", () => {
 
 describe("GET /relation/follower/:user_uuid", () => {
     describe("올바른 user_UUID 제공", () => {
-        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 1
         test("should respond with statusCode 200", async () => {
-            const response = await request(app).get("/app/relation/follower/" + user_uuid).send()
+            const response = await request(app).get("/app/relation/follower/" + id.user_uuid).send()
             expect(response.statusCode).toBe(200);
         })
     })
@@ -127,9 +137,8 @@ describe("GET /relation/follower/:user_uuid", () => {
 
 describe("GET /relation/follower/:user_uuid", () => {
     describe("올바른 user_UUID 제공", () => {
-        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 1
         test("should respond with statusCode 200", async () => {
-            const response = await request(app).get("/app/relation/follower/" + user_uuid).send()
+            const response = await request(app).get("/app/relation/follower/" + id.user_uuid).send()
             expect(response.statusCode).toBe(200);
         })
     })
@@ -137,10 +146,9 @@ describe("GET /relation/follower/:user_uuid", () => {
 
 describe("DELETE /relation/follower/:user_uuid/:delete_id", () => {
     describe("올바른 user_UUID 제공 1 -> 44 제거", () => {
-        const user_uuid = "43cdeffc-936f-426c-801f-515bf759f8ba";//user_id = 1
-        const delete_id = 44;
+        const delete_id = 1;
         test("should respond with statusCode 204", async () => {
-            const response = await request(app).delete("/app/relation/follower/" + user_uuid + "/" + delete_id).send()
+            const response = await request(app).delete("/app/relation/follower/" + id.user_uuid + "/" + delete_id).send()
             expect(response.statusCode).toBe(204);
         })
     })
@@ -166,7 +174,7 @@ describe("POST /appointment", () => {
         test("정상 업로드", async () => {
             const response = await request(app).post("/app/appointment").send({
                 request: 1,
-                requested: 2,
+                requested: id.user,
                 restname: "약속의 식당"
             })
             expect(response.statusCode).toBe(201);
@@ -178,7 +186,7 @@ describe("GET /appointment", () => {
     describe("올바른 값 ->약속 신청 읽어오기", () => {
         test("정상 GET", async () => {
             const response = await request(app).get("/app/appointment").send({
-                user_id: 2
+                user_id: id.user
             })
             expect(response.statusCode).toBe(200);
         })
@@ -189,7 +197,7 @@ describe("DELETE /appointment", () => {
     describe("올바른 값 ->약속 리스트 제거", () => {
         test("정상 GET", async () => {
             const response = await request(app).delete("/app/appointment").send({
-                user_id: 2
+                user_id: id.user
             })
             expect(response.statusCode).toBe(204);
         })

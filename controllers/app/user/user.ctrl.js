@@ -3,6 +3,8 @@ const models = require("../../../models");
 const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
 const { v4: uuidv4 } = require('uuid');
+const uuidConvert = require("../../../modules/uuidConvert");
+
 require("dotenv").config();
 
 exports.addUser = async (req, res) => {
@@ -25,10 +27,11 @@ exports.addUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     var result;
+    const user_id = uuidConvert.getIdFromUuid(req.params.uuid);
     try {
         result = await models.User.destroy({
             where: {
-                id: req.params.user_id
+                id: user_id
             }
         });
     } catch (e) {

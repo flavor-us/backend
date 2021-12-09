@@ -28,7 +28,8 @@ exports.s3Delete = async (req, res) => {
 }
 
 exports.getRekog = async (req, res) => {
-    const key = req.query.s3ImageKey;
+    const user_id = uuidConvert.getIdFromUuid(req.query.uuid);
+    const key = user_id + "/" + req.query.s3ImageKey;
     const rekogData = await awsUtils.getLabel(key).catch((e) => {
         console.log(e)
         res.status(400).send(errorMsg.rekogFail);

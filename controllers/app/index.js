@@ -11,7 +11,7 @@ router.get("/contents/:user_uuid", app.contentsCtrl.getMyContents);
 router.post("/contents", app.contentsCtrl.uploadContents);
 router.get("/contents/relevant/:user_uuid", app.contentsCtrl.getRelevantContents);
 
-router.delete("/user/:user_id", app.userCtrl.deleteUser);
+router.delete("/user/:user_uuid", app.userCtrl.deleteUser);
 router.post("/user", app.userCtrl.addUser);
 router.patch("/user", app.userCtrl.editProfile);
 
