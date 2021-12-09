@@ -4,9 +4,10 @@ const rekognition = require("../../../modules/rekognition");
 const uuidConvert = require("../../../modules/uuidConvert");
 
 exports.s3Upload = async (req, res) => {
-    const user_id = req.param.user_id;
+    const user_id = req.params.user_id;
     if (req.file && user_id) {
         var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype, user_id).catch(e => {
+            console.log(e);
             res.status(400).send(errorMsg.s3UploadFail);
         });
         res.status(201).send({ filename: uploadedFileInfo.key });
