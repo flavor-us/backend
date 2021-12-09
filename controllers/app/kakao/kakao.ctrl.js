@@ -27,7 +27,7 @@ const completeMsg = require("../../../message/complete");
 exports.updateToken = async (req, res) => {
     const uuid = req.params.user_uuid;
     if (!uuid)
-        res.status(400).send(errorMsg.updateFail);
+        res.status(400).send(errorMsg.notEnoughReq);
     const user = await models.User.findOne({
         where: {
             uuid: uuid

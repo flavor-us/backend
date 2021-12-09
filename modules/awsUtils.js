@@ -31,6 +31,29 @@ exports.uploadS3Bucket = async function (filepath, filetype, userId) {
 	return uploadedFileInfo;
 };
 
+exports.deleteS3Bucket = async function (filepath) {
+	AWS.config.region = process.env.AWS_REGION;
+	new AWS.Config({
+		accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+		region: process.env.AWS_REGION,
+	})
+	var s3 = new AWS.S3();
+	var param = {
+		Bucket: process.env.BUCKET_NAME,
+		Key: filepath
+	};
+	s3.deleteObject(param, function (err, data) {
+		if (err) {
+			console.log(err)
+			throw (new Error)
+		}
+		else {
+			return (data);
+		}
+	})
+}
+
 exports.getLabel = async function (filename) {
 	const bucket = process.env.BUCKET_NAME; // the bucketname without s3://
 	const photo = filename; // the name of file

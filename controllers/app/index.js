@@ -16,6 +16,7 @@ router.post("/user", app.userCtrl.addUser);
 router.patch("/user", app.userCtrl.editProfile);
 
 router.post("/s3/:user_id", upload.single("photo"), app.rekognitionCtrl.s3Upload);
+router.delete("/s3/:user_uuid/:filename", app.rekognitionCtrl.s3Delete)
 router.get("/rekog", app.rekognitionCtrl.getRekog);
 
 router.delete("/relation/follower/:user_uuid/:delete_id", app.relationCtrl.deleteFollower)

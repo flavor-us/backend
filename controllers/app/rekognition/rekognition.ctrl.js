@@ -1,6 +1,7 @@
 const awsUtils = require("../../../modules/awsUtils");
 const errorMsg = require("../../../message/error");
 const rekognition = require("../../../modules/rekognition");
+const uuidConvert = require("../../../modules/uuidConvert");
 
 exports.s3Upload = async (req, res) => {
     const user_id = req.param.user_id;
@@ -12,6 +13,18 @@ exports.s3Upload = async (req, res) => {
     } else {
         res.status(400).send(errorMsg.s3UploadFail);
     }
+}
+
+exports.s3Delete = async (req, res) => {
+    const user_id = await uuidConvert.getIdFromUuid(req.params.user_uuid);
+    const filename = req.params.filename;
+    if (!user_id || !filename)
+        res.status(400).send(errorMsg.notEnoughReq);
+    const filepath = user_id + "/" + filename;
+    await awsUtils.deleteS3Bucket(filepath).catch((e) => {
+        res.status(400).send(errorMsg.deleteFail);
+    })
+    res.status(204).send();
 }
 
 exports.getRekog = async (req, res) => {
