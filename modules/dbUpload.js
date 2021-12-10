@@ -24,7 +24,6 @@ exports.updateContents = async (content, content_id) => {
 
 exports.uploadUser = async (user) => {
 	const id = await models.User.create(user).then((uploadedColumn) => {
-		console.log(uploadedColumn.dataValues.uid)
 		return uploadedColumn.dataValues.id;
 	}).catch((err) => {
 		console.log(err);

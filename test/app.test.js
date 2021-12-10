@@ -1,7 +1,7 @@
 const app = require('../app')
 const request = require('supertest');
 const mocking = require("../modules/mocking");
-const uuidConvert = require("../modules/uuidConvert")
+const kakaoIdConvert = require("../modules/kakaoIdConvert")
 // describe("URL", () => {
 //     describe("조건", () => {
 //         test("예상 반환 값", async () => {
@@ -12,14 +12,19 @@ const uuidConvert = require("../modules/uuidConvert")
 //         })
 //     })
 // })
-
-const id = beforeAll(() => {
-    const id = await mocking.makeMock();
-    id.user_uuid = await uuidConvert.getIdFromUuid(id.user);
-    return id;
+var id = {
+    user: "",
+    content: "",
+    kakao: ""
+};
+beforeAll(async () => {
+    var idList = await mocking.makeMock();
+    id.user = idList.user;
+    id.content = idList.content;
+    id.kakao = idList.kakao;
     //mockData 생성
 })
-afterAll(() => {
+afterAll(async () => {
     await mocking.deleteMock();
     //Delete mockData & Test made Data
 })
@@ -108,47 +113,47 @@ describe("admin Contents 테이블", () => {
     })
 })
 
-describe("GET /contents/relevant/:user_uuid", () => {
+describe("GET /contents/relevant/:kakao_id", () => {
     describe("올바른 user_UUID 제공", () => {
         test("should respond with statusCode 200", async () => {
-            const response = await request(app).get("/app/contents/relevant/" + id.user_uuid).send()
+            const response = await request(app).get("/app/contents/relevant/" + id.kakao).send()
             expect(response.statusCode).toBe(200);
         })
     })
 })
 
-describe("GET /contents/:user_uuid", () => {
+describe("GET /contents/:kakao_id", () => {
     describe("올바른 user_UUID 제공", () => {
         test("should respond with statusCode 200", async () => {
-            const response = await request(app).get("/app/contents/" + id.user_uuid).send()
+            const response = await request(app).get("/app/contents/" + id.kakao).send()
             expect(response.statusCode).toBe(200);
         })
     })
 })
 
-describe("GET /relation/follower/:user_uuid", () => {
+describe("GET /relation/follower/:kakao_id", () => {
     describe("올바른 user_UUID 제공", () => {
         test("should respond with statusCode 200", async () => {
-            const response = await request(app).get("/app/relation/follower/" + id.user_uuid).send()
+            const response = await request(app).get("/app/relation/follower/" + id.kakao).send()
             expect(response.statusCode).toBe(200);
         })
     })
 })
 
-describe("GET /relation/follower/:user_uuid", () => {
+describe("GET /relation/follower/:kakao_id", () => {
     describe("올바른 user_UUID 제공", () => {
         test("should respond with statusCode 200", async () => {
-            const response = await request(app).get("/app/relation/follower/" + id.user_uuid).send()
+            const response = await request(app).get("/app/relation/follower/" + id.kakao).send()
             expect(response.statusCode).toBe(200);
         })
     })
 })
 
-describe("DELETE /relation/follower/:user_uuid/:delete_id", () => {
+describe("DELETE /relation/follower/:kakao_id/:delete_id", () => {
     describe("올바른 user_UUID 제공 1 -> 44 제거", () => {
         const delete_id = 1;
         test("should respond with statusCode 204", async () => {
-            const response = await request(app).delete("/app/relation/follower/" + id.user_uuid + "/" + delete_id).send()
+            const response = await request(app).delete("/app/relation/follower/" + id.kakao + "/" + delete_id).send()
             expect(response.statusCode).toBe(204);
         })
     })

@@ -1,6 +1,6 @@
 exports.restaurantsCtrl = require("./restaurants/restaurants.ctrl");
 exports.userCtrl = require("./user/user.ctrl");
-exports.rekognitionCtrl = require("./rekognition/rekognition.ctrl");
+exports.s3Ctrl = require("./s3/s3.ctrl");
 exports.relationCtrl = require("./relation/relation.ctrl");
 exports.authCtrl = require("./auth/auth.ctrl");
 exports.contentsCtrl = require("./contents/contents.ctrl");

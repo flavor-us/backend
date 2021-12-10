@@ -3,7 +3,7 @@ const models = require("../../../models");
 const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
 const Sequelize = require("sequelize");
-const uuidConvert = require("../../../modules/uuidConvert");
+const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
 const Op = Sequelize.Op;
 
 exports.uploadContents = async (req, res) => {
@@ -61,27 +61,24 @@ exports.deleteContents = async (req, res) => {
 }
 
 exports.getMyContents = async (req, res) => {
-    const userUUID = req.params.user_uuid;
-    const user = await models.User.findOne({
-        where: {
-            uuid: userUUID
-        }
+    const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id).catch((e) => {
+        console.log(e);
+        res.status(400).send(errorMsg.readFail);
+    })
+    const contents = await models.Contents.findAll({
+        where: { user_id: user_id }
     }).catch((e) => {
-        console.log(e)
+        console.log(e);
         res.status(400).send(errorMsg.readFail);
-    });
-    if (user) {
-        const contents = await models.Contents.findAll({
-            where: { user_id: user.id }
-        })
-        res.status(200).json(contents)
-    }
-    else
-        res.status(400).send(errorMsg.readFail);
+    })
+    res.status(200).json(contents)
 }
 
 exports.getRelevantContents = async (req, res) => {
-    const user_id = await uuidConvert.getIdFromUuid(req.params.user_uuid);
+    const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id).catch((e) => {
+        console.log(e);
+        res.status(400).send(errorMsg.readFail);
+    })
     const friends = await models.Relation.findAll({
         attributes: ['followed_id'],
         where: {

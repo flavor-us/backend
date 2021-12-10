@@ -12,6 +12,5 @@ exports.getUuidById = async (req, res) => {
         console.log(e);
         res.status(400).send(errorMsg.readFail);
     })
-    console.log(typeof (uuid.dataValues.uuid));
     res.status(200).send({ uuid: uuid.dataValues.uuid });
 }

@@ -1,10 +1,13 @@
 const awsUtils = require("../../../modules/awsUtils");
 const errorMsg = require("../../../message/error");
 const rekognition = require("../../../modules/rekognition");
-const uuidConvert = require("../../../modules/uuidConvert");
+const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
 
 exports.s3Upload = async (req, res) => {
-    const user_id = req.params.user_id;
+    const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id).catch((e) => {
+        console.log(e);
+        res.status(400).send(errorMsg.readFail);
+    })
     if (req.file && user_id) {
         var uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype, user_id).catch(e => {
             console.log(e);
@@ -17,7 +20,10 @@ exports.s3Upload = async (req, res) => {
 }
 
 exports.s3Delete = async (req, res) => {
-    const user_id = await uuidConvert.getIdFromUuid(req.params.user_uuid);
+    const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id).catch((e) => {
+        console.log(e);
+        res.status(400).send(errorMsg.readFail);
+    })
     const filename = req.params.filename;
     if (!user_id || !filename)
         res.status(400).send(errorMsg.notEnoughReq);
@@ -29,7 +35,10 @@ exports.s3Delete = async (req, res) => {
 }
 
 exports.getRekog = async (req, res) => {
-    const user_id = await uuidConvert.getIdFromUuid(req.query.user_uuid);
+    const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.query.kakaoId).catch((e) => {
+        console.log(e);
+        res.status(400).send(errorMsg.rekogFail);
+    })
     const key = user_id + "/" + req.query.s3ImageKey;
     console.log(key);
     const rekogData = await awsUtils.getLabel(key).catch((e) => {

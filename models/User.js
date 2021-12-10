@@ -29,6 +29,9 @@ module.exports = function (sequelize, DataTypes) {
             },
             profileimg_path: {
                 type: DataTypes.TEXT
+            },
+            kakao_id: {
+                type: DataTypes.TEXT
             }
         },
         {

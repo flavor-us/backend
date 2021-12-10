@@ -1,7 +1,10 @@
 const models = require("../models");
 const dbUpload = require("./dbUpload");
+const { v4: uuidv4 } = require('uuid');
+const kakaoIdConvert = require("../modules/kakaoIdConvert");
+
 exports.makeMock = async function () {
-    var id;
+    var id = {};
     id.content = await dbUpload.uploadContent({
         user_id: 1,
         rest_id: 10000,
@@ -16,9 +19,13 @@ exports.makeMock = async function () {
     })
     id.user = await dbUpload.uploadUser({
         username: "jest",
+        signupdate: new Date(),
         email: "jest@jest.com",
-        kakaotoken: "testtoken"
+        kakaotoken: "testtoken",
+        uuid: uuidv4(),
+        kakao_id: 99
     });
+    id.kakao = await kakaoIdConvert.getKakaoIdByUserId(id.user);
     return (id);
 }
 

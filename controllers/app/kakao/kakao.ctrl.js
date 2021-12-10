@@ -25,20 +25,21 @@ const completeMsg = require("../../../message/complete");
 // }
 
 exports.updateToken = async (req, res) => {
-    const uuid = req.params.user_uuid;
-    if (!uuid)
-        res.status(400).send(errorMsg.notEnoughReq);
     const user = await models.User.findOne({
         where: {
-            uuid: uuid
+            kakao_id: req.params.kakao_id
         }
     }).catch((e) => {
         console.log(e);
         res.status(400).send(errorMsg.updateFail);
     });
-    user.set({
-        kakaotoken: req.body.kakaotoken
-    })
-    await user.save();
-    res.status(201).send(completeMsg.updateComplete);
+    if (user) {
+        user.set({
+            kakaotoken: req.body.kakaotoken
+        })
+        await user.save();
+        res.status(201).send(completeMsg.updateComplete);
+    } else {
+        res.status(400).send(errorMsg.updateFail);
+    }
 }

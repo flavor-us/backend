@@ -3,7 +3,7 @@ const models = require("../../../models");
 const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
 const { v4: uuidv4 } = require('uuid');
-const uuidConvert = require("../../../modules/uuidConvert");
+const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
 
 require("dotenv").config();
 
@@ -15,7 +15,8 @@ exports.addUser = async (req, res) => {
         signupdate: new Date(),
         email: req.body.email,
         username: req.body.username,
-        kakaotoken: req.body.kakaotoken
+        kakaotoken: req.body.kakaotoken,
+        kakao_id: req.body.kakao_id
     }
     await dbUpload.uploadUser(user).then((id) => {
         res.status(201).send({ msg: completeMsg.uploadComplete.msg, user_id: id });
@@ -27,7 +28,10 @@ exports.addUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     var result;
-    const user_id = uuidConvert.getIdFromUuid(req.params.uuid);
+    const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id).catch((e) => {
+        console.log(e);
+        res.status(400).send(errorMsg.deleteFail);
+    })
     try {
         result = await models.User.destroy({
             where: {

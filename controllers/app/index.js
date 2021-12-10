@@ -7,21 +7,21 @@ router.post("/name", upload.single("photo"), app.restaurantsCtrl.getNames);
 
 router.delete("/contents/:content_id", app.contentsCtrl.deleteContents);
 router.put("/contents/:content_id", app.contentsCtrl.updateContents);
-router.get("/contents/:user_uuid", app.contentsCtrl.getMyContents);
+router.get("/contents/:kakao_id", app.contentsCtrl.getMyContents);
 router.post("/contents", app.contentsCtrl.uploadContents);
-router.get("/contents/relevant/:user_uuid", app.contentsCtrl.getRelevantContents);
+router.get("/contents/relevant/:kakao_id", app.contentsCtrl.getRelevantContents);
 
-router.delete("/user/:user_uuid", app.userCtrl.deleteUser);
+router.delete("/user/:kakao_id", app.userCtrl.deleteUser);
 router.post("/user", app.userCtrl.addUser);
 router.patch("/user", app.userCtrl.editProfile);
 
-router.post("/s3/:user_id", upload.single("photo"), app.rekognitionCtrl.s3Upload);
-router.delete("/s3/:user_uuid/:filename", app.rekognitionCtrl.s3Delete)
-router.get("/rekog", app.rekognitionCtrl.getRekog);
+router.post("/s3/:user_id", upload.single("photo"), app.s3Ctrl.s3Upload);
+router.delete("/s3/:kakao_id/:filename", app.s3Ctrl.s3Delete)
+router.get("/rekog", app.s3Ctrl.getRekog);
 
-router.delete("/relation/follower/:user_uuid/:delete_id", app.relationCtrl.deleteFollower)
-router.get("/relation/follower/:user_uuid", app.relationCtrl.getFollower);
-router.get("/relation/follower/:user_uuid", app.relationCtrl.getFollower)
+router.delete("/relation/follower/:kakao_id/:delete_id", app.relationCtrl.deleteFollower)
+router.get("/relation/follower/:kakao_id", app.relationCtrl.getFollower);
+router.get("/relation/followed/:kakao_id", app.relationCtrl.getFollowed);
 router.post("/relation", app.relationCtrl.makeRelation);
 
 router.post("/kakao", app.authCtrl.login);
@@ -37,6 +37,6 @@ router.get("/tag/adj2", app.tagCtrl.getadj2);
 router.get("/tag/locationtag", app.tagCtrl.getlocationtag);
 
 // router.get("/kakao", app.kakaoCtrl.testApi);
-router.patch("/kakao/token/:user_uuid", app.kakaoCtrl.updateToken);
+router.patch("/kakao/token/:kakao_id", app.kakaoCtrl.updateToken);
 
 module.exports = router;

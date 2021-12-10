@@ -1,72 +1,63 @@
 const models = require("../../../models");
 const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
+const kakaoIdConvert = require("../../../modules/kakaoIdConvert")
 
 exports.getFollower = async (req, res) => {
-    await models.User.findOne({
+    const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id).catch((e) => {
+        console.log(e);
+        res.status(400).send(errorMsg.readFail);
+    });
+    const followed = await models.Relation.findAll({
+        attributes: ["follower_id"],
         where: {
-            uuid: req.params.user_uuid
+            followed_id: user_id
         }
-    }).then(async (user) => {
-        const followed = await models.Relation.findAll({
-            attributes: ["follower_id"],
-            where: {
-                followed_id: user.id
-            }
-        })
-        const followerList = followed.map((item) => {
-            return item.dataValues.follower_id;
-        })
-        return followerList;
-    }).then((followerList) => {
-        res.status(200).send({ followerList: followerList });
-    }).catch((err) => {
-        console.log(err);
+    }).catch((e) => {
+        console.log(e);
         res.status(400).send(errorMsg.readFail);
     })
+    const followerList = followed.map((item) => {
+        return item.dataValues.follower_id;
+    })
+    res.status(200).send({ followerList: followerList });
 }
 
-exports.getFollower = async (req, res) => {
-    await models.User.findOne({
+exports.getFollowed = async (req, res) => {
+    const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id).catch((e) => {
+        console.log(e);
+        res.status(400).send(errorMsg.readFail);
+    });
+    const followed = await models.Relation.findAll({
+        attributes: ["followed_id"],
         where: {
-            uuid: req.params.user_uuid
+            follower_id: user_id
         }
-    }).then(async (user) => {
-        const follower = await models.Relation.findAll({
-            attributes: ["followed_id"],
-            where: {
-                follower_id: user.id
-            }
-        }).catch((e) => console.log(e));
-        const followerList = follower.map((item) => {
-            return item.dataValues.followed_id;
-        })
-        return followerList
-    }).then((followerList) => {
-        res.status(200).send({ followerList: followerList });
-    }).catch((err) => {
-        console.log(err);
+    }).catch((e) => {
+        console.log(e);
         res.status(400).send(errorMsg.readFail);
     })
+    const followedList = followed.map((item) => {
+        return item.dataValues.followed_id;
+    })
+    res.status(200).send({ followedList: followedList });
 }
 exports.deleteFollower = async (req, res) => {
-    await models.User.findOne({
+    const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id).catch((e) => {
+        console.log(e);
+        res.status(400).send(errorMsg.readFail);
+    })
+    await models.Relation.destroy({
         where: {
-            uuid: req.params.user_uuid
+            follower_id: user_id,
+            followed_id: req.params.delete_id
         }
-    }).then(async (user) => {
-        await models.Relation.destroy({
-            where: {
-                follower_id: user.id,
-                followed_id: req.params.delete_id
-            }
-        }).catch((e) => console.log(e));
-    }).then(() => {
-        res.status(204).send();
-    }).catch((err) => {
-        console.log(err);
+    }).catch((e) => {
+        console.log(e);
         res.status(400).send(errorMsg.deleteFail);
     })
+    res.status(204).send();
+
 }
 
 exports.makeRelation = async (req, res) => {
