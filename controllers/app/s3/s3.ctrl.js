@@ -19,6 +19,13 @@ exports.s3Upload = async (req, res) => {
     }
 }
 
+exports.s3MulterUpload = async (req, res) => {
+    if (req.file)
+        res.status(201).send(req.file);
+    else
+        res.status(400).send(errorMsg.uploadFail);
+}
+
 exports.s3Delete = async (req, res) => {
     const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id).catch((e) => {
         console.log(e);

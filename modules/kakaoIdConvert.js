@@ -12,7 +12,7 @@ exports.getUserIdByKakaoId = async function (kakao_id) {
     if (!user_id)
         throw 'there is no user_id corresponding to kakao_id'
     else
-        return (user_id);
+        return (user_id.id);
 }
 
 exports.getKakaoIdByUserId = async function (user_id) {

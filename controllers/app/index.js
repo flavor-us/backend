@@ -1,7 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 const app = require("./app.ctrl");
-const upload = require("../../middleware/multer");
+// const upload = require("../../middleware/multer");
+const { upload } = require('../../middleware/multerS3');
 
 router.post("/name", upload.single("photo"), app.restaurantsCtrl.getNames);
 
@@ -15,7 +16,10 @@ router.delete("/user/:kakao_id", app.userCtrl.deleteUser);
 router.post("/user", app.userCtrl.addUser);
 router.patch("/user", app.userCtrl.editProfile);
 
-router.post("/s3/:user_id", upload.single("photo"), app.s3Ctrl.s3Upload);
+
+router.post("/s3/:kakao_id", upload.single("photo"), app.s3Ctrl.s3MulterUpload);
+// router.post("/s3/:user_id", upload.single("photo"), app.s3Ctrl.s3Upload);
+
 router.delete("/s3/:kakao_id/:filename", app.s3Ctrl.s3Delete)
 router.get("/rekog", app.s3Ctrl.getRekog);
 
