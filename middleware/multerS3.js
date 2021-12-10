@@ -21,7 +21,7 @@ const storage = multerS3({
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id).catch((e) => {
             cb(new Error('Error : no corresponding user_id'))
         });
-        cb(null, `${user_id}/${Date.now()}_${file.originalname}`);
+        cb(null, `${user_id}/${Date.now()}.${file.mimetype.split('/')[1]}`);
     },
 })
 
