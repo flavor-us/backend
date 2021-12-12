@@ -1,10 +1,10 @@
 const { Router } = require("express");
 const router = Router();
 const app = require("./app.ctrl");
-// const upload = require("../../middleware/multer");
+const local_upload = require("../../middleware/multer");
 const { upload } = require('../../middleware/multerS3');
 
-router.post("/name", upload.single("photo"), app.restaurantsCtrl.getNames);
+router.post("/name", local_upload.single("photo"), app.restaurantsCtrl.getNames);
 
 router.delete("/contents/:content_id", app.contentsCtrl.deleteContents);
 router.put("/contents/:content_id", app.contentsCtrl.updateContents);

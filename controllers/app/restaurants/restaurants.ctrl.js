@@ -6,8 +6,10 @@ exports.getNames = async (req, res) => {
     var names;
     var gpsDMS;
     if (req.file) {
+        console.log(req.file)
         var gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
             console.log(error);
+            res.status(400).send(errorMsg.readFail);
         });
     } else {
         res.status(400).send(errorMsg.noFile);
