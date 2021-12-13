@@ -15,12 +15,12 @@ module.exports = function (sequelize, DataTypes) {
 				comment: "컨텐츠의 업로드 날짜입니다."
 			},
 			filename: {
-				type: DataTypes.TEXT,
+				type: DataTypes.STRING,
 				allowNull: true,
 				comment: "컨텐츠에 올라간 사진의 파일 명입니다."
 			},
 			restname: {
-				type: DataTypes.TEXT,
+				type: DataTypes.STRING,
 				allowNull: true,
 				comment: "컨텐츠의 식당 명 입니다."
 			},

@@ -9,11 +9,11 @@ module.exports = function (sequelize, DataTypes) {
 
 			},
 			name: {
-				type: DataTypes.TEXT,
+				type: DataTypes.STRING,
 				allowNull: false,
 			},
 			type: {
-				type: DataTypes.TEXT,
+				type: DataTypes.STRING,
 				allowNull: true,
 			},
 			lat: {

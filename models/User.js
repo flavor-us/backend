@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
                 autoIncrement: true,
             },
             uuid: {
-                type: DataTypes.TEXT,
+                type: DataTypes.STRING,
                 allowNull: false,
             },
             signupdate: {
@@ -17,21 +17,21 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: true,
             },
             email: {
-                type: DataTypes.TEXT,
+                type: DataTypes.STRING,
                 allowNull: true,
             },
             username: {
-                type: DataTypes.TEXT,
+                type: DataTypes.STRING,
                 allowNull: true,
             },
             kakaotoken: {
-                type: DataTypes.TEXT
+                type: DataTypes.STRING
             },
             profileimg_path: {
-                type: DataTypes.TEXT
+                type: DataTypes.STRING
             },
             kakao_id: {
-                type: DataTypes.TEXT
+                type: DataTypes.STRING
             }
         },
         {

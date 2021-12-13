@@ -3,7 +3,7 @@ const errorMsg = require("../../../message/error");
 const rekognition = require("../../../modules/rekognition");
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
 
-exports.s3Upload = async (req, res) => {
+exports.s3Upload = async (req, res) => { //Used Only Web Ctrl
     const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id).catch((e) => {
         console.log(e);
         res.status(400).send(errorMsg.readFail);
