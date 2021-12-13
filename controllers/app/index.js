@@ -40,7 +40,8 @@ router.get("/tag/adj1", app.tagCtrl.getadj1);
 router.get("/tag/adj2", app.tagCtrl.getadj2);
 router.get("/tag/locationtag", app.tagCtrl.getlocationtag);
 
-// router.get("/kakao", app.kakaoCtrl.testApi);
+router.get("/kakao/friend/:kakao_id", app.kakaoCtrl.getFriendList);
 router.patch("/kakao/token/:kakao_id", app.kakaoCtrl.updateToken);
+router.get("/kakao/profile/:kakao_id", app.kakaoCtrl.getProfile);
 
 module.exports = router;
