@@ -17,7 +17,6 @@ exports.uploadS3Bucket = async function (filepath, filetype, userId) {
 		Body: fs.createReadStream(filepath),
 		ContentType: filetype,
 	};
-
 	var putObjectPromise = s3.upload(param).promise();
 	var location = await putObjectPromise
 		.then(function (data) {
@@ -25,6 +24,7 @@ exports.uploadS3Bucket = async function (filepath, filetype, userId) {
 		})
 		.catch(function (err) {
 			console.log(err);
+			throw (err);
 		});
 	uploadedFileInfo.key = param.Key;
 	uploadedFileInfo.location = location;
@@ -45,8 +45,8 @@ exports.deleteS3Bucket = async function (filepath) {
 	};
 	s3.deleteObject(param, function (err, data) {
 		if (err) {
-			console.log(err)
-			throw (new Error)
+			console.log(err);
+			throw (err)
 		}
 		else {
 			return (data);
@@ -86,6 +86,7 @@ exports.getLabel = async function (filename) {
 		})
 		.catch((err) => {
 			console.log(err);
+			throw (err);
 		});
 	return labels;
 };

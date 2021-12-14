@@ -1,5 +1,5 @@
 exports.notEnoughReq = {
-    msg: "필수 requirement가 충족되지 못했습니다. api를 다시 확인해주세요"
+    msg: "필수 requirement가 충족되지 못했습니다. api 명세를 다시 확인해주세요"
 }
 
 exports.noFile = {
@@ -11,7 +11,7 @@ exports.noLatLng = {
 }
 
 exports.s3UploadFail = {
-    msg: "s3 업로드에 실패했습니다."
+    msg: "s3 버킷 업로드에 실패했습니다."
 }
 
 exports.rekogFail = {
@@ -36,4 +36,12 @@ exports.deleteFail = {
 
 exports.noUser = {
     msg: "해당하는 유저가 없습니다."
+}
+
+exports.noContent = {
+    msg: "해당하는 컨텐츠가 없습니다."
+}
+
+exports.noRestaurants = {
+    msg: "근처에 추정되는 식당이 없습니다."
 }

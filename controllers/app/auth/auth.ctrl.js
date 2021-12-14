@@ -43,7 +43,6 @@ exports.login = async (req, res) => {
             });
             responseData.jwt = token;
         }
-
         return res.status(created ? 201 : 200).json(responseData);
     } catch (err) {
         return res.status(500).json({

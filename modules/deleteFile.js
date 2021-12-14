@@ -1,6 +1,6 @@
 const fs = require("fs")
 
-exports.deleteFile = function (path) {
+exports.deleteFile = async function (path) {
     fs.access(path, fs.constants.F_OK, (err) => { // A
         if (err) return console.log('삭제할 수 없는 파일입니다');
 

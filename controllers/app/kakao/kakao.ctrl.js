@@ -4,82 +4,88 @@ const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
 
 exports.getProfile = async (req, res) => {
-    const kakaoToken = await models.User.findOne({
-        attributes: ['kakaotoken'],
-        where: {
-            kakao_id: req.params.kakao_id
+    var profile;
+    try {
+        const kakaoToken = await models.User.findOne({
+            attributes: ['kakaotoken'],
+            where: {
+                kakao_id: req.params.kakao_id
+            }
+        })
+        if (!kakaoToken) {
+            throw 'Token not found'
         }
-    }).catch((e) => {
+        let kakaoOptions = {
+            url: 'https://kapi.kakao.com/v1/api/talk/profile',  // target에 해당하는 것을 적기
+            method: 'GET',
+            headers: {
+                'Authorization': "Bearer " + kakaoToken.dataValues.kakaotoken
+            },
+            encoding: 'UTF-8',
+        }
+        request(kakaoOptions, function (err, resp, body) {
+            if (err || res.statusCode != 200)
+                throw (err);
+            else
+                profile = JSON.parse(body);
+        })
+    } catch (e) {
         console.log(e);
-        res.status(400).send(errorMsg.readFail);
-    })
-    console.log(kakaoToken)
-    let kakaoOptions = {
-        url: 'https://kapi.kakao.com/v1/api/talk/profile',  // target에 해당하는 것을 적기
-        method: 'GET',
-        headers: {
-            'Authorization': "Bearer " + kakaoToken.dataValues.kakaotoken
-        },
-        encoding: 'UTF-8',
+        return (res.status(400).send(errorMsg.readFail));
     }
-    request(kakaoOptions, function (err, resp, body) {
-        if (!err && res.statusCode == 200) {
-            console.log(JSON.parse(body));
-            res.status(200).send(JSON.parse(body))
-        }
-        else {
-            console.log(err, body, res);
-            res.status(400).send("failed")
-        }
-    })
+    return (res.status(200).send(profile));
 }
 
 exports.getFriendList = async (req, res) => {
-    const kakaoToken = await models.User.findOne({
-        attributes: ['kakaotoken'],
-        where: {
-            kakao_id: req.params.kakao_id
+    var friendList;
+    try {
+        const kakaoToken = await models.User.findOne({
+            attributes: ['kakaotoken'],
+            where: {
+                kakao_id: req.params.kakao_id
+            }
+        })
+        if (!kakaoToken) {
+            throw 'Token not found'
         }
-    }).catch((e) => {
+        let kakaoOptions = {
+            url: 'https://kapi.kakao.com/v1/api/talk/friends',  // target에 해당하는 것을 적기
+            method: 'GET',
+            headers: {
+                'Authorization': "Bearer " + kakaoToken.dataValues.kakaotoken
+            },
+            encoding: 'UTF-8',
+        }
+        request(kakaoOptions, function (err, resp, body) {
+            if (err || res.statusCode != 200)
+                throw (err);
+            else
+                friendList = JSON.parse(body);
+        })
+    } catch (e) {
         console.log(e);
-        res.status(400).send(errorMsg.readFail);
-    })
-    let kakaoOptions = {
-        url: 'https://kapi.kakao.com/v1/api/talk/friends',  // target에 해당하는 것을 적기
-        method: 'GET',
-        headers: {
-            'Authorization': "Bearer " + kakaoToken.dataValues.kakaotoken
-        },
-        encoding: 'UTF-8',
+        return (res.status(400).send(errorMsg.readFail));
     }
-    request(kakaoOptions, function (err, resp, body) {
-        if (!err && res.statusCode == 200) {
-            console.log(JSON.parse(body));
-            res.status(200).send(JSON.parse(body))
-        }
-        else {
-            console.log(err, body, res);
-            res.status(400).send("failed")
-        }
-    })
+    return (res.status(200).send(profile));
 }
 
 exports.updateToken = async (req, res) => {
-    const user = await models.User.findOne({
-        where: {
-            kakao_id: req.params.kakao_id
+    try {
+        const user = await models.User.findOne({
+            where: {
+                kakao_id: req.params.kakao_id
+            }
+        });
+        if (!user) {
+            throw 'User not found'
         }
-    }).catch((e) => {
-        console.log(e);
-        res.status(400).send(errorMsg.updateFail);
-    });
-    if (user) {
-        user.set({
+        await user.set({
             kakaotoken: req.body.kakaotoken
         })
         await user.save();
-        res.status(201).send(completeMsg.updateComplete);
-    } else {
+    } catch (e) {
+        console.log(e);
         res.status(400).send(errorMsg.updateFail);
     }
+    res.status(201).send(completeMsg.updateComplete);
 }

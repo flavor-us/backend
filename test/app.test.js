@@ -114,7 +114,7 @@ describe("admin Contents 테이블", () => {
 })
 
 describe("GET /contents/relevant/:kakao_id", () => {
-    describe("올바른 user_UUID 제공", () => {
+    describe("올바른 kakao_id 제공", () => {
         test("should respond with statusCode 200", async () => {
             const response = await request(app).get("/app/contents/relevant/" + id.kakao).send()
             expect(response.statusCode).toBe(200);
@@ -123,7 +123,7 @@ describe("GET /contents/relevant/:kakao_id", () => {
 })
 
 describe("GET /contents/:kakao_id", () => {
-    describe("올바른 user_UUID 제공", () => {
+    describe("올바른 kakao_id 제공", () => {
         test("should respond with statusCode 200", async () => {
             const response = await request(app).get("/app/contents/" + id.kakao).send()
             expect(response.statusCode).toBe(200);
@@ -132,7 +132,7 @@ describe("GET /contents/:kakao_id", () => {
 })
 
 describe("GET /relation/follower/:kakao_id", () => {
-    describe("올바른 user_UUID 제공", () => {
+    describe("올바른 kakao_id 제공", () => {
         test("should respond with statusCode 200", async () => {
             const response = await request(app).get("/app/relation/follower/" + id.kakao).send()
             expect(response.statusCode).toBe(200);
@@ -141,7 +141,7 @@ describe("GET /relation/follower/:kakao_id", () => {
 })
 
 describe("GET /relation/follower/:kakao_id", () => {
-    describe("올바른 user_UUID 제공", () => {
+    describe("올바른 kakao_id 제공", () => {
         test("should respond with statusCode 200", async () => {
             const response = await request(app).get("/app/relation/follower/" + id.kakao).send()
             expect(response.statusCode).toBe(200);
@@ -150,7 +150,7 @@ describe("GET /relation/follower/:kakao_id", () => {
 })
 
 describe("DELETE /relation/follower/:kakao_id/:delete_id", () => {
-    describe("올바른 user_UUID 제공 1 -> 44 제거", () => {
+    describe("올바른 kakao_id 제공 1 -> 44 제거", () => {
         const delete_id = 1;
         test("should respond with statusCode 204", async () => {
             const response = await request(app).delete("/app/relation/follower/" + id.kakao + "/" + delete_id).send()
@@ -159,11 +159,11 @@ describe("DELETE /relation/follower/:kakao_id/:delete_id", () => {
     })
 })
 
-describe("PUT /contents/:content_id", () => {
+describe("PATCH /contents/:content_id", () => {
     describe("올바른 value 제공 -> 컨텐츠 수정", () => {
         test("정상 수정", async () => {
             const content_id = 2;
-            const response = await request(app).put("/app/contents/" + content_id).send({
+            const response = await request(app).patch("/app/contents/" + content_id).send({
                 adj1_id: 1,
                 adj2_id: 1,
                 locationtag_id: 1

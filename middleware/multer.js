@@ -8,7 +8,6 @@ const storage = multer.diskStorage({
 	},
 	filename: (req, file, callback) => {
 		callback(null, Date.now() % 30 + '.' + file.mimetype.split('/')[1]);
-		// callback(null, 'foods' + '.' + file.mimetype.split('/')[1] );
 	}
 });
 
