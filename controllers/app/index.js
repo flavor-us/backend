@@ -14,7 +14,7 @@ router.get("/contents/relevant/:kakao_id", app.contentsCtrl.getRelevantContents)
 
 router.delete("/user/:kakao_id", app.userCtrl.deleteUser);
 router.post("/user", app.userCtrl.addUser);
-router.patch("/user", app.userCtrl.editProfile);
+router.patch("/user/:kakao_id", app.userCtrl.editProfile);
 
 
 router.post("/s3/:kakao_id", upload.single("photo"), app.s3Ctrl.s3MulterUpload);

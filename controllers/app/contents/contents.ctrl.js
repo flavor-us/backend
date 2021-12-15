@@ -33,31 +33,45 @@ exports.uploadContents = async (req, res) => {
 exports.updateContents = async (req, res) => {
     var content_id;
     try {
-        const content = {
-            adj1_id: req.body.adj1_id,
-            adj2_id: req.body.adj2_id,
-            locationtag_id: req.body.locationtag_id
-        }
+        let content = {};
+        if ((!req.body.adj1_id && !req.body.adj2_id && !req.body.locationtag_id) || (!req.params.content_id))
+            throw (errorMsg.notEnoughReq)
+        if (req.body.adj1_id)
+            content.adj1_id = req.body.adj1_id
+        if (req.body.adj2_id)
+            content.adj2_id = req.body.adj2_id
+        if (req.body.locationtag_id)
+            content.locationtag_id = req.body.locationtag_id
         content_id = await dbUpload.updateContents(content, req.params.content_id);
     } catch (e) {
         console.log(e);
-        res.status(400).send(errorMsg.updateFail);
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else
+            return (res.status(400).send(errorMsg.updateFail));
     }
     return (res.status(201).send({ msg: completeMsg.updateComplete.msg, content_id: content_id }));
 }
 
 exports.deleteContents = async (req, res) => {
     try {
+        if (!req.params.content_id)
+            throw (errorMsg.notEnoughReq);
         const content = await models.Contents.destroy({
             where: {
                 id: req.params.content_id
             }
         });
         if (!content)
-            throw 'No contents arresponding req.params.content_id'
+            throw (errorMsg.noContent);
     } catch (e) {
         console.log(e);
-        return (res.status(400).send(errorMsg.deleteFail));
+        if (e == errorMsg.noContent)
+            return (res.status(400).send(errorMsg.noContent));
+        else if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else
+            return (res.status(400).send(errorMsg.deleteFail));
     }
     return (res.status(204).send());
 }
@@ -65,21 +79,34 @@ exports.deleteContents = async (req, res) => {
 exports.getMyContents = async (req, res) => {
     var contents;
     try {
+        if (!req.params.kakao_id)
+            throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
+        if (!user_id)
+            throw (errorMsg.noUser);
         contents = await models.Contents.findAll({
             where: { user_id: user_id }
         })
     } catch (e) {
         console.log(e);
-        res.status(400).send(errorMsg.readFail);
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else if (e == errorMsg.noUser)
+            return (res.status(400).send(errorMsg.noUser));
+        else
+            return (res.status(400).send(errorMsg.readFail));
     }
-    res.status(200).json(contents)
+    return (res.status(200).json(contents));
 }
 
 exports.getRelevantContents = async (req, res) => {
     var contents;
     try {
+        if (!req.params.kakao_id)
+            throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
+        if (!user_id)
+            throw (errorMsg.noUser);
         const friends = await models.Relation.findAll({
             attributes: ['followed_id'],
             where: {
@@ -95,7 +122,12 @@ exports.getRelevantContents = async (req, res) => {
         })
     } catch (e) {
         console.log(e);
-        res.status(400).send(errorMsg.readFail)
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else if (e == errorMsg.noUser)
+            return (res.status(400).send(errorMsg.noUser));
+        else
+            return (res.status(400).send(errorMsg.readFail));
     }
-    res.status(200).send(contents);
+    return (res.status(200).send(contents));
 }

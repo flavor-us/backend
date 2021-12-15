@@ -35,7 +35,7 @@ exports.deleteUser = async (req, res) => {
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
-        const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id)
+        const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
         const result = await models.User.destroy({
             where: {
                 id: user_id
@@ -57,13 +57,16 @@ exports.deleteUser = async (req, res) => {
 
 exports.editProfile = async (req, res) => {
     try {
-        const profile = {
-            username: req.body.username,
-            profileimg_path: req.body.profileimg_path
-        }
-        if (!req.body.user_id)
+        let profile = {};
+        if (!req.params.kakao_id || (!req.body.username && !req.body.profileimg_path))
             throw (errorMsg.notEnoughReq);
-        const user_id = req.body.user_id;
+        const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
+        if (!user_id)
+            throw (errorMsg.noUser);
+        if (req.body.username)
+            profile.username = req.body.username
+        if (req.body.profileimg_path)
+            profile.profileimg_path = req.body.profileimg_path
         await dbUpload.updateProfile(profile, user_id);
     } catch (e) {
         console.log(e);

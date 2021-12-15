@@ -1,7 +1,7 @@
 const app = require('../app')
 const request = require('supertest');
 const mocking = require("../modules/mocking");
-const kakaoIdConvert = require("../modules/kakaoIdConvert")
+const models = require("../models");
 // describe("URL", () => {
 //     describe("조건", () => {
 //         test("예상 반환 값", async () => {
@@ -54,10 +54,9 @@ describe("POST /user", () => {
 describe("PATCH /user", () => {
     describe("올바른 값 -> 프로필 정보 수정", () => {
         test("정상 수정", async () => {
-            const response = await request(app).patch("/app/user").send({
-                user_id: id.user,
+            const response = await request(app).patch("/app/user/" + id.kakao).send({
                 username: "jest",
-                profileImgPath: "/test"
+                profileimg_path: "/testpath"
             })
             expect(response.statusCode).toBe(201);
         })
@@ -162,9 +161,15 @@ describe("DELETE /relation/follower/:kakao_id/:delete_id", () => {
 describe("PATCH /contents/:content_id", () => {
     describe("올바른 value 제공 -> 컨텐츠 수정", () => {
         test("정상 수정", async () => {
-            const content_id = 2;
+            const content_id = id.content;
+            // const before_adj1_value = await models.Contents.findOne({
+            //     attributes: ['adj1'],
+            //     where: {
+            //         id: content_id
+            //     }
+            // })
             const response = await request(app).patch("/app/contents/" + content_id).send({
-                adj1_id: 1,
+                adj1_id: 2,
                 adj2_id: 1,
                 locationtag_id: 1
             })

@@ -70,5 +70,5 @@ exports.getRekog = async (req, res) => {
         else
             return (res.status(400).send(errorMsg.rekogFail));
     }
-    res.status(200).json({ rekogData })
+    return (res.status(200).json({ rekogData }));
 }

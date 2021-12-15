@@ -2,10 +2,13 @@ const request = require('request');
 const models = require("../../../models");
 const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
+const dbUpload = require("../../../modules/dbUpload");
 
 exports.getProfile = async (req, res) => {
     var profile;
     try {
+        if (!req.params.kakao_id)
+            throw (errorMsg.notEnoughReq);
         const kakaoToken = await models.User.findOne({
             attributes: ['kakaotoken'],
             where: {
@@ -13,7 +16,7 @@ exports.getProfile = async (req, res) => {
             }
         })
         if (!kakaoToken) {
-            throw 'Token not found'
+            throw (errorMsg.noToken);
         }
         let kakaoOptions = {
             url: 'https://kapi.kakao.com/v1/api/talk/profile',  // target에 해당하는 것을 적기
@@ -31,7 +34,12 @@ exports.getProfile = async (req, res) => {
         })
     } catch (e) {
         console.log(e);
-        return (res.status(400).send(errorMsg.readFail));
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else if (e == errorMsg.noToken)
+            return (res.status(400).send(errorMsg.noToken));
+        else
+            return (res.status(400).send(errorMsg.readFail));
     }
     return (res.status(200).send(profile));
 }
@@ -39,6 +47,8 @@ exports.getProfile = async (req, res) => {
 exports.getFriendList = async (req, res) => {
     var friendList;
     try {
+        if (!req.params.kakao_id)
+            throw (errorMsg.notEnoughReq);
         const kakaoToken = await models.User.findOne({
             attributes: ['kakaotoken'],
             where: {
@@ -46,7 +56,7 @@ exports.getFriendList = async (req, res) => {
             }
         })
         if (!kakaoToken) {
-            throw 'Token not found'
+            throw (errorMsg.noToken)
         }
         let kakaoOptions = {
             url: 'https://kapi.kakao.com/v1/api/talk/friends',  // target에 해당하는 것을 적기
@@ -64,28 +74,27 @@ exports.getFriendList = async (req, res) => {
         })
     } catch (e) {
         console.log(e);
-        return (res.status(400).send(errorMsg.readFail));
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else if (e == errorMsg.noToken)
+            return (res.status(400).send(errorMsg.noToken));
+        else
+            return (res.status(400).send(errorMsg.readFail));
     }
     return (res.status(200).send(profile));
 }
 
 exports.updateToken = async (req, res) => {
     try {
-        const user = await models.User.findOne({
-            where: {
-                kakao_id: req.params.kakao_id
-            }
-        });
-        if (!user) {
-            throw 'User not found'
-        }
-        await user.set({
-            kakaotoken: req.body.kakaotoken
-        })
-        await user.save();
+        if (!req.params.kakao_id)
+            throw (errorMsg.notEnoughReq);
+        await dbUpload.updateToken(req.body.kakaotoken);
     } catch (e) {
         console.log(e);
-        res.status(400).send(errorMsg.updateFail);
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else
+            return (res.status(400).send(errorMsg.updateFail));
     }
-    res.status(201).send(completeMsg.updateComplete);
+    return (res.status(201).send(completeMsg.updateComplete));
 }

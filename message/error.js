@@ -45,3 +45,7 @@ exports.noContent = {
 exports.noRestaurants = {
     msg: "근처에 추정되는 식당이 없습니다."
 }
+
+exports.noToken = {
+    msg: "해당하는 유저의 카카오 토큰값이 없습니다."
+}

@@ -29,7 +29,7 @@ exports.getFollower = async (req, res) => {
         else
             return (res.status(400).send(errorMsg.readFail));
     }
-    res.status(200).send({ followerList: followerList });
+    return (res.status(200).send({ followerList: followerList }));
 }
 
 exports.getFollowed = async (req, res) => {
@@ -47,7 +47,7 @@ exports.getFollowed = async (req, res) => {
             }
         })
         followedList = followed.map((item) => {
-            return item.dataValues.followed_id;
+            return (item.dataValues.followed_id);
         })
     } catch (e) {
         console.log(e);
@@ -79,11 +79,11 @@ exports.deleteFollower = async (req, res) => {
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
-            res.status(400).send(errorMsg.noUser);
+            return (res.status(400).send(errorMsg.noUser));
         else
-            res.status(400).send(errorMsg.deleteFail);
+            return (res.status(400).send(errorMsg.deleteFail));
     }
-    res.status(204).send();
+    return (res.status(204).send());
 }
 
 exports.makeRelation = async (req, res) => {
@@ -114,5 +114,5 @@ exports.makeRelation = async (req, res) => {
         else
             return (res.status(400).send(errorMsg.uploadFail));
     }
-    res.status(201).send(completeMsg.complete);
+    return (res.status(201).send(completeMsg.complete));
 }

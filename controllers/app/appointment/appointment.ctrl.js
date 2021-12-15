@@ -1,10 +1,11 @@
 const models = require("../../../models")
 const errorMsg = require("../../../message/error")
 const completeMsg = require("../../../message/complete")
-const app = require("../../../app")
 
 exports.requestAppointment = async (req, res) => {
     try {
+        if (!req.body.request || !req.body.requested)
+            throw (errorMsg.notEnoughReq)
         const request = await models.User.findOne({
             where: {
                 id: req.body.request
@@ -16,18 +17,25 @@ exports.requestAppointment = async (req, res) => {
             }
         })
         if (!request || !requested)
-            return res.status(400).send(errorMsg.noUser);
+            throw (res.status(400).send(errorMsg.noUser));
         await request.addRequest(requested, { through: { restname: req.body.restname } });
     } catch (e) {
         console.log(e);
-        return res.status(400).send(errorMsg.uploadFail);
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else if (e == errorMsg.noUser)
+            return (res.status(400).send(errorMsg.noUser));
+        else
+            return (res.status(400).send(errorMsg.uploadFail));
     }
     return (res.status(201).send(completeMsg.uploadComplete));
 }
 
 exports.checkRequested = async (req, res) => {
-    var requested
+    var requested;
     try {
+        if (!req.body.user_id)
+            throw (errorMsg.notEnoughReq)
         const user = await models.User.findOne({
             where: {
                 id: req.body.user_id
@@ -42,13 +50,20 @@ exports.checkRequested = async (req, res) => {
         })
     } catch (e) {
         console.log(e);
-        res.status(400).send(errorMsg.readFail)
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else if (e == errorMsg.noUser)
+            return (res.status(400).send(errorMsg.noUser));
+        else
+            return (res.status(400).send(errorMsg.readFail));
     }
-    res.status(200).json({ requested: requested });
+    return (res.status(200).json({ requested: requested }));
 }
 
 exports.removeAppointment = async (req, res) => {
     try {
+        if (!req.body.user_id)
+            throw (errorMsg.notEnoughReq)
         const user = await models.User.findOne({
             where: {
                 id: req.body.user_id
@@ -63,8 +78,12 @@ exports.removeAppointment = async (req, res) => {
         })
     } catch (e) {
         console.log(e);
-        return (res.status(400).send(errorMsg.deleteFail));
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else if (e == errorMsg.noUser)
+            return (res.status(400).send(errorMsg.noUser));
+        else
+            return (res.status(400).send(errorMsg.readFail));
     }
-    res.status(204).send();
+    return (res.status(204).send());
 }
-

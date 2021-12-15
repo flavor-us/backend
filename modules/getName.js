@@ -2,6 +2,7 @@ var ExifImage = require("exif").ExifImage;
 const Sequelize = require("sequelize");
 const models = require("../models");
 const Op = Sequelize.Op;
+const errorMsg = require("../message/error");
 
 exports.getExif = function (file) {
 	return new Promise(function (resolve, reject) {
@@ -39,6 +40,6 @@ exports.convertLatLng = function (lat_DMS, lng_DMS) {
 		return [lat_Degree, lng_Degree];
 	} else {
 		console.log("error : something wrong in lat_DMS , lng_DMS")
-		return null;
+		throw (errorMsg.noLatLng);
 	}
 };

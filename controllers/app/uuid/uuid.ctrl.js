@@ -4,6 +4,8 @@ const errorMsg = require("../../../message/error");
 exports.getUuidById = async (req, res) => {
     var uuid;
     try {
+        if (!req.body.user_id)
+            throw (errorMsg.notEnoughReq)
         const user_id = req.body.user_id;
         uuid = await models.User.findOne({
             attributes: ["uuid"],
@@ -16,6 +18,8 @@ exports.getUuidById = async (req, res) => {
     } catch (e) {
         console.log(e);
         if (e == errorMsg.noUser)
+            return (res.status(400).send(errorMsg.noUser));
+        if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.noUser));
         else
             return (res.status(400).send(errorMsg.readFail));
