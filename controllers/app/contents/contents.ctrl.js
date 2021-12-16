@@ -82,8 +82,6 @@ exports.getMyContents = async (req, res) => {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
-        if (!user_id)
-            throw (errorMsg.noUser);
         contents = await models.Contents.findAll({
             where: { user_id: user_id }
         })
@@ -105,8 +103,6 @@ exports.getRelevantContents = async (req, res) => {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
-        if (!user_id)
-            throw (errorMsg.noUser);
         const friends = await models.Relation.findAll({
             attributes: ['followed_id'],
             where: {

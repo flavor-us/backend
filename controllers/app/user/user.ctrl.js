@@ -61,8 +61,6 @@ exports.editProfile = async (req, res) => {
         if (!req.params.kakao_id || (!req.body.username && !req.body.profileimg_path))
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
-        if (!user_id)
-            throw (errorMsg.noUser);
         if (req.body.username)
             profile.username = req.body.username
         if (req.body.profileimg_path)

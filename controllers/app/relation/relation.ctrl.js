@@ -9,8 +9,6 @@ exports.getFollower = async (req, res) => {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
-        if (!user_id)
-            throw (errorMsg.noUser);
         const followed = await models.Relation.findAll({
             attributes: ["follower_id"],
             where: {
@@ -38,8 +36,6 @@ exports.getFollowed = async (req, res) => {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
-        if (!user_id)
-            throw (errorMsg.noUser);
         const followed = await models.Relation.findAll({
             attributes: ["followed_id"],
             where: {
@@ -66,8 +62,6 @@ exports.deleteFollower = async (req, res) => {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
-        if (!user_id)
-            throw (errorMsg.noUser);
         await models.Relation.destroy({
             where: {
                 follower_id: user_id,

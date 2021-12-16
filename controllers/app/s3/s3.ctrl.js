@@ -9,8 +9,6 @@ exports.s3Upload = async (req, res) => { //Used Only Web Ctrl
         if (!req.params.kakaoId || !req.file)
             throw (errorMsg.notEnoughReq)
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
-        if (!user_id)
-            throw (errorMsg.noUser);
         uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype, user_id);
     } catch {
         return (res.status(400).send(errorMsg.s3UploadFail));
@@ -31,8 +29,6 @@ exports.s3Delete = async (req, res) => {
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
         const filename = req.params.filename;
-        if (!user_id)
-            throw (errorMsg.noUser);
         const filepath = user_id + "/" + filename;
         await awsUtils.deleteS3Bucket(filepath);
     } catch (e) {
@@ -53,8 +49,6 @@ exports.getRekog = async (req, res) => {
         if (!req.query.kakaoId || !req.query.s3ImageKey)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.query.kakaoId);
-        if (!user_id)
-            throw (errorMsg.noUser);
         const key = user_id + "/" + req.query.s3ImageKey;
         rekogData = await awsUtils.getLabel(key);
         if (!rekogData)

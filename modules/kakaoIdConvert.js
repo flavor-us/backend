@@ -1,5 +1,5 @@
 const models = require("../models");
-
+const errorMsg = require("../message/error");
 exports.getUserIdByKakaoId = async function (kakao_id) {
     const user_id = await models.User.findOne({
         where: {
@@ -10,7 +10,7 @@ exports.getUserIdByKakaoId = async function (kakao_id) {
         throw 'Error has occured on Sequelize FindOne'
     })
     if (!user_id)
-        throw 'there is no user_id corresponding to kakao_id'
+        throw (errorMsg.noUser)
     else
         return (user_id.id);
 }
@@ -25,7 +25,7 @@ exports.getKakaoIdByUserId = async function (user_id) {
         throw 'Error has occured on Sequelize FindOne'
     })
     if (!kakao_id)
-        throw 'there is no user_id corresponding to kakao_id'
+        throw (errorMsg.noUser)
     else
         return (kakao_id.kakao_id);
 }
