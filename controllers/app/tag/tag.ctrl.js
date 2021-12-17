@@ -9,7 +9,7 @@ exports.getadj1 = async (_, res) => {
         console.log(e);
         return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).send({ adj1: adj1 }));
+    return (res.status(200).send({ result: adj1 }));
 }
 
 exports.getadj2 = async (_, res) => {
@@ -20,7 +20,7 @@ exports.getadj2 = async (_, res) => {
         console.log(e);
         return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).send({ adj2: adj2 }));
+    return (res.status(200).send({ result: adj2 }));
 }
 
 exports.getlocationtag = async (_, res) => {
@@ -31,5 +31,5 @@ exports.getlocationtag = async (_, res) => {
         console.log(e);
         return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).send({ locationtag: locationtag }));
+    return (res.status(200).send({ result: locationtag }));
 }

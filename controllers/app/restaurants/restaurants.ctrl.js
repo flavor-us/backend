@@ -35,5 +35,5 @@ exports.getNames = async (req, res) => {
     } finally {
         deleteFileModule.deleteFile(req.file.path);
     }
-    return (res.status(200).json({ restData: restData }));
+    return (res.status(200).json({ result: restData }));
 }
