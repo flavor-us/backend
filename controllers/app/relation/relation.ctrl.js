@@ -27,7 +27,7 @@ exports.getFollower = async (req, res) => {
         else
             return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).send({ followerList: followerList }));
+    return (res.status(200).send({ result: followerList }));
 }
 
 exports.getFollowed = async (req, res) => {
@@ -54,7 +54,7 @@ exports.getFollowed = async (req, res) => {
         else
             return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).send({ followedList: followedList }));
+    return (res.status(200).send({ result: followedList }));
 }
 
 exports.deleteFollower = async (req, res) => {

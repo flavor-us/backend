@@ -94,7 +94,7 @@ exports.getMyContents = async (req, res) => {
         else
             return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).json(contents));
+    return (res.status(200).send({ result: contents }));
 }
 
 exports.getRelevantContents = async (req, res) => {
@@ -125,5 +125,5 @@ exports.getRelevantContents = async (req, res) => {
         else
             return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).send(contents));
+    return (res.status(200).send({ result: contents }));
 }
