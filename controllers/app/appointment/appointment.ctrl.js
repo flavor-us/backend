@@ -57,7 +57,7 @@ exports.checkRequested = async (req, res) => {
         else
             return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).json({ requested: requested }));
+    return (res.status(200).json({ result: requested }));
 }
 
 exports.removeAppointment = async (req, res) => {

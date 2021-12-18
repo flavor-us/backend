@@ -10,7 +10,7 @@ require("dotenv").config();
 exports.addUser = async (req, res) => {
     var user_id;
     try {
-        if (!req.body.email || !req.body.username)
+        if (!req.body.email || !req.body.username || !req.body.kakao_id)
             throw (errorMsg.notEnoughReq);
         const user = {
             uuid: uuidv4(),
