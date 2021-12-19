@@ -19,6 +19,11 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: true,
 				comment: "컨텐츠에 올라간 사진의 파일 명입니다."
 			},
+			filepath: {
+				type: DataTypes.STRING,
+				allowNull: true,
+				comment: "컨텐츠에 올라간 사진의 파일 경로입니다."
+			},
 			restname: {
 				type: DataTypes.STRING,
 				allowNull: true,

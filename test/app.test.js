@@ -42,7 +42,8 @@ describe("POST /user", () => {
             const response = await request(app).post("/app/user").send({
                 username: "jest",
                 email: "jest@jest.com",
-                kakaotoken: "testtoken"
+                kakaotoken: "testtoken",
+                kakao_id: id.kakao
             })
             expect(response.statusCode).toBe(201);
         })
