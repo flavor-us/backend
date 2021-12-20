@@ -8,9 +8,12 @@ const Op = Sequelize.Op;
 
 exports.uploadContents = async (req, res) => {
     var content_id;
+    const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.kakao_id);
+    if (!user_id)
+        return (res.status(400).send(errorMsg.noUser));
     try {
         const content = {
-            user_id: req.body.user_id,
+            user_id: user_id,
             rest_id: req.body.rest_id,
             date: new Date(),
             filename: req.body.filename,

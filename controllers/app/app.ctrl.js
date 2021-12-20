@@ -8,3 +8,4 @@ exports.appointmentCtrl = require("./appointment/appointment.ctrl");
 exports.uuidCtrl = require("./uuid/uuid.ctrl");
 exports.tagCtrl = require("./tag/tag.ctrl");
 exports.kakaoCtrl = require("./kakao/kakao.ctrl");
+exports.useridCtrl = require("./userid/userid.ctrl");

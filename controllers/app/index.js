@@ -35,6 +35,7 @@ router.get("/appointment", app.appointmentCtrl.checkRequested);
 router.delete("/appointment", app.appointmentCtrl.removeAppointment);
 
 router.get("/uuid", app.uuidCtrl.getUuidById);
+router.get("/userid", app.useridCtrl.getUserIdByKakaoId);
 
 router.get("/tag/adj1", app.tagCtrl.getadj1);
 router.get("/tag/adj2", app.tagCtrl.getadj2);

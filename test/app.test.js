@@ -85,7 +85,7 @@ describe("POST /content", () => {
     describe("given full requirement, include tag", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/contents").send({
-                user_id: 1,
+                kakao_id: id.kakao,
                 rest_id: 10000,
                 filename: "jest",
                 rekog: { Labels: { "jest": "jest" } },
@@ -251,3 +251,22 @@ describe("DELETE /appointment", () => {
     })
 })
 
+//user_id
+describe("GET /userid", () => {
+    describe("valid kakao_id -> get user_id", () => {
+        test("정상 GET", async () => {
+            const response = await request(app).get("/app/userid").send({
+                kakao_id: id.kakao
+            })
+            expect(response.statusCode).toBe(200);
+        })
+    })
+    describe("invalid kakao_id -> get user_id", () => {
+        test("GET 불가", async () => {
+            const response = await request(app).get("/app/userid").send({
+                kakao_id: 0
+            })
+            expect(response.statusCode).toBe(400);
+        })
+    })
+})
