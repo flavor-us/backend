@@ -4,9 +4,9 @@ const errorMsg = require("../../../message/error");
 exports.getUuidById = async (req, res) => {
     var uuid;
     try {
-        if (!req.body.user_id)
+        if (!req.params.user_id)
             throw (errorMsg.notEnoughReq)
-        const user_id = req.body.user_id;
+        const user_id = req.params.user_id;
         uuid = await models.User.findOne({
             attributes: ["uuid"],
             where: {

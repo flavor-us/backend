@@ -4,9 +4,9 @@ const errorMsg = require("../../../message/error");
 exports.getUserIdByKakaoId = async (req, res) => {
     var user_id;
     try {
-        if (!req.body.kakao_id)
+        if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq)
-        const kakao_id = req.body.kakao_id;
+        const kakao_id = req.params.kakao_id;
         user_id = await models.User.findOne({
             attributes: ["id"],
             where: {
@@ -20,7 +20,7 @@ exports.getUserIdByKakaoId = async (req, res) => {
         if (e == errorMsg.noUser)
             return (res.status(400).send(errorMsg.noUser));
         if (e == errorMsg.notEnoughReq)
-            return (res.status(400).send(errorMsg.noUser));
+            return (res.status(400).send(errorMsg.notEnoughReq));
         else
             return (res.status(400).send(errorMsg.readFail));
     }
