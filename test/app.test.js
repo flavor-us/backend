@@ -252,20 +252,32 @@ describe("DELETE /appointment", () => {
 })
 
 //user_id
-describe("GET /userid", () => {
+describe("GET /userid/{kakao_id}", () => {
     describe("valid kakao_id -> get user_id", () => {
         test("정상 GET", async () => {
-            const response = await request(app).get("/app/userid").send({
-                kakao_id: id.kakao
-            })
+            const response = await request(app).get("/app/userid/" + id.kakao).send({});
             expect(response.statusCode).toBe(200);
         })
     })
     describe("invalid kakao_id -> get user_id", () => {
         test("GET 불가", async () => {
-            const response = await request(app).get("/app/userid").send({
-                kakao_id: 0
-            })
+            const response = await request(app).get("/app/userid/" + 0).send({});
+            expect(response.statusCode).toBe(400);
+        })
+    })
+})
+
+//user_id
+describe("GET /uuid/{kakao_id}", () => {
+    describe("valid user_id -> get uuid", () => {
+        test("정상 GET", async () => {
+            const response = await request(app).get("/app/uuid/" + id.user).send({});
+            expect(response.statusCode).toBe(200);
+        })
+    })
+    describe("invalid kakao_id -> get uuid", () => {
+        test("GET 불가", async () => {
+            const response = await request(app).get("/app/uuid/" + 0).send({});
             expect(response.statusCode).toBe(400);
         })
     })
