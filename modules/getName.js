@@ -17,10 +17,10 @@ exports.getExif = function (file) {
 	});
 };
 
-exports.getNameSequelize = async function (lat, lng, moe) {
-	var names;
+exports.getNearRestaurants = async function (lat, lng, moe) {
+	var restaurants;
 	try {
-		names = await models.Restaurants.findAll({
+		restaurants = await models.Restaurants.findAll({
 			attributes: ["name", "lat", "lng", "id"],
 			where: {
 				lat: { [Op.between]: [lat - moe, lat + moe] },
@@ -30,7 +30,7 @@ exports.getNameSequelize = async function (lat, lng, moe) {
 	} catch (error) {
 		console.log(error);
 	}
-	return names;
+	return restaurants;
 };
 
 exports.convertLatLng = function (lat_DMS, lng_DMS) {

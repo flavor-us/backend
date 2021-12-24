@@ -3,15 +3,19 @@ const models = require("../../../models");
 const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
 const Sequelize = require("sequelize");
+const nearStation = require("../../../modules/nearStation");
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
 const Op = Sequelize.Op;
 
 exports.uploadContents = async (req, res) => {
     var content_id;
-    const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.kakao_id);
-    if (!user_id)
-        return (res.status(400).send(errorMsg.noUser));
     try {
+        if (!req.body.lat || !req.body.lng || !req.body.filename || !req.body.restname)
+            throw (errorMsg.notEnoughReq);
+        const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.kakao_id);
+        if (!user_id)
+            throw (errorMsg.noUser);
+        const station = await nearStation.getNearStation(req.body.lat, req.body.lng);
         const content = {
             user_id: user_id,
             rest_id: req.body.rest_id,
@@ -25,11 +29,18 @@ exports.uploadContents = async (req, res) => {
             adj1_id: req.body.adj1_id,
             adj2_id: req.body.adj2_id,
             locationtag_id: req.body.locationtag_id,
+            near_station: station.name,
+            station_distance: station.distance
         }
         content_id = await dbUpload.uploadContent(content);
     } catch (e) {
         console.log(e);
-        return (res.status(400).send(errorMsg.uploadFail));
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        if (e == errorMsg.noUser)
+            return (res.status(400).send(errorMsg.noUser));
+        else
+            return (res.status(400).send(errorMsg.uploadFail));
     };
     return (res.status(201).send({ msg: completeMsg.uploadComplete.msg, content_id: content_id }));
 }
