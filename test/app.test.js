@@ -93,8 +93,8 @@ describe("POST /content", () => {
                 adj1_id: 1,
                 adj2_id: 1,
                 locationtag_id: 1,
-                lat: 127.1,
-                lng: 37.1
+                lat: 37.54001365,
+                lng: 127.0680031
             })
             expect(response.statusCode).toBe(201);
         })
