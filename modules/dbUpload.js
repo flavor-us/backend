@@ -69,29 +69,17 @@ exports.updateProfile = async (profile, user_id) => {
 }
 
 exports.updateToken = async (token, kakao_id) => {
-	// const user = await models.User.findOne({
-	// 	where: { id: user_id }
-	// })
-	// if (!user)
-	// 	throw (errorMsg.noUser);
-	// if (profile.profileimg_path) {
-	// 	user.set({
-	// 		username: profile.username,
-	// 		profileimg_path: profile.profileimg_path
-	// 	})
-	// } else {
-	// 	user.set({
-	// 		username: profile.username
-	// 	})
-	// }
-	// await user.save();
+	console.log("token: " + token + "\n" + "kakao_id : " + kakao_id);
 	const result = await models.User.update(
-		token, {
+		{ kakaotoken: token }, {
 		where: {
 			kakao_id: kakao_id
 		}
 	}
-	)
+	).catch(e => {
+		console.log(e);
+	})
+	console.log(result);
 	if (!result[0])
 		throw (errorMsg.updateFail);
 	return;

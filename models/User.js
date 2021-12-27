@@ -31,7 +31,8 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.STRING
             },
             kakao_id: {
-                type: DataTypes.STRING
+                type: DataTypes.STRING,
+                unique: true
             }
         },
         {

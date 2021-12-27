@@ -1,8 +1,11 @@
-const request = require('request');
+const request = require('request-promise-native');
 const models = require("../../../models");
+const sequelize = require("sequelize");
+const Op = sequelize.Op;
 const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
 const dbUpload = require("../../../modules/dbUpload");
+const social = require("../../../modules/social");
 
 exports.getProfile = async (req, res) => {
     var profile;
@@ -26,7 +29,8 @@ exports.getProfile = async (req, res) => {
             },
             encoding: 'UTF-8',
         }
-        request(kakaoOptions, function (err, resp, body) {
+        await request(kakaoOptions, function (err, resp, body) {
+            console.log(res.statusCode);
             if (err || res.statusCode != 200)
                 throw (err);
             else
@@ -45,7 +49,7 @@ exports.getProfile = async (req, res) => {
 }
 
 exports.getFriendList = async (req, res) => {
-    var friendList;
+    var friends, friendList;
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
@@ -66,12 +70,17 @@ exports.getFriendList = async (req, res) => {
             },
             encoding: 'UTF-8',
         }
-        request(kakaoOptions, function (err, resp, body) {
-            if (err || res.statusCode != 200)
+        friendList = await request(kakaoOptions, function (err, resp, body) {
+            if (err || resp.statusCode != 200) {
                 throw (err);
+            }
             else
-                friendList = JSON.parse(body);
+                return body;
         })
+        friendList = JSON.parse(friendList).elements.map((item) => {
+            return item.id;
+        })
+        friends = await social.getUserList(friendList);
     } catch (e) {
         console.log(e);
         if (e == errorMsg.notEnoughReq)
@@ -81,14 +90,14 @@ exports.getFriendList = async (req, res) => {
         else
             return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).send(profile));
+    return (res.status(200).send({ result: friends }));
 }
 
 exports.updateToken = async (req, res) => {
     try {
-        if (!req.params.kakao_id)
+        if (!req.params.kakao_id || !req.body.kakaotoken)
             throw (errorMsg.notEnoughReq);
-        await dbUpload.updateToken(req.body.kakaotoken);
+        await dbUpload.updateToken(req.body.kakaotoken, req.params.kakao_id);
     } catch (e) {
         console.log(e);
         if (e == errorMsg.notEnoughReq)

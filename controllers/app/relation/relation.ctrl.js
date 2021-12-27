@@ -1,10 +1,13 @@
 const models = require("../../../models");
+const sequelize = require("sequelize");
+const Op = sequelize.Op;
 const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert")
+const social = require("../../../modules/social");
 
 exports.getFollower = async (req, res) => {
-    var followerList;
+    var followers;
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
@@ -15,9 +18,10 @@ exports.getFollower = async (req, res) => {
                 followed_id: user_id
             }
         })
-        followerList = followed.map((item) => {
+        const followerList = followed.map((item) => {
             return item.dataValues.follower_id;
         })
+        followers = await social.getUserList(followerList);
     } catch (e) {
         console.log(e);
         if (e == errorMsg.notEnoughReq)
@@ -27,11 +31,11 @@ exports.getFollower = async (req, res) => {
         else
             return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).send({ result: followerList }));
+    return (res.status(200).send({ result: followers }));
 }
 
 exports.getFollowed = async (req, res) => {
-    var followedList;
+    var followeds;
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
@@ -42,9 +46,10 @@ exports.getFollowed = async (req, res) => {
                 follower_id: user_id
             }
         })
-        followedList = followed.map((item) => {
+        const followedList = followed.map((item) => {
             return (item.dataValues.followed_id);
         })
+        followeds = await social.getUserList(followedList);
     } catch (e) {
         console.log(e);
         if (e == errorMsg.notEnoughReq)
@@ -54,7 +59,7 @@ exports.getFollowed = async (req, res) => {
         else
             return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).send({ result: followedList }));
+    return (res.status(200).send({ result: followeds }));
 }
 
 exports.deleteFollower = async (req, res) => {

@@ -23,7 +23,7 @@ exports.makeMock = async function () {
         email: "jest@jest.com",
         kakaotoken: "testtoken",
         uuid: uuidv4(),
-        kakao_id: 99
+        kakao_id: 999
     });
     id.kakao = await kakaoIdConvert.getKakaoIdByUserId(id.user);
     return (id);

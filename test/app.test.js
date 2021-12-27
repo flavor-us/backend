@@ -37,13 +37,13 @@ afterAll(async () => {
 
 // USER
 describe("POST /user", () => {
-    describe("given a username & email", () => {
+    describe("given a full requirement", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/user").send({
                 username: "jest",
                 email: "jest@jest.com",
                 kakaotoken: "testtoken",
-                kakao_id: id.kakao
+                kakao_id: id.kakao + 1 // prevent duplication
             })
             expect(response.statusCode).toBe(201);
         })
