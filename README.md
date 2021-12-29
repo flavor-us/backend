@@ -32,36 +32,3 @@ npm start
 * Web Controller 와 App Controller 가 분리되어 있으며 /web 과 /app 으로 라우팅합니다.
 
 <br>
-
-## APP 컨트롤러 명세
-
-### 1. 식당 이름 리스트 반환 <br>
-```  
-  URL : "app/name"
-  METHOD : POST
-  RETURN : restData
-  RETURN TYPE : JsonArray
-```
-  req.file 의  EXIF 데이터에서 위치정보 추출하여 jsonarray 반환 <br><br>
-  식당명(name), 위도(lat), 경도(lng)
-  
-  > restData 의 내용 에시
-  <img width="339" alt="스크린샷 2021-10-26 오후 12 33 55" src="https://user-images.githubusercontent.com/58672664/138844227-81800596-bc7c-4983-a70a-a24075b4faaa.png">
-<br>
-
-### 2. 인공지능 인식 결과 반환 <br>
-```
-  URL : "app/rekog"
-  METHOD : POST
-  RETURN : rekogData, filename, userId(admin : 1)
-  RETURN TYPE : JsonArray
-```
-  req.file 객체를 AWS S3 스토리지에 업로드 , Rekognition 결과 json 반환
-  
-  > rekogData 의 내용 예시
-  <img width="339" alt="스크린샷 2021-10-26 오후 5 59 43" src="https://user-images.githubusercontent.com/58672664/138846779-67de74df-0aad-4ad6-afe8-93c37a882294.png">
-
-  > filename 의 내용 예시 (filename 은 uploadedFileInfo의 key 입니다.)
-  <img width="757" alt="스크린샷 2021-10-26 오후 6 02 31" src="https://user-images.githubusercontent.com/58672664/138847062-d5f15b8e-c2d3-4efc-8336-91654d124717.png">
-  
-  
