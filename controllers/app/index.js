@@ -2,6 +2,7 @@ const { Router } = require("express");
 const router = Router();
 const app = require("./app.ctrl");
 const local_upload = require("../../middleware/multer");
+const jwtAuth = require("../../middleware/jwtAuth");
 const { upload } = require('../../middleware/multerS3');
 
 router.post("/name", local_upload.single("photo"), app.restaurantsCtrl.getNames);
@@ -28,7 +29,13 @@ router.get("/relation/follower/:kakao_id", app.relationCtrl.getFollower);
 router.get("/relation/followed/:kakao_id", app.relationCtrl.getFollowed);
 router.post("/relation", app.relationCtrl.makeRelation);
 
-router.post("/kakao", app.authCtrl.login);
+router.get("/kakao", app.authCtrl.getJwt);
+router.get("/jwt", jwtAuth.checkToken, (req, res) => {
+    console.log(JSON.stringify(req.body));
+    console.log(req.kakao_id);
+    res.send("complete");
+})
+
 
 router.post("/appointment", app.appointmentCtrl.requestAppointment);
 router.get("/appointment", app.appointmentCtrl.checkRequested);

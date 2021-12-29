@@ -53,3 +53,15 @@ exports.noStation = {
 exports.noToken = {
     msg: "해당하는 유저의 카카오 토큰값이 없습니다."
 }
+
+exports.expiredToken = {
+    msg: "[jwt]만료된 토큰입니다."
+}
+
+exports.invalidToken = {
+    msg: "[jwt]유효하지 않은 토큰입니다."
+}
+
+exports.wrongToken = {
+    msg: "[jwt]올바르지 않은 형식의 토큰입니다."
+}
