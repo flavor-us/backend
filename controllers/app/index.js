@@ -29,7 +29,8 @@ router.get("/relation/follower/:kakao_id", app.relationCtrl.getFollower);
 router.get("/relation/followed/:kakao_id", app.relationCtrl.getFollowed);
 router.post("/relation", app.relationCtrl.makeRelation);
 
-router.get("/kakao", app.authCtrl.getJwt);
+router.get("/auth/login", app.authCtrl.getAllToken);
+router.get("/auth/refresh", app.authCtrl.getAccessToken);
 router.get("/jwt", jwtAuth.checkToken, (req, res) => {
     console.log(JSON.stringify(req.body));
     console.log(req.kakao_id);

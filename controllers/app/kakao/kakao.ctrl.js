@@ -30,8 +30,8 @@ exports.getProfile = async (req, res) => {
             encoding: 'UTF-8',
         }
         await request(kakaoOptions, function (err, resp, body) {
-            console.log(res.statusCode);
-            if (err || res.statusCode != 200)
+            console.log(resp.statusCode);
+            if (err || resp.statusCode != 200)
                 throw (err);
             else
                 profile = JSON.parse(body);
@@ -63,7 +63,7 @@ exports.getFriendList = async (req, res) => {
             throw (errorMsg.noToken)
         }
         let kakaoOptions = {
-            url: 'https://kapi.kakao.com/v1/api/talk/friends',  // target에 해당하는 것을 적기
+            url: 'https://kapi.kakao.com/v1/api/talk/friends',// target에 해당하는 것을 적기
             method: 'GET',
             headers: {
                 'Authorization': "Bearer " + kakaoToken.dataValues.kakaotoken

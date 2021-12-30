@@ -71,6 +71,7 @@ module.exports = function (sequelize, DataTypes) {
             through: "Appointment",
             foreignKey: "requested_id"
         })
+        User.hasOne(models.Token, { foreignKey: "user_id", sourceKey: "id", unique: true });
     };
     return User;
 };

@@ -1,25 +1,50 @@
 const social = require("../../../modules/social");
 const errorMsg = require("../../../message/error");
 const jwt = require('jsonwebtoken');
-require("dotenv").config();
+const tokenAuth = require("../../../modules/tokenAuth");
 
-exports.getJwt = async (req, res) => {
-    var responseData = {};
+exports.getAllToken = async (req, res) => {
+    var token = {};
     try {
-        if (!req.body.kakao_id)
+        if (!req.body.kakaoToken)
             return (res.status(400).send(errorMsg.notEnoughReq));
-        const user = await social.getUserList([req.body.kakao_id]);
+        const kakao_id = await tokenAuth.verifyKakaoToken(req.body.kakaoToken);
+        console.log("kakao_id = " + kakao_id);
+        const user = await social.getUserList([kakao_id]);
+        console.log(user);
         if (user.length == 0)
             return (res.status(400).send(errorMsg.noUser));
-        const token = jwt.sign({ //토큰 발급
+        token.accessToken = jwt.sign({
+            kakao_id: req.body.kakao_id,
+        }, process.env.JWT_TOKEN, {
+            expiresIn: '2d',
+            issuer: 'limchanyeop',
+        });
+        token.refreshToken = jwt.sign({
             kakao_id: req.body.kakao_id,
         }, process.env.JWT_TOKEN, {
             issuer: 'limchanyeop',
         });
-        responseData.token = token;
+        tokenAuth.uploadRefreshToken(token.refreshToken, kakao_id);
     } catch (e) {
         console.log(e);
         return (res.send(e));
     }
-    return (res.send(responseData));
+    return (res.send(token));
+}
+
+exports.getAccessToken = async (req, res) => {
+    var accessToken;
+    const verifyResult = await tokenAuth.verifyRefreshToken(req.body.refreshToken, req.body.kakao_id);
+    if (verifyResult == true) {
+        accessToken = jwt.sign({
+            kakao_id: req.body.kakao_id,
+        }, process.env.JWT_TOKEN, {
+            expiresIn: '2d',
+            issuer: 'limchanyeop',
+        });
+        return (res.status(200).send({ accessToken: accessToken }));
+    }
+    else
+        return (res.status(401).send(errorMsg.invalidToken));
 }
