@@ -9,7 +9,7 @@ router.post("/name", local_upload.single("photo"), app.restaurantsCtrl.getNames)
 
 router.delete("/contents/:content_id", app.contentsCtrl.deleteContents);
 router.patch("/contents/:content_id", app.contentsCtrl.updateContents);
-router.get("/contents/:kakao_id", app.contentsCtrl.getMyContents);
+router.get("/contents/:kakao_id", jwtAuth.checkToken, app.contentsCtrl.getMyContents);
 router.post("/contents", app.contentsCtrl.uploadContents);
 router.get("/contents/relevant/:kakao_id", app.contentsCtrl.getRelevantContents);
 
