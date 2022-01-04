@@ -90,10 +90,14 @@ exports.getProfile = async (req, res) => {
                 id: user_id
             }
         })
+        if (!user_id)
+            throw (errorMsg.noUser);
     } catch (e) {
         console.log(e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
+        else if (e == errorMsg.noUser)
+            return (res.status(400).send(errorMsg.noUser));
         else
             return (res.status(400).send(errorMsg.readFail));
     }

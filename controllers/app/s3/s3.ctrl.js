@@ -9,9 +9,16 @@ exports.s3Upload = async (req, res) => { //Used Only Web Ctrl
         if (!req.params.kakaoId || !req.file)
             throw (errorMsg.notEnoughReq)
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
+        if (!user_id)
+            throw (errorMsg.noUser)
         uploadedFileInfo = await awsUtils.uploadS3Bucket(req.file.path, req.file.mimetype, user_id);
-    } catch {
-        return (res.status(400).send(errorMsg.s3UploadFail));
+    } catch (e) {
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else if (e == errorMsg.noUser)
+            return (res.status(400).send(errorMsg.noUser));
+        else
+            return (res.status(400).send(errorMsg.s3UploadFail));
     }
     return (res.status(201).send({ filename: uploadedFileInfo.key.split("/")[1] }));
 }
