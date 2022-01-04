@@ -93,6 +93,8 @@ exports.deleteContents = async (req, res) => {
 
 exports.getMyContents = async (req, res) => {
     var contents;
+    console.log(req.kakao_id);
+    console.log(req.body.kakao_id);
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);

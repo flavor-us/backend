@@ -16,7 +16,7 @@ router.get("/contents/relevant/:kakao_id", app.contentsCtrl.getRelevantContents)
 router.delete("/user/:kakao_id", app.userCtrl.deleteUser);
 router.post("/user", app.userCtrl.addUser);
 router.patch("/user/:kakao_id", app.userCtrl.editProfile);
-
+router.get("/user/:user_id", app.userCtrl.getProfile);
 
 router.post("/s3/:kakao_id", upload.single("photo"), app.s3Ctrl.s3MulterUpload);
 // router.post("/s3/:user_id", upload.single("photo"), app.s3Ctrl.s3Upload);
@@ -36,7 +36,6 @@ router.get("/jwt", jwtAuth.checkToken, (req, res) => {
     console.log(req.kakao_id);
     res.send("complete");
 })
-
 
 router.post("/appointment", app.appointmentCtrl.requestAppointment);
 router.get("/appointment", app.appointmentCtrl.checkRequested);

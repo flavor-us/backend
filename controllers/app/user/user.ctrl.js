@@ -77,3 +77,25 @@ exports.editProfile = async (req, res) => {
     }
     return (res.status(201).send(completeMsg.updateComplete));
 }
+
+exports.getProfile = async (req, res) => {
+    var profile;
+    try {
+        if (!req.params.user_id)
+            throw (errorMsg.notEnoughReq);
+        const user_id = req.params.user_id;
+        profile = await models.User.findOne({
+            attributes: ["username", "profileimg_path"],
+            where: {
+                id: user_id
+            }
+        })
+    } catch (e) {
+        console.log(e);
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else
+            return (res.status(400).send(errorMsg.readFail));
+    }
+    return (res.status(200).send(profile));
+}
