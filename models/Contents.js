@@ -67,6 +67,20 @@ module.exports = function (sequelize, DataTypes) {
 			comment: "Station 테이블 역 이름 외래키입니다."
 		})
 
+		Contents.belongsTo(models.Tag_FirstAdj, {
+			foreignKey: "adj1_id",
+			targetKey: "id",
+		})
+
+		Contents.belongsTo(models.Tag_SecondAdj, {
+			foreignKey: "adj2_id",
+			targetKey: "id",
+		})
+
+		Contents.belongsTo(models.Tag_Location, {
+			foreignKey: "locationtag_id",
+			targetKey: "id",
+		})
 		// Contents.belongsToMany(models.Tag, {
 		// 	as: "Tag",
 		// 	through: "TagContents",

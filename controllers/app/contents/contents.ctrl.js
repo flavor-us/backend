@@ -5,6 +5,7 @@ const completeMsg = require("../../../message/complete");
 const Sequelize = require("sequelize");
 const nearStation = require("../../../modules/nearStation");
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
+const Tag_FirstAdj = require("../../../models/Tag_FirstAdj");
 const Op = Sequelize.Op;
 
 exports.uploadContents = async (req, res) => {
@@ -99,7 +100,12 @@ exports.getMyContents = async (req, res) => {
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
         contents = await models.Contents.findAll({
-            include: { attributes: ["username", "profileimg_path"], model: models.User },
+            include: [
+                { attributes: ["username", "profileimg_path"], model: models.User },
+                { attributes: ["tagname"], model: models.Tag_FirstAdj },
+                { attributes: ["tagname"], model: models.Tag_SecondAdj },
+                { attributes: ["tagname"], model: models.Tag_Location }
+            ],
             where: { user_id: user_id }
         })
     } catch (e) {
@@ -130,7 +136,12 @@ exports.getRelevantContents = async (req, res) => {
             return item.dataValues.followed_id;
         })
         contents = await models.Contents.findAll({
-            include: { attributes: ["username", "profileimg_path"], model: models.User },
+            include: [
+                { attributes: ["username", "profileimg_path"], model: models.User },
+                { attributes: ["tagname"], model: models.Tag_FirstAdj },
+                { attributes: ["tagname"], model: models.Tag_SecondAdj },
+                { attributes: ["tagname"], model: models.Tag_Location }
+            ],
             where: { [Op.or]: [{ user_id: { [Op.in]: friendList } }, { user_id: user_id }] },
             order: [['date', 'DESC']],
         })
