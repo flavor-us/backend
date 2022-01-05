@@ -24,6 +24,8 @@ exports.s3Upload = async (req, res) => { //Used Only Web Ctrl
 }
 
 exports.s3MulterUpload = async (req, res) => {
+    if (req.error)
+        return (res.status(400).send(req.error));
     if (req.file)
         return (res.status(201).send({ filepath: req.file.location }));
     else

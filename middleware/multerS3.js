@@ -19,16 +19,15 @@ const storage = multerS3({
     },
     key: async function (req, file, cb) {
         var user_id;
+        // try {
         try {
             user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
-            if (!user_id)
-                throw (errorMsg.noUser);
         } catch (e) {
             console.log(e);
             if (e == errorMsg.noUser)
-                cb(new Error(errorMsg.noUser));
+                req.error = errorMsg.noUser;
             else
-                cb(new Error(errorMsg.uploadFail));
+                req.error = errorMsg.uploadFail;
         }
         cb(null, `${user_id}/${Date.now()}.${file.mimetype.split('/')[1]}`);
     },
