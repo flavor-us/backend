@@ -13,10 +13,7 @@ exports.uploadContents = async (req, res) => {
         if (!req.body.lat || !req.body.lng || !req.body.filename || !req.body.restname)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.kakao_id);
-        if (!user_id)
-            throw (errorMsg.noUser);
         const station = await nearStation.getNearStation(req.body.lat, req.body.lng);
-        console.log("station = " + JSON.stringify(station));
         const content = {
             user_id: user_id,
             rest_id: req.body.rest_id,
@@ -94,13 +91,15 @@ exports.deleteContents = async (req, res) => {
 
 exports.getMyContents = async (req, res) => {
     var contents;
-    console.log(req.kakao_id);
-    console.log(req.body.kakao_id);
+    const contents_user = await models.Contents.findAll({ include: User });
+    console.log(contents_user);
+    console.log(JSON.stringify(contents_user));
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
         contents = await models.Contents.findAll({
+            include: { attributes: ["username", "profileimg_path"], model: models.User },
             where: { user_id: user_id }
         })
     } catch (e) {
@@ -131,6 +130,7 @@ exports.getRelevantContents = async (req, res) => {
             return item.dataValues.followed_id;
         })
         contents = await models.Contents.findAll({
+            include: { attributes: ["username", "profileimg_path"], model: models.User },
             where: { [Op.or]: [{ user_id: { [Op.in]: friendList } }, { user_id: user_id }] },
             order: [['date', 'DESC']],
         })
