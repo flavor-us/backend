@@ -16,6 +16,7 @@ exports.uploadContents = async (req, res) => {
         if (!user_id)
             throw (errorMsg.noUser);
         const station = await nearStation.getNearStation(req.body.lat, req.body.lng);
+        console.log("station = " + JSON.stringify(station));
         const content = {
             user_id: user_id,
             rest_id: req.body.rest_id,

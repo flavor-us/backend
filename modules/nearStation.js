@@ -6,8 +6,9 @@ exports.getNearStation = async function (lat, lng) {
     var moe = 0.00004;
     var stationData;
     do {
-        stationData = await getStation(lat, lng, moe);
+        stationData = await getStation(parseFloat(lat), parseFloat(lng), moe);
         moe *= 10;
+        console.log("StData : ", stationData);
         if (moe > 0.05) // 약 5000m
             break;
     } while (!stationData);
@@ -26,6 +27,7 @@ getMeterDistance = async function (lat1, lat2, lng1, lng2) {
 getStation = async function (lat, lng, moe) {
     var station = {};
     try {
+        console.log(typeof (moe), typeof (lat));
         station = await models.Stations.findOne({
             attributes: ["name", "lat", "lng"],
             where: {
@@ -36,5 +38,6 @@ getStation = async function (lat, lng, moe) {
     } catch (error) {
         console.log(error);
     }
+    console.log(JSON.stringify(station));
     return station;
 };
