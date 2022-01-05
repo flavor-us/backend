@@ -20,7 +20,7 @@ const storage = multerS3({
     key: async function (req, file, cb) {
         var user_id;
         try {
-            const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
+            user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
             if (!user_id)
                 throw (errorMsg.noUser);
         } catch (e) {
