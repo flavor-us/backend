@@ -3,7 +3,7 @@ const request = require('supertest');
 const mocking = require("../modules/mocking");
 const models = require("../models");
 const errorMsg = require("../message/error");
-
+const stationModule = require("../modules/nearStation");
 // describe("URL", () => {
 //     describe("조건", () => {
 //         test("예상 반환 값", async () => {
@@ -279,6 +279,17 @@ describe("GET /uuid/{kakao_id}", () => {
         test("GET 불가", async () => {
             const response = await request(app).get("/app/uuid/" + 0).send({});
             expect(response.statusCode).toBe(400);
+        })
+    })
+})
+
+//station
+describe("MODULE TEST : Station Module", () => {
+    describe("get valid Near station", () => {
+        test("정상 요청", async () => {
+            const response = await stationModule.getNearStation(37.54633909000000000, 127.07005690000000000);
+            console.log(response);
+            expect(response).not.toBeNull();
         })
     })
 })

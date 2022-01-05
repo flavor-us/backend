@@ -19,9 +19,9 @@ const storage = multerS3({
     },
     key: async function (req, file, cb) {
         var user_id;
-        // try {
         try {
             user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
+            console.log("uploaded to S3: id = " + user_id);
         } catch (e) {
             console.log(e);
             if (e == errorMsg.noUser)

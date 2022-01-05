@@ -3,11 +3,11 @@ const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 exports.getNearStation = async function (lat, lng) {
-    var moe = 0.00004;
+    var moe = 0.004;
     var stationData;
     do {
         stationData = await getStation(parseFloat(lat), parseFloat(lng), moe);
-        moe *= 10;
+        moe *= 3;
         console.log("StData : ", stationData);
         if (moe > 0.05) // 약 5000m
             break;
@@ -27,7 +27,6 @@ getMeterDistance = async function (lat1, lat2, lng1, lng2) {
 getStation = async function (lat, lng, moe) {
     var station = {};
     try {
-        console.log(typeof (moe), typeof (lat));
         station = await models.Stations.findOne({
             attributes: ["name", "lat", "lng"],
             where: {
