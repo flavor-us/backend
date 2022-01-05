@@ -92,9 +92,6 @@ exports.deleteContents = async (req, res) => {
 
 exports.getMyContents = async (req, res) => {
     var contents;
-    const contents_user = await models.Contents.findAll({ include: User });
-    console.log(contents_user);
-    console.log(JSON.stringify(contents_user));
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
