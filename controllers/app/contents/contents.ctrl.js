@@ -22,7 +22,7 @@ exports.uploadContents = async (req, res) => {
             rest_id: req.body.rest_id,
             date: new Date(),
             filename: req.body.filename,
-            filepath: process.env.BUCKET_ADDR + "/" + req.body.user_id + "/" + req.body.filename,
+            filepath: process.env.BUCKET_ADDR + "/" + user_id + "/" + req.body.filename,
             rekognition: req.body.rekog,
             restname: req.body.restname,
             lat: req.body.lat,
