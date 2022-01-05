@@ -18,11 +18,13 @@ const storage = multerS3({
         cb(null, { fieldName: file.fieldname })
     },
     key: async function (req, file, cb) {
+        var user_id;
         try {
             const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
             if (!user_id)
                 throw (errorMsg.noUser);
         } catch (e) {
+            console.log(e);
             if (e == errorMsg.noUser)
                 cb(new Error(errorMsg.noUser));
             else
