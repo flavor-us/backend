@@ -4,6 +4,7 @@ const deleteFileModule = require("../../../modules/deleteFile");
 
 exports.getNames = async (req, res) => {
     var restData, restList, moe = 0.00004; // 약 4m 반경
+    var defaultData = {};
     try {
         if (!req.file)
             throw (errorMsg.notEnoughReq);
@@ -13,6 +14,7 @@ exports.getNames = async (req, res) => {
         }
         if (gpsDMS) {
             const gpsDegree = nameModule.convertLatLng(gpsDMS[0], gpsDMS[1]);
+            [defaultData.lat, defaultData.lng] = [gpsDegree[0], gpsDegree[1]];
             do {
                 restList = await nameModule.getNearRestaurants(gpsDegree[0], gpsDegree[1], moe);
                 moe *= 4;
@@ -36,5 +38,5 @@ exports.getNames = async (req, res) => {
     } finally {
         deleteFileModule.deleteFile(req.file.path);
     }
-    return (res.status(200).json({ result: restData }));
+    return (res.status(200).json({ default: defaultData, result: restData }));
 }
