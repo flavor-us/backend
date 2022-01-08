@@ -14,7 +14,7 @@ exports.getNames = async (req, res) => {
         }
         if (gpsDMS) {
             const gpsDegree = nameModule.convertLatLng(gpsDMS[0], gpsDMS[1]);
-            [defaultData.lat, defaultData.lng] = [gpsDegree[0], gpsDegree[1]];
+            [defaultData.lat, defaultData.lng] = [String(gpsDegree[0]), String(gpsDegree[1])];
             do {
                 restList = await nameModule.getNearRestaurants(gpsDegree[0], gpsDegree[1], moe);
                 moe *= 4;

@@ -26,7 +26,7 @@ exports.getNames = async (req, res) => {
 		const gpsDegree = nameModule.convertLatLng(gpsDMS[0], gpsDMS[1]);
 		if (gpsDegree) {
 			do {
-				names = await nameModule.getNameSequelize(gpsDegree[0], gpsDegree[1], moe);
+				names = await nameModule.getNearRestaurants(gpsDegree[0], gpsDegree[1], moe);
 				moe *= 2;
 				if (moe > 0.005)
 					// 500m
