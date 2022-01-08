@@ -118,11 +118,11 @@ exports.getMyContents = async (req, res) => {
 }
 
 exports.getRelevantContents = async (req, res) => {
-    console.log(JSON.stringify(req.headers));
     var contents;
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
+        const maxCnt = (req.query.max && req.query.max < 50 && req.query.max > 0) ? req.query.max : null;
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
         const friends = await models.Relation.findAll({
             attributes: ['followed_id'],
@@ -142,6 +142,7 @@ exports.getRelevantContents = async (req, res) => {
             ],
             where: { [Op.or]: [{ user_id: { [Op.in]: friendList } }, { user_id: user_id }] },
             order: [['date', 'DESC']],
+            limit: maxCnt ? Number(maxCnt) : null
         })
     } catch (e) {
         console.log(e);
