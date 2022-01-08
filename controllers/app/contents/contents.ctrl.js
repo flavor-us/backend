@@ -118,6 +118,7 @@ exports.getMyContents = async (req, res) => {
 }
 
 exports.getRelevantContents = async (req, res) => {
+    console.log(JSON.stringify(req.headers));
     var contents;
     try {
         if (!req.params.kakao_id)

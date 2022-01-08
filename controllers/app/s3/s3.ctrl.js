@@ -36,7 +36,7 @@ exports.s3MulterUpload = async (req, res) => {
 
 exports.s3Delete = async (req, res) => {
     try {
-        if (!req.params.kakao_id || req.params.filename)
+        if (!req.params.kakao_id || !req.params.filename)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
         const filename = req.params.filename;
