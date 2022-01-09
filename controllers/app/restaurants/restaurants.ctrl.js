@@ -38,5 +38,5 @@ exports.getNames = async (req, res) => {
     } finally {
         deleteFileModule.deleteFile(req.file.path);
     }
-    return (res.status(200).json({ default: defaultData, result: restData }));
+    return (res.status(200).json({ default_lat: defaultData.lat, default_lng: defaultData.lng, result: restData }));
 }
