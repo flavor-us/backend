@@ -2,7 +2,7 @@ const models = require("../models");
 const dbUpload = require("./dbUpload");
 const { v4: uuidv4 } = require('uuid');
 const kakaoIdConvert = require("../modules/kakaoIdConvert");
-const logger = require("../../../config/logger");
+const logger = require("../config/logger");
 
 exports.makeMock = async function () {
     var id = {};

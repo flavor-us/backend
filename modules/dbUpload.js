@@ -1,6 +1,6 @@
 const models = require("../models");
 const errorMsg = require("../message/error");
-const logger = require("../../../config/logger");
+const logger = require("../config/logger");
 
 exports.uploadContent = async (content) => {
 	const id = await models.Contents.create(content).then((uploadedColumn) => {

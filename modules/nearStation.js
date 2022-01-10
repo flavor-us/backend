@@ -1,7 +1,7 @@
 const models = require("../models");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
-const logger = require("../../../config/logger");
+const logger = require("../config/logger");
 
 exports.getNearStation = async function (lat, lng) {
     var moe = 0.004;

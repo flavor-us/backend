@@ -1,7 +1,7 @@
 const nameModule = require("../../modules/getName");
 const awsUtils = require("../../modules/awsUtils");
 const dbUploads = require("../../modules/dbUpload");
-const logger = require("../../../config/logger");
+const logger = require("../../config/logger");
 
 exports.getNames = async (req, res) => {
 	let moe = 0.0001; // 10m 반경

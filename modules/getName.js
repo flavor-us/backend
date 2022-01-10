@@ -3,7 +3,7 @@ const Sequelize = require("sequelize");
 const models = require("../models");
 const Op = Sequelize.Op;
 const errorMsg = require("../message/error");
-const logger = require("../../../config/logger");
+const logger = require("../config/logger");
 
 exports.getExif = function (file) {
 	return new Promise(function (resolve, reject) {

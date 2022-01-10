@@ -1,4 +1,4 @@
-const logger = require("../../../config/logger");
+const logger = require("../config/logger");
 
 exports.foodOrNot = function (rekog) {
     for (var i = 0; i < rekog.Labels.length; i++) {
