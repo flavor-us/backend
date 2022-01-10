@@ -1,5 +1,7 @@
 const models = require("../models");
 const errorMsg = require("../message/error");
+const logger = require("../../../config/logger");
+
 exports.getUserIdByKakaoId = async function (kakao_id) {
     const user_id = await models.User.findOne({
         where: {

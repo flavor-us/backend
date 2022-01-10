@@ -1,5 +1,6 @@
 var AWS = require("aws-sdk");
 var fs = require("fs");
+const logger = require("../../../config/logger");
 
 exports.uploadS3Bucket = async function (filepath, filetype, userId) {
 	AWS.config.region = process.env.AWS_REGION;

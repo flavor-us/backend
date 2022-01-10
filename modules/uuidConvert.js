@@ -1,5 +1,7 @@
 const models = require("../models");
-const errorMsg = require("../message/error")
+const errorMsg = require("../message/error");
+const logger = require("../../../config/logger");
+
 exports.getIdFromUuid = async (uuid) => {
     const user = await models.User.findOne({
         where: {

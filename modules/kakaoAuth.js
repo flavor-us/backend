@@ -1,4 +1,5 @@
 const request = require('request-promise-native');
+const logger = require("../../../config/logger");
 
 module.exports = function getProfile(accessToken) {
     return new Promise((resolve, reject) => {

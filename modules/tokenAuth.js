@@ -4,6 +4,7 @@ const errorMsg = require("../message/error");
 const request = require("request-promise-native");
 const uuidConvert = require("../modules/uuidConvert")
 const jwt = require('jsonwebtoken');
+const logger = require("../../../config/logger");
 
 exports.verifyRefreshToken = async (requestToken, kakao_id) => {
     var refreshToken, verifyResult, uuid;

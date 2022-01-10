@@ -1,4 +1,5 @@
 const fs = require("fs")
+const logger = require("../../../config/logger");
 
 exports.deleteFile = async function (path) {
     fs.access(path, fs.constants.F_OK, (err) => {
