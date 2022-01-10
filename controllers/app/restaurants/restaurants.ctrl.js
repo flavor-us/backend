@@ -1,6 +1,7 @@
 const nameModule = require("../../../modules/getName");
 const errorMsg = require("../../../message/error");
 const deleteFileModule = require("../../../modules/deleteFile");
+const logger = require("../../../config/logger");
 
 exports.getNames = async (req, res) => {
     var restData, restList, moe = 0.00004; // 약 4m 반경
@@ -28,7 +29,7 @@ exports.getNames = async (req, res) => {
                 throw (errorMsg.noRestaurants);
         }
     } catch (e) {
-        console.log(e);
+        logger.error("[getNames] : ", e);
         if (e == errorMsg.noLatLng)
             return (res.status(400).send(errorMsg.noLatLng));
         if (e == errorMsg.noRestaurants)

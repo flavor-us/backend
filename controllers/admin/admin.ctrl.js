@@ -22,6 +22,6 @@ exports.getContents = async (req, res) => {
 		)]);
 		res.render("admin/contents.html", { contents });
 	} catch (e) {
-		console.log(e);
+		logger.error("[getContents] : ", e);
 	}
 };

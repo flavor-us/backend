@@ -5,8 +5,8 @@ const completeMsg = require("../../../message/complete");
 const Sequelize = require("sequelize");
 const nearStation = require("../../../modules/nearStation");
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
-const Tag_FirstAdj = require("../../../models/Tag_FirstAdj");
 const Op = Sequelize.Op;
+const logger = require("../../../config/logger");
 
 exports.uploadContents = async (req, res) => {
     var content_id;
@@ -33,7 +33,7 @@ exports.uploadContents = async (req, res) => {
         }
         content_id = await dbUpload.uploadContent(content);
     } catch (e) {
-        console.log(e);
+        logger.error("[uploadContents] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         if (e == errorMsg.noUser)
@@ -58,7 +58,7 @@ exports.updateContents = async (req, res) => {
             content.locationtag_id = req.body.locationtag_id
         content_id = await dbUpload.updateContents(content, req.params.content_id);
     } catch (e) {
-        console.log(e);
+        logger.error("[updateContents] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else
@@ -79,7 +79,7 @@ exports.deleteContents = async (req, res) => {
         if (!content)
             throw (errorMsg.noContent);
     } catch (e) {
-        console.log(e);
+        logger.error("[deleteContents] : ", e);
         if (e == errorMsg.noContent)
             return (res.status(400).send(errorMsg.noContent));
         else if (e == errorMsg.notEnoughReq)
@@ -92,6 +92,7 @@ exports.deleteContents = async (req, res) => {
 
 exports.getMyContents = async (req, res) => {
     var contents;
+    logger.info(req.kakao_id, " - [getMyContents]")
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
@@ -106,7 +107,7 @@ exports.getMyContents = async (req, res) => {
             where: { user_id: user_id }
         })
     } catch (e) {
-        console.log(e);
+        logger.error("[getMyContents] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -145,7 +146,7 @@ exports.getRelevantContents = async (req, res) => {
             limit: maxCnt ? Number(maxCnt) : null
         })
     } catch (e) {
-        console.log(e);
+        logger.error("[getRelevantContents] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

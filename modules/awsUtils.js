@@ -1,6 +1,5 @@
 var AWS = require("aws-sdk");
 var fs = require("fs");
-require("dotenv").config();
 
 exports.uploadS3Bucket = async function (filepath, filetype, userId) {
 	AWS.config.region = process.env.AWS_REGION;
@@ -23,7 +22,7 @@ exports.uploadS3Bucket = async function (filepath, filetype, userId) {
 			return data.Location;
 		})
 		.catch(function (err) {
-			console.log(err);
+			logger.error(err);
 			throw (err);
 		});
 	uploadedFileInfo.key = param.Key;
@@ -45,7 +44,7 @@ exports.deleteS3Bucket = async function (filepath) {
 	};
 	s3.deleteObject(param, function (err, data) {
 		if (err) {
-			console.log(err);
+			logger.error(err);
 			throw (err)
 		}
 		else {
@@ -85,7 +84,7 @@ exports.getLabel = async function (filename) {
 			return data;
 		})
 		.catch((err) => {
-			console.log(err);
+			logger.error(err);
 			throw (err);
 		});
 	return labels;

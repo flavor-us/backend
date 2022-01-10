@@ -1,5 +1,6 @@
 const models = require("../../../models");
 const errorMsg = require("../../../message/error");
+const logger = require("../../../config/logger");
 
 exports.getUuidById = async (req, res) => {
     var uuid;
@@ -16,7 +17,7 @@ exports.getUuidById = async (req, res) => {
         if (!uuid)
             throw (errorMsg.noUser);
     } catch (e) {
-        console.log(e);
+        logger.error("[getUuidById] : ", e);
         if (e == errorMsg.noUser)
             return (res.status(400).send(errorMsg.noUser));
         if (e == errorMsg.notEnoughReq)

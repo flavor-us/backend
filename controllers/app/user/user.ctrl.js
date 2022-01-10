@@ -4,8 +4,7 @@ const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
 const { v4: uuidv4 } = require('uuid');
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
-
-require("dotenv").config();
+const logger = require("../../../config/logger");
 
 exports.addUser = async (req, res) => {
     var user_id;
@@ -22,7 +21,7 @@ exports.addUser = async (req, res) => {
         }
         user_id = await dbUpload.uploadUser(user);
     } catch (e) {
-        console.log(e);
+        logger.error("[addUser] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else
@@ -44,7 +43,7 @@ exports.deleteUser = async (req, res) => {
         if (!result)
             throw (errorMsg.noUser)
     } catch (e) {
-        console.log(e);
+        logger.error("[deleteUser] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == noUser)
@@ -67,7 +66,7 @@ exports.editProfile = async (req, res) => {
             profile.profileimg_path = req.body.profileimg_path
         await dbUpload.updateProfile(profile, user_id);
     } catch (e) {
-        console.log(e);
+        logger.error("[editProfile] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -93,7 +92,7 @@ exports.getProfile = async (req, res) => {
         if (!user_id)
             throw (errorMsg.noUser);
     } catch (e) {
-        console.log(e);
+        logger.error("[getProfile] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

@@ -1,5 +1,6 @@
 const models = require("../../../models");
 const errorMsg = require("../../../message/error");
+const logger = require("../../../config/logger");
 
 exports.getUserIdByKakaoId = async (req, res) => {
     var user_id;
@@ -16,7 +17,7 @@ exports.getUserIdByKakaoId = async (req, res) => {
         if (!user_id)
             throw (errorMsg.noUser);
     } catch (e) {
-        console.log(e);
+        logger.error("[getUserIdByKakaoId] : ", e);
         if (e == errorMsg.noUser)
             return (res.status(400).send(errorMsg.noUser));
         if (e == errorMsg.notEnoughReq)

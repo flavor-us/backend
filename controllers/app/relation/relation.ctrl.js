@@ -5,6 +5,7 @@ const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert")
 const social = require("../../../modules/social");
+const logger = require("../../../config/logger");
 
 exports.getFollower = async (req, res) => {
     var followers;
@@ -23,7 +24,7 @@ exports.getFollower = async (req, res) => {
         })
         followers = await social.getUserList(followerList);
     } catch (e) {
-        console.log(e);
+        logger.error("[getFollower] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -51,7 +52,7 @@ exports.getFollowed = async (req, res) => {
         })
         followeds = await social.getUserList(followedList);
     } catch (e) {
-        console.log(e);
+        logger.error("[getFollowed] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -74,7 +75,7 @@ exports.deleteFollower = async (req, res) => {
             }
         })
     } catch (e) {
-        console.log(e);
+        logger.error("[deleteFollower] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -105,7 +106,7 @@ exports.makeRelation = async (req, res) => {
             throw (errorMsg.noUser);
         await followed.addFollower(follower);
     } catch (e) {
-        console.log(e);
+        logger.error("[makeRelation] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

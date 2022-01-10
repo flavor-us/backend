@@ -7,7 +7,7 @@ const sequelizeData = new Sequelize(process.env.DATABASE, process.env.DB_USER, p
 	host: process.env.DB_HOST,
 	dialect: "mysql",
 	timezone: "+09:00", //한국 시간 셋팅
-	operatorsAliases: Sequelize.Op,
+	operatorsAliases: 0,
 	pool: {
 		max: 5,
 		min: 0,

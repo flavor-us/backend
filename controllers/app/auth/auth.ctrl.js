@@ -3,6 +3,7 @@ const errorMsg = require("../../../message/error");
 const jwt = require('jsonwebtoken');
 const tokenAuth = require("../../../modules/tokenAuth");
 const uuidConvert = require("../../../modules/uuidConvert");
+const logger = require("../../../config/logger");
 
 exports.getAllToken = async (req, res) => {
     var tokens = {};
@@ -11,7 +12,6 @@ exports.getAllToken = async (req, res) => {
             return (res.status(400).send(errorMsg.notEnoughReq));
         const kakao_id = await tokenAuth.verifyKakaoToken(req.params.kakaotoken);
         const uuid = await uuidConvert.getUuidFromKakaoId(kakao_id);
-        console.log("kakao_id = " + kakao_id + "uuid = " + uuid);
         const user = await social.getUserList([kakao_id]);
         if (user.length == 0)
             return (res.status(400).send(errorMsg.noUser));
@@ -29,7 +29,7 @@ exports.getAllToken = async (req, res) => {
         });
         await tokenAuth.uploadRefreshToken(tokens.refreshToken, kakao_id);
     } catch (e) {
-        console.log(e);
+        logger.error("[getAllToken] : ", e);
         if (e == errorMsg.noUser)
             return (res.status(400).send(errorMsg.noUser));
         else

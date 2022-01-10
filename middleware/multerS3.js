@@ -8,6 +8,7 @@ const s3 = new AWS.S3({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     region: process.env.AWS_REGION,
 });
+const logger = require("../config/logger");
 
 const storage = multerS3({
     s3: s3,
@@ -21,9 +22,8 @@ const storage = multerS3({
         var user_id;
         try {
             user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
-            console.log("uploaded to S3: id = " + user_id);
         } catch (e) {
-            console.log(e);
+            logger.error("[multerS3] : ", e);
             if (e == errorMsg.noUser)
                 req.error = errorMsg.noUser;
             else

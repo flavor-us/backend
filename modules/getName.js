@@ -8,11 +8,11 @@ exports.getExif = function (file) {
 	return new Promise(function (resolve, reject) {
 		try {
 			new ExifImage({ image: file }, function (error, exifData) {
-				if (error) reject(console.log("Error: " + error.message));
+				if (error) reject(logger.error("Error: " + error.message));
 				else resolve([exifData.gps.GPSLatitude, exifData.gps.GPSLongitude]);
 			});
 		} catch (error) {
-			reject(console.log("Error: " + error.message));
+			reject(logger.error("Error: " + error.message));
 		}
 	});
 };
@@ -28,7 +28,7 @@ exports.getNearRestaurants = async function (lat, lng, moe) {
 			},
 		});
 	} catch (error) {
-		console.log(error);
+		logger.error(error);
 	}
 	return restaurants;
 };
@@ -39,7 +39,7 @@ exports.convertLatLng = function (lat_DMS, lng_DMS) {
 		const lng_Degree = lng_DMS[0] + lng_DMS[1] / 60 + lng_DMS[2] / 3600;
 		return [lat_Degree, lng_Degree];
 	} else {
-		console.log("error : something wrong in lat_DMS , lng_DMS")
+		logger.error("error : something wrong in lat_DMS , lng_DMS")
 		throw (errorMsg.noLatLng);
 	}
 };

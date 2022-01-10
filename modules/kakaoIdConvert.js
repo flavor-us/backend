@@ -6,7 +6,7 @@ exports.getUserIdByKakaoId = async function (kakao_id) {
             kakao_id: kakao_id
         }
     }).catch((e) => {
-        console.log(e);
+        logger.error("[getUserIdByKakaoId] : ", e);
         throw 'Error has occured on Sequelize FindOne'
     })
     if (!user_id)
@@ -21,7 +21,7 @@ exports.getKakaoIdByUserId = async function (user_id) {
             id: user_id
         }
     }).catch((e) => {
-        console.log(e);
+        logger.error("[getKakaoIdByUserId] : ", e);
         throw 'Error has occured on Sequelize FindOne'
     })
     if (!kakao_id)

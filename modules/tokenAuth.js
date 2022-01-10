@@ -20,7 +20,6 @@ exports.verifyRefreshToken = async (requestToken, kakao_id) => {
     refreshToken = refreshToken.dataValues.refreshtoken;
     verifyResult = jwt.verify(refreshToken, process.env.JWT_TOKEN);
     uuid = await uuidConvert.getUuidFromKakaoId(kakao_id);
-    console.log(requestToken + "\n" + refreshToken + "\n" + verifyResult.kakao_id + "\n" + kakao_id + "\n" + verifyResult.uuid + "\n" + uuid)
     if (requestToken == refreshToken && verifyResult.kakao_id == kakao_id && verifyResult.uuid == uuid)
         return (true);
     else
@@ -41,20 +40,18 @@ exports.verifyKakaoToken = async (kakaoToken) => {
         await request(kakaoOptions, function (err, resp, body) {
             try {
                 if (err || resp.statusCode != 200) {
-                    console.log(resp.statusCode);
                     throw ("errorCode :" + resp.statusCode);
                 }
                 else
                     profile = JSON.parse(body);
             } catch (e) {
-                console.log(e);
+                logger.error("[verifyKakaoToken] : ", e);
             }
         })
     } catch (e) {
-        console.log(e);
+        logger.error("[verifyKakaoToken] : ", e);
         return (false);
     }
-    // console.log(profile);
     return (profile.id)
 }
 
@@ -69,7 +66,7 @@ exports.uploadRefreshToken = async (refreshToken, kakao_id) => {
                 }
             }
         )
-        console.log("result[0] = " + result[0])
+        logger.error("result[0] = " + result[0])
         if (!result[0]) {
             await models.Token.create({
                 user_id: user_id,
@@ -77,7 +74,7 @@ exports.uploadRefreshToken = async (refreshToken, kakao_id) => {
             })
         }
     } catch (e) {
-        console.log(e);
+        logger.error("[uploadRefreshToken] : ", e);
         if (e == errorMsg.noUser)
             throw (errorMsg.noUser);
         else

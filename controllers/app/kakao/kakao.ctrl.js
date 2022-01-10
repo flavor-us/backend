@@ -6,6 +6,7 @@ const errorMsg = require("../../../message/error");
 const completeMsg = require("../../../message/complete");
 const dbUpload = require("../../../modules/dbUpload");
 const social = require("../../../modules/social");
+const logger = require("../../../config/logger");
 
 exports.getProfile = async (req, res) => {
     var profile;
@@ -30,14 +31,13 @@ exports.getProfile = async (req, res) => {
             encoding: 'UTF-8',
         }
         await request(kakaoOptions, function (err, resp, body) {
-            console.log(resp.statusCode);
             if (err || resp.statusCode != 200)
                 throw (err);
             else
                 profile = JSON.parse(body);
         })
     } catch (e) {
-        console.log(e);
+        logger.error("[getProfile] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noToken)
@@ -82,7 +82,7 @@ exports.getFriendList = async (req, res) => {
         })
         friends = await social.getUserList(friendList);
     } catch (e) {
-        console.log(e);
+        logger.error("[getFriendList] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noToken)
@@ -99,7 +99,7 @@ exports.updateToken = async (req, res) => {
             throw (errorMsg.notEnoughReq);
         await dbUpload.updateToken(req.body.kakaotoken, req.params.kakao_id);
     } catch (e) {
-        console.log(e);
+        logger.error("[updateToken] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else

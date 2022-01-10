@@ -12,6 +12,7 @@
 	"author": "limchanyeop",
 	"license": "ISC",
 	"dependencies": {
+		"app-root-path": "^3.0.0",
 		"aws-sdk": "^2.995.0",
 		"body-parser": "^1.19.0",
 		"dotenv": "^10.0.0",
@@ -31,6 +32,8 @@
 		"supertest": "^6.1.6",
 		"swagger-jsdoc": "^6.1.0",
 		"swagger-ui-express": "^4.1.6",
-		"uuid": "^8.3.2"
+		"uuid": "^8.3.2",
+		"winston": "^3.3.4",
+		"winston-daily-rotate-file": "^4.5.5"
 	}
 }

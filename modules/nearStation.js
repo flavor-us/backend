@@ -8,7 +8,6 @@ exports.getNearStation = async function (lat, lng) {
     do {
         stationData = await getStation(parseFloat(lat), parseFloat(lng), moe);
         moe *= 3;
-        console.log("StData : ", stationData);
         if (moe > 0.05) // 약 5000m
             break;
     } while (!stationData);
@@ -35,8 +34,8 @@ getStation = async function (lat, lng, moe) {
             },
         });
     } catch (error) {
-        console.log(error);
+        logger.error(error);
     }
-    console.log(JSON.stringify(station));
+    logger.error(JSON.stringify(station));
     return station;
 };

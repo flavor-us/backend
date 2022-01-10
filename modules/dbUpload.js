@@ -69,7 +69,6 @@ exports.updateProfile = async (profile, user_id) => {
 }
 
 exports.updateToken = async (token, kakao_id) => {
-	console.log("token: " + token + "\n" + "kakao_id : " + kakao_id);
 	const result = await models.User.update(
 		{ kakaotoken: token }, {
 		where: {
@@ -77,9 +76,8 @@ exports.updateToken = async (token, kakao_id) => {
 		}
 	}
 	).catch(e => {
-		console.log(e);
+		logger.error("[updateToken] : ", e);
 	})
-	console.log(result);
 	if (!result[0])
 		throw (errorMsg.updateFail);
 	return;

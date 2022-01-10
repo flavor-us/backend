@@ -3,13 +3,14 @@ const bodyParser = require("body-parser");
 const db = require("./models/index");
 const nunjucks = require("nunjucks");
 const { swaggerUi, specs } = require('./modules/swagger');
+const logger = require("./config/logger");
 
 class App {
 	constructor() {
 		this.app = express();
 
 		this.app.listen(3000, function () {
-			console.log("Express listening on port : 3000");
+			logger.info("Express listening on port : 3000");
 		});
 		this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 		this.app.use(bodyParser.json());
@@ -20,14 +21,14 @@ class App {
 			db.sequelize
 				.authenticate()
 				.then(() => {
-					console.log("Connection has been established successfully.");
+					logger.info("Connection has been established successfully.");
 					// return db.sequelize.sync({ alter: true });
 				})
 				.then(() => {
-					console.log("DB Sync complete.");
+					logger.info("DB Sync complete.");
 				})
 				.catch((err) => {
-					console.error("Unable to connect to the database:", err);
+					logger.error("Unable to connect to the database:", err);
 				});
 		};
 

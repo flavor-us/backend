@@ -2,6 +2,7 @@ const awsUtils = require("../../../modules/awsUtils");
 const errorMsg = require("../../../message/error");
 const rekognition = require("../../../modules/rekognition");
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
+const logger = require("../../../config/logger");
 
 exports.s3Upload = async (req, res) => { //Used Only Web Ctrl
     var uploadedFileInfo;
@@ -27,7 +28,6 @@ exports.s3MulterUpload = async (req, res) => {
     if (req.error)
         return (res.status(400).send(req.error));
     if (req.file) {
-        console.log("location : " + req.file.location)
         return (res.status(201).send({ filepath: req.file.location }));
     }
     else
@@ -43,7 +43,7 @@ exports.s3Delete = async (req, res) => {
         const filepath = user_id + "/" + filename;
         await awsUtils.deleteS3Bucket(filepath);
     } catch (e) {
-        console.log(e);
+        logger.error("[s3Delete] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -67,7 +67,7 @@ exports.getRekog = async (req, res) => {
         const is_food = rekognition.foodOrNot(rekogData)
         rekogData.is_food = is_food;
     } catch (e) {
-        console.log(e);
+        logger.error("[getRekog] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

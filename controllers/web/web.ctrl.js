@@ -1,7 +1,6 @@
 const nameModule = require("../../modules/getName");
 const awsUtils = require("../../modules/awsUtils");
 const dbUploads = require("../../modules/dbUpload");
-require("dotenv").config();
 
 exports.getNames = async (req, res) => {
 	let moe = 0.0001; // 10m 반경
@@ -9,8 +8,8 @@ exports.getNames = async (req, res) => {
 	const userId = 1;
 	var gpsDMS;
 	if (req.file) {
-		gpsDMS = await nameModule.getExif(req.file.path).catch(function (error) {
-			console.log(error);
+		gpsDMS = await nameModule.getExif(req.file.path).catch(function (e) {
+			logger.error("[getNames] : ", e);
 			res.send({
 				name: ["Not Found"],
 				msg: "EXIF 정보를 추출할 수 없습니다."
@@ -58,6 +57,6 @@ exports.dbUpload = async (req, res) => {
 		rekognition: req.body.rekog,
 		restname: req.body.restname
 	};
-	dbUploads.uploadContent(contents).catch((e) => console.log(e));
+	dbUploads.uploadContent(contents).catch((e) => logger.error("[dbUpload] : ", e));
 	res.render("web/map.html", { name: req.body.restname, lat: req.body.lat, lng: req.body.lng, KakaoApikey: process.env.KAKAO_JAVASCRIPT_KEY });
 };

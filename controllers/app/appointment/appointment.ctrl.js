@@ -1,6 +1,7 @@
 const models = require("../../../models")
 const errorMsg = require("../../../message/error")
 const completeMsg = require("../../../message/complete")
+const logger = require("../../../config/logger");
 
 exports.requestAppointment = async (req, res) => {
     try {
@@ -20,7 +21,7 @@ exports.requestAppointment = async (req, res) => {
             throw (res.status(400).send(errorMsg.noUser));
         await request.addRequest(requested, { through: { restname: req.body.restname } });
     } catch (e) {
-        console.log(e);
+        logger.error("[requestAppointment] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -49,7 +50,7 @@ exports.checkRequested = async (req, res) => {
             }
         })
     } catch (e) {
-        console.log(e);
+        logger.error("[checkRequested] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -77,7 +78,7 @@ exports.removeAppointment = async (req, res) => {
             }
         })
     } catch (e) {
-        console.log(e);
+        logger.error("[removeAppointment] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

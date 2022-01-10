@@ -288,7 +288,6 @@ describe("MODULE TEST : Station Module", () => {
     describe("get valid Near station", () => {
         test("정상 요청", async () => {
             const response = await stationModule.getNearStation(37.54633909000000000, 127.07005690000000000);
-            console.log(response);
             expect(response).not.toBeNull();
         })
     })
