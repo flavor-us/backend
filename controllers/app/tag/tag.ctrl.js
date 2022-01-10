@@ -2,7 +2,7 @@ const models = require("../../../models")
 const errorMsg = require("../../../message/error");
 const logger = require("../../../config/logger");
 
-exports.getadj1 = async (_, res) => {
+exports.getadj1 = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     var adj1;
     try {
@@ -14,7 +14,7 @@ exports.getadj1 = async (_, res) => {
     return (res.status(200).send({ result: adj1 }));
 }
 
-exports.getadj2 = async (_, res) => {
+exports.getadj2 = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     var adj2;
     try {
@@ -26,7 +26,7 @@ exports.getadj2 = async (_, res) => {
     return (res.status(200).send({ result: adj2 }));
 }
 
-exports.getlocationtag = async (_, res) => {
+exports.getlocationtag = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     var locationtag;
     try {
