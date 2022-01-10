@@ -5,6 +5,7 @@ const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
 const logger = require("../../../config/logger");
 
 exports.s3Upload = async (req, res) => { //Used Only Web Ctrl
+    logger.info(`${req.method} ${req.url}`);
     var uploadedFileInfo;
     try {
         if (!req.params.kakaoId || !req.file)
@@ -25,6 +26,7 @@ exports.s3Upload = async (req, res) => { //Used Only Web Ctrl
 }
 
 exports.s3MulterUpload = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     if (req.error)
         return (res.status(400).send(req.error));
     if (req.file) {
@@ -35,6 +37,7 @@ exports.s3MulterUpload = async (req, res) => {
 }
 
 exports.s3Delete = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     try {
         if (!req.params.kakao_id || !req.params.filename)
             throw (errorMsg.notEnoughReq);
@@ -55,6 +58,7 @@ exports.s3Delete = async (req, res) => {
 }
 
 exports.getRekog = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var rekogData;
     try {
         if (!req.query.kakaoId || !req.query.s3ImageKey)

@@ -6,6 +6,7 @@ const uuidConvert = require("../../../modules/uuidConvert");
 const logger = require("../../../config/logger");
 
 exports.getAllToken = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var tokens = {};
     try {
         if (!req.params.kakaotoken)

@@ -8,8 +8,10 @@ const jwtAuth = {
         var token = req.headers.accesstoken;
         var user;
 
-        if (!token) // 토큰 없음
-            return res.status(400).send(errorMsg.invalidToken);
+        if (!token) {
+            next(); //미들웨어 적용 전 처리
+            // return res.status(400).send(errorMsg.invalidToken);
+        } // 토큰 없음
         // decode
         try {
             user = jwt.verify(token, process.env.JWT_TOKEN);

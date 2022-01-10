@@ -3,6 +3,7 @@ const errorMsg = require("../../../message/error");
 const logger = require("../../../config/logger");
 
 exports.getUuidById = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var uuid;
     try {
         if (!req.params.user_id)

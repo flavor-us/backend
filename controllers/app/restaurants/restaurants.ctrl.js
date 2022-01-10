@@ -4,6 +4,7 @@ const deleteFileModule = require("../../../modules/deleteFile");
 const logger = require("../../../config/logger");
 
 exports.getNames = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var restData, restList, moe = 0.00004; // 약 4m 반경
     var defaultData = {};
     try {

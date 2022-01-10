@@ -8,6 +8,7 @@ const social = require("../../../modules/social");
 const logger = require("../../../config/logger");
 
 exports.getFollower = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var followers;
     try {
         if (!req.params.kakao_id)
@@ -36,6 +37,7 @@ exports.getFollower = async (req, res) => {
 }
 
 exports.getFollowed = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var followeds;
     try {
         if (!req.params.kakao_id)
@@ -64,6 +66,7 @@ exports.getFollowed = async (req, res) => {
 }
 
 exports.deleteFollower = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
@@ -87,6 +90,7 @@ exports.deleteFollower = async (req, res) => {
 }
 
 exports.makeRelation = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     try {
         const followed_id = req.body.followed_id;
         const follower_id = req.body.follower_id;

@@ -7,6 +7,7 @@ const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
 const logger = require("../../../config/logger");
 
 exports.addUser = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var user_id;
     try {
         if (!req.body.email || !req.body.username || !req.body.kakao_id)
@@ -31,6 +32,7 @@ exports.addUser = async (req, res) => {
 }
 
 exports.deleteUser = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
@@ -55,6 +57,7 @@ exports.deleteUser = async (req, res) => {
 }
 
 exports.editProfile = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     try {
         let profile = {};
         if (!req.params.kakao_id || (!req.body.username && !req.body.profileimg_path))
@@ -78,6 +81,7 @@ exports.editProfile = async (req, res) => {
 }
 
 exports.getProfile = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var profile;
     try {
         if (!req.params.user_id)

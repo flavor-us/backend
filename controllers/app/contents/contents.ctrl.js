@@ -68,6 +68,7 @@ exports.updateContents = async (req, res) => {
 }
 
 exports.deleteContents = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     try {
         if (!req.params.content_id)
             throw (errorMsg.notEnoughReq);
@@ -92,7 +93,7 @@ exports.deleteContents = async (req, res) => {
 
 exports.getMyContents = async (req, res) => {
     var contents;
-    logger.info(req.kakao_id, " - [getMyContents]")
+    logger.info(`${req.method} ${req.url}`);
     try {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
@@ -119,6 +120,7 @@ exports.getMyContents = async (req, res) => {
 }
 
 exports.getRelevantContents = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var contents;
     try {
         if (!req.params.kakao_id)

@@ -4,6 +4,7 @@ const completeMsg = require("../../../message/complete")
 const logger = require("../../../config/logger");
 
 exports.requestAppointment = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     try {
         if (!req.body.request || !req.body.requested)
             throw (errorMsg.notEnoughReq)
@@ -21,7 +22,7 @@ exports.requestAppointment = async (req, res) => {
             throw (res.status(400).send(errorMsg.noUser));
         await request.addRequest(requested, { through: { restname: req.body.restname } });
     } catch (e) {
-        logger.error("[requestAppointment] : ", e);
+        logger.error(req.kakao_id ? req.kakao_id : req.header.host, "[requestAppointment] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -33,6 +34,7 @@ exports.requestAppointment = async (req, res) => {
 }
 
 exports.checkRequested = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var requested;
     try {
         if (!req.body.user_id)
@@ -62,6 +64,7 @@ exports.checkRequested = async (req, res) => {
 }
 
 exports.removeAppointment = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     try {
         if (!req.body.user_id)
             throw (errorMsg.notEnoughReq)

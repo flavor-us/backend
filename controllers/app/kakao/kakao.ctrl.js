@@ -9,6 +9,7 @@ const social = require("../../../modules/social");
 const logger = require("../../../config/logger");
 
 exports.getProfile = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var profile;
     try {
         if (!req.params.kakao_id)
@@ -49,6 +50,7 @@ exports.getProfile = async (req, res) => {
 }
 
 exports.getFriendList = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var friends, friendList;
     try {
         if (!req.params.kakao_id)
@@ -94,6 +96,7 @@ exports.getFriendList = async (req, res) => {
 }
 
 exports.updateToken = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     try {
         if (!req.params.kakao_id || !req.body.kakaotoken)
             throw (errorMsg.notEnoughReq);

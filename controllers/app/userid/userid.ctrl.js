@@ -3,6 +3,7 @@ const errorMsg = require("../../../message/error");
 const logger = require("../../../config/logger");
 
 exports.getUserIdByKakaoId = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var user_id;
     try {
         if (!req.params.kakao_id)

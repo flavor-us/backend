@@ -3,6 +3,7 @@ const errorMsg = require("../../../message/error");
 const logger = require("../../../config/logger");
 
 exports.getadj1 = async (_, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var adj1;
     try {
         adj1 = await models.Tag_FirstAdj.findAll({});
@@ -14,6 +15,7 @@ exports.getadj1 = async (_, res) => {
 }
 
 exports.getadj2 = async (_, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var adj2;
     try {
         adj2 = await models.Tag_SecondAdj.findAll({});
@@ -25,6 +27,7 @@ exports.getadj2 = async (_, res) => {
 }
 
 exports.getlocationtag = async (_, res) => {
+    logger.info(`${req.method} ${req.url}`);
     var locationtag;
     try {
         locationtag = await models.Tag_Location.findAll({})
