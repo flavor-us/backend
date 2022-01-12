@@ -22,7 +22,7 @@ exports.requestAppointment = async (req, res) => {
             throw (res.status(400).send(errorMsg.noUser));
         await request.addRequest(requested, { through: { restname: req.body.restname } });
     } catch (e) {
-        logger.error(req.kakao_id ? req.kakao_id : req.header.host, "[requestAppointment] : ", e);
+        logger.error(req.kakao_id ? req.kakao_id : req.headers.host, "[requestAppointment] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

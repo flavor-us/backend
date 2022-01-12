@@ -71,10 +71,11 @@ exports.deleteFollower = async (req, res) => {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
+        const delete_id = await kakaoIdConvert.getUserIdByKakaoId.getUserIdByKakaoId(req.params.delete_id)
         await models.Relation.destroy({
             where: {
                 follower_id: user_id,
-                followed_id: req.params.delete_id
+                followed_id: delete_id
             }
         })
     } catch (e) {
@@ -92,10 +93,12 @@ exports.deleteFollower = async (req, res) => {
 exports.makeRelation = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     try {
-        const followed_id = req.body.followed_id;
-        const follower_id = req.body.follower_id;
-        if (!followed_id || !follower_id)
+        if (!req.body.followed_id || !req.body.follower_id)
             throw (errorMsg.notEnoughReq);
+        const followed_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.followed_id);
+        const follower_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.follower_id);
+        if (!followed_id || !follower_id)
+            throw (errorMsg.noUser);
         const followed = await models.User.findOne({
             where: {
                 id: followed_id
