@@ -71,7 +71,7 @@ exports.deleteFollower = async (req, res) => {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
-        const delete_id = await kakaoIdConvert.getUserIdByKakaoId.getUserIdByKakaoId(req.params.delete_id)
+        const delete_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.delete_id)
         await models.Relation.destroy({
             where: {
                 follower_id: user_id,

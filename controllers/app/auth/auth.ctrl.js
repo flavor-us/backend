@@ -13,7 +13,7 @@ exports.getAllToken = async (req, res) => {
             return (res.status(400).send(errorMsg.notEnoughReq));
         const kakao_id = await tokenAuth.verifyKakaoToken(req.params.kakaotoken);
         const uuid = await uuidConvert.getUuidFromKakaoId(kakao_id);
-        const user = await social.getUserList([kakao_id]);
+        const user = await social.getUserListByKakaoId([kakao_id]);
         if (user.length == 0)
             return (res.status(400).send(errorMsg.noUser));
         tokens.accessToken = jwt.sign({
