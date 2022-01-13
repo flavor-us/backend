@@ -25,8 +25,8 @@ router.delete("/s3/:kakao_id/:filename", app.s3Ctrl.s3Delete)
 router.get("/rekog", app.s3Ctrl.getRekog);
 
 router.delete("/relation/follower/:kakao_id/:delete_id", app.relationCtrl.deleteFollower)
+router.get("/relation/following/:kakao_id", app.relationCtrl.getFollowing);
 router.get("/relation/follower/:kakao_id", app.relationCtrl.getFollower);
-router.get("/relation/followed/:kakao_id", app.relationCtrl.getFollowed);
 router.post("/relation", app.relationCtrl.makeRelation);
 
 router.get("/auth/login/:kakaotoken", app.authCtrl.getAllToken);
