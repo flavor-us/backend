@@ -13,7 +13,7 @@ exports.getUserListByKakaoId = async function (list) {
 
 exports.getUserListByUserId = async function (list) {
     const UserList = await models.User.findAll({
-        attributes: ["id", "username", "profileimg_path"],
+        attributes: ["kakao_id", "username", "profileimg_path"],
         where: { id: { [Op.in]: list } }
     })
     return (UserList);
