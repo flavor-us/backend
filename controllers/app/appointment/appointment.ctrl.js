@@ -2,27 +2,30 @@ const models = require("../../../models")
 const errorMsg = require("../../../message/error")
 const completeMsg = require("../../../message/complete")
 const logger = require("../../../config/logger");
+const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
 
 exports.requestAppointment = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     try {
         if (!req.body.request || !req.body.requested)
             throw (errorMsg.notEnoughReq)
+        const request_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.request);
+        const requested_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.requested);
         const request = await models.User.findOne({
             where: {
-                id: req.body.request
+                id: request_id
             }
         })
         const requested = await models.User.findOne({
             where: {
-                id: req.body.requested
+                id: requested_id
             }
         })
         if (!request || !requested)
             throw (res.status(400).send(errorMsg.noUser));
         await request.addRequest(requested, { through: { restname: req.body.restname } });
     } catch (e) {
-        logger.error(req.kakao_id ? req.kakao_id : req.headers.host, "[requestAppointment] : ", e);
+        logger.error(req.kakao_id ? req.kakao_id : req.headers.host, " [requestAppointment] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -37,11 +40,12 @@ exports.checkRequested = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     var requested;
     try {
-        if (!req.body.user_id)
+        if (!req.body.kakao_id)//수정
             throw (errorMsg.notEnoughReq)
+        const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.kakao_id);
         const user = await models.User.findOne({
             where: {
-                id: req.body.user_id
+                id: user_id
             }
         })
         if (!user)
@@ -66,11 +70,12 @@ exports.checkRequested = async (req, res) => {
 exports.removeAppointment = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     try {
-        if (!req.body.user_id)
+        if (!req.body.kakao_id)// 수정
             throw (errorMsg.notEnoughReq)
+        const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.kakao_id);
         const user = await models.User.findOne({
             where: {
-                id: req.body.user_id
+                id: user_id
             }
         })
         if (!user)
