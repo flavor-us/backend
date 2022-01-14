@@ -40,7 +40,7 @@ exports.convertLatLng = function (lat_DMS, lng_DMS) {
 		const lng_Degree = lng_DMS[0] + lng_DMS[1] / 60 + lng_DMS[2] / 3600;
 		return [lat_Degree, lng_Degree];
 	} else {
-		logger.error("error : something wrong in lat_DMS , lng_DMS")
+		logger.error("error : lat_DMS , lng_DMS can't be null")
 		throw (errorMsg.noLatLng);
 	}
 };
