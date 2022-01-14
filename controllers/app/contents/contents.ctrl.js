@@ -100,7 +100,7 @@ exports.getMyContents = async (req, res) => {
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
         contents = await models.Contents.findAll({
             include: [
-                { attributes: ["username", "profileimg_path"], model: models.User },
+                { attributes: ["username", "profileimg_path", "kakao_id"], model: models.User },
                 { attributes: ["tagname"], model: models.Tag_FirstAdj },
                 { attributes: ["tagname"], model: models.Tag_SecondAdj },
                 { attributes: ["tagname"], model: models.Tag_Location }
@@ -138,7 +138,7 @@ exports.getRelevantContents = async (req, res) => {
         })
         contents = await models.Contents.findAll({
             include: [
-                { attributes: ["username", "profileimg_path"], model: models.User },
+                { attributes: ["username", "profileimg_path", "kakao_id"], model: models.User },
                 { attributes: ["tagname"], model: models.Tag_FirstAdj },
                 { attributes: ["tagname"], model: models.Tag_SecondAdj },
                 { attributes: ["tagname"], model: models.Tag_Location }
