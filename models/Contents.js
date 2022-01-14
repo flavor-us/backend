@@ -42,6 +42,18 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.DECIMAL(20, 17),
 				allowNull: false,
 			},
+			adj1_id: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+			},
+			adj2_id: {
+				type: DataTypes.INTEGER,
+				allowNull: true,
+			},
+			locationtag_id: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+			},
 			station_distance: {
 				type: DataTypes.STRING,
 				allowNull: true
@@ -81,12 +93,6 @@ module.exports = function (sequelize, DataTypes) {
 			foreignKey: "locationtag_id",
 			targetKey: "id",
 		})
-		// Contents.belongsToMany(models.Tag, {
-		// 	as: "Tag",
-		// 	through: "TagContents",
-		// 	foreignKey: "content_id",
-		// 	comment: "TagContents 테이블에서 컨텐츠를 매핑하는 외래키입니다."
-		// })
 
 		Contents.belongsTo(models.User, {
 			foreignKey: "user_id",

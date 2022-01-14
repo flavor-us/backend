@@ -32,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
             },
             kakao_id: {
                 type: DataTypes.STRING,
-                unique: true
+                unique: 'kakao_id'
             }
         },
         {
@@ -62,14 +62,14 @@ module.exports = function (sequelize, DataTypes) {
 
         User.belongsToMany(User, {
             as: "Request",
-            through: "Appointment",
-            foreignKey: "request_id"
+            through: "Appointments",
+            foreignKey: "request_id",
         });
 
         User.belongsToMany(User, {
             as: "Requested",
-            through: "Appointment",
-            foreignKey: "requested_id"
+            through: "Appointments",
+            foreignKey: "requested_id",
         })
         User.hasOne(models.Token, { foreignKey: "user_id", sourceKey: "id", unique: true });
     };

@@ -25,7 +25,7 @@ exports.requestAppointment = async (req, res) => {
             throw (res.status(400).send(errorMsg.noUser));
         await request.addRequest(requested, { through: { restname: req.body.restname } });
     } catch (e) {
-        logger.error(req.kakao_id ? req.kakao_id : req.headers.host, " [requestAppointment] : ", e);
+        logger.error(req.kakao_id ? req.kakao_id : req.headers.host, " [requestAppointments] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -50,7 +50,11 @@ exports.checkRequested = async (req, res) => {
         })
         if (!user)
             return (res.status(400).send(errorMsg.noUser));
-        requested = await models.Appointment.findAll({
+        requested = await models.Appointments.findAll({
+            attributes: ["restname", "request_id"],
+            include: [
+                { attributes: ["username"], model: models.User },
+            ],
             where: {
                 requested_id: user.dataValues.id
             }
@@ -80,13 +84,13 @@ exports.removeAppointment = async (req, res) => {
         })
         if (!user)
             return res.status(400).send(errorMsg.noUser);
-        await models.Appointment.destroy({
+        await models.Appointments.destroy({
             where: {
                 requested_id: user.dataValues.id
             }
         })
     } catch (e) {
-        logger.error("[removeAppointment] : ", e);
+        logger.error("[removeAppointments] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

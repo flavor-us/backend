@@ -15,6 +15,9 @@ module.exports = function (sequelize, DataTypes) {
             },
         },
         {
+            indexes: [{ unique: true, fields: ['tagname'] }]
+        },
+        {
             sequelize,
             tableName: "Tag_Location",
             timestamps: false,

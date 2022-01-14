@@ -215,11 +215,11 @@ describe("DELETE /relation/follower/:kakao_id/:delete_id", () => {
     })
 })
 
-//APPOINTMENT
-describe("POST /appointment", () => {
-    describe("valid value -> make appointment", () => {
+//Appointments
+describe("POST /Appointments", () => {
+    describe("valid value -> make Appointments", () => {
         test("upload successfully", async () => {
-            const response = await request(app).post("/app/appointment").send({
+            const response = await request(app).post("/app/appointments").send({
                 request: 1,
                 requested: id.user,
                 restname: "약속의 식당"
@@ -229,10 +229,10 @@ describe("POST /appointment", () => {
     })
 })
 
-describe("GET /appointment", () => {
-    describe("valid value -> read appointment list successfully", () => {
+describe("GET /Appointments", () => {
+    describe("valid value -> read Appointments list successfully", () => {
         test("정상 GET", async () => {
-            const response = await request(app).get("/app/appointment").send({
+            const response = await request(app).get("/app/appointments").send({
                 user_id: id.user
             })
             expect(response.statusCode).toBe(200);
@@ -240,10 +240,10 @@ describe("GET /appointment", () => {
     })
 })
 
-describe("DELETE /appointment", () => {
-    describe("valid value -> remove appointment list", () => {
+describe("DELETE /Appointments", () => {
+    describe("valid value -> remove Appointments list", () => {
         test("정상 GET", async () => {
-            const response = await request(app).delete("/app/appointment").send({
+            const response = await request(app).delete("/app/appointments").send({
                 user_id: id.user
             })
             expect(response.statusCode).toBe(204);

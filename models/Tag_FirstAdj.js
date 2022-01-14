@@ -13,6 +13,10 @@ module.exports = function (sequelize, DataTypes) {
                 unique: true,
                 allowNull: false,
             },
+
+        },
+        {
+            indexes: [{ unique: true, fields: ['tagname'] }]
         },
         {
             sequelize,
@@ -27,5 +31,6 @@ module.exports = function (sequelize, DataTypes) {
             sourceKey: "id"
         });
     }
+
     return Tag_FirstAdj;
 };
