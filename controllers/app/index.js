@@ -38,7 +38,7 @@ router.get("/jwt", jwtAuth.checkToken, (req, res) => {
 })
 
 router.post("/appointments", app.appointmentsCtrl.requestAppointment);
-router.get("/appointments", app.appointmentsCtrl.checkRequested);
+router.get("/appointments/:kakao_id", app.appointmentsCtrl.checkRequested);
 router.delete("/appointments", app.appointmentsCtrl.removeAppointment);
 
 router.get("/uuid/:user_id", app.uuidCtrl.getUuidById);

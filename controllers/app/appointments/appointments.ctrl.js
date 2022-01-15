@@ -40,9 +40,9 @@ exports.checkRequested = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     var requested;
     try {
-        if (!req.body.kakao_id)
+        if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq)
-        const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.kakao_id);
+        const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
         const user = await models.User.findOne({
             where: {
                 id: user_id
@@ -74,9 +74,9 @@ exports.checkRequested = async (req, res) => {
 exports.removeAppointment = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     try {
-        if (!req.body.kakao_id)
+        if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq)
-        const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.kakao_id);
+        const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
         const user = await models.User.findOne({
             where: {
                 id: user_id
