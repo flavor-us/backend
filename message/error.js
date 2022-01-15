@@ -65,3 +65,7 @@ exports.invalidToken = {
 exports.wrongToken = {
     msg: "[jwt]올바르지 않은 형식의 토큰입니다."
 }
+
+exports.appointmentFail = {
+    msg: "약속을 신청하지 못했습니다."
+}

@@ -10,7 +10,6 @@ module.exports = function (sequelize, DataTypes) {
             },
             tagname: {
                 type: DataTypes.STRING,
-                unique: true,
                 allowNull: false,
             },
 

@@ -8,6 +8,9 @@ module.exports = function (sequelize, DataTypes) {
                 primaryKey: true,
                 autoIncrement: true,
             },
+            kakao_id: {
+                type: DataTypes.STRING,
+            },
             uuid: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -30,10 +33,6 @@ module.exports = function (sequelize, DataTypes) {
             profileimg_path: {
                 type: DataTypes.STRING
             },
-            kakao_id: {
-                type: DataTypes.STRING,
-                unique: 'kakao_id'
-            }
         },
         {
             sequelize,
@@ -60,17 +59,19 @@ module.exports = function (sequelize, DataTypes) {
             foreignKey: "followed_id"
         })
 
-        User.belongsToMany(User, {
-            as: "Request",
-            through: "Appointments",
-            foreignKey: "request_id",
-        });
+        // User.belongsToMany(User, {
+        //     as: "Request",
+        //     through: "Appointments",
+        //     foreignKey: "request_id",
+        //     unique: false
+        // });
 
-        User.belongsToMany(User, {
-            as: "Requested",
-            through: "Appointments",
-            foreignKey: "requested_id",
-        })
+        // User.belongsToMany(User, {
+        //     as: "Requested",
+        //     through: "Appointments",
+        //     foreignKey: "requested_id",
+        //     unique: false
+        // })
         User.hasOne(models.Token, { foreignKey: "user_id", sourceKey: "id", unique: true });
     };
     return User;

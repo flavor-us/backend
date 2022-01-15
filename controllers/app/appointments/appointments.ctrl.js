@@ -23,13 +23,17 @@ exports.requestAppointment = async (req, res) => {
         })
         if (!request || !requested)
             throw (res.status(400).send(errorMsg.noUser));
-        await request.addRequest(requested, { through: { restname: req.body.restname } });
+        const result = await request.addRequest(requested, { through: { restname: req.body.restname } })
+        if (!result)
+            throw (errorMsg.appointmentFail);
     } catch (e) {
         logger.error(req.kakao_id ? req.kakao_id : req.headers.host, " [requestAppointments] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
             return (res.status(400).send(errorMsg.noUser));
+        else if (e == errorMsg.appointmentFail)
+            return (res.status(400).send(errorMsg.appointmentFail));
         else
             return (res.status(400).send(errorMsg.uploadFail));
     }
