@@ -83,3 +83,10 @@ exports.updateToken = async (token, kakao_id) => {
 		throw (errorMsg.updateFail);
 	return;
 }
+
+exports.uploadAppointment = async (appointment) => {
+	const id = await models.Appointments.create(appointment).then((uploadedColumn) => {
+		return uploadedColumn.dataValues.id;
+	})
+	return id;
+}

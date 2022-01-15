@@ -30,23 +30,23 @@ module.exports = function (sequelize, DataTypes) {
             timestamps: true,
         }
     );
-    // Appointments.associate = (models) => {
-    //     Appointments.belongsTo(models.User, {
-    //         foreignKey: "request_id",
-    //         targetKey: "id",
-    //         allowNull: false,
-    //         unique: false
-    //     })
+    Appointments.associate = (models) => {
+        Appointments.belongsTo(models.User, {
+            foreignKey: "request_id",
+            targetKey: "id",
+            allowNull: false,
+            unique: false
+        })
 
-    //     Appointments.associate = (models) => {
-    //         Appointments.belongsTo(models.User, {
-    //             foreignKey: "requested_id",
-    //             targetKey: "id",
-    //             allowNull: false,
-    //             unique: false
-    //         })
-    //     }
-    // }
+        Appointments.associate = (models) => {
+            Appointments.belongsTo(models.User, {
+                foreignKey: "requested_id",
+                targetKey: "id",
+                allowNull: false,
+                unique: false
+            })
+        }
+    }
 
     return Appointments;
 };

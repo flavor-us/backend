@@ -3,6 +3,7 @@ const errorMsg = require("../../../message/error")
 const completeMsg = require("../../../message/complete")
 const logger = require("../../../config/logger");
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
+const dbUpload = require("../../../modules/dbUpload");
 
 exports.requestAppointment = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
@@ -11,22 +12,29 @@ exports.requestAppointment = async (req, res) => {
             throw (errorMsg.notEnoughReq)
         const request_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.request);
         const requested_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.requested);
-        const request = await models.User.findOne({
-            where: {
-                id: request_id
-            }
-        })
-        const requested = await models.User.findOne({
-            where: {
-                id: requested_id
-            }
-        })
-        if (!request || !requested)
-            throw (res.status(400).send(errorMsg.noUser));
-        const result = await request.addRequest(requested, { through: { restname: req.body.restname } })
+        // const request = await models.User.findOne({
+        //     where: {
+        //         id: request_id
+        //     }
+        // })
+        // const requested = await models.User.findOne({
+        //     where: {
+        //         id: requested_id
+        //     }
+        // })
+        // if (!request || !requested)
+        //     throw (res.status(400).send(errorMsg.noUser));
+        const appointment = {
+            request_id: request_id,
+            requested_id: requested_id,
+            restname: req.body.restname
+        }
+        const result = await dbUpload.uploadAppointment(appointment);
+        // const result = await request.addRequest(requested, { through: { restname: req.body.restname } });
         if (!result)
             throw (errorMsg.appointmentFail);
     } catch (e) {
+        console.log(e);
         logger.error(req.kakao_id ? req.kakao_id : req.headers.host, " [requestAppointments] : ", e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
