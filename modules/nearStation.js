@@ -37,6 +37,5 @@ getStation = async function (lat, lng, moe) {
     } catch (error) {
         logger.error(error);
     }
-    logger.error(JSON.stringify(station));
     return station;
 };
