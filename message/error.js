@@ -69,3 +69,7 @@ exports.wrongToken = {
 exports.appointmentFail = {
     msg: "약속을 신청하지 못했습니다."
 }
+
+exports.duplicatedEntry = {
+    msg: "ER_DUP_ENTRY"
+}

@@ -34,8 +34,10 @@ exports.requestAppointment = async (req, res) => {
         if (!result)
             throw (errorMsg.appointmentFail);
     } catch (e) {
-        console.log(e);
+        console.log("e.parent.code : " + e.parent.code);
         logger.error(req.kakao_id ? req.kakao_id : req.headers.host + " [requestAppointments] : " + e);
+        if (e.parent.code && e.parent.code == "ER_DUP_ENTRY")
+            return (res.status(400).send(errorMsg.duplicatedEntry));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
