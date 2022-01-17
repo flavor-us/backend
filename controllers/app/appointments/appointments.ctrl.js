@@ -35,7 +35,7 @@ exports.requestAppointment = async (req, res) => {
             throw (errorMsg.appointmentFail);
     } catch (e) {
         if (e.parent.code && e.parent.code == "ER_DUP_ENTRY")
-            return (res.status(202).send(errorMsg.duplicatedEntry));
+            return (res.status(400).send(errorMsg.duplicatedEntry));
         logger.error("requestAppointment : " + e)
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
