@@ -30,7 +30,7 @@ exports.getNames = async (req, res) => {
                 throw (errorMsg.noRestaurants);
         }
     } catch (e) {
-        logger.error("[getNames] : ", e);
+        logger.error("[getNames] : " + e);
         if (e == errorMsg.noLatLng)
             return (res.status(400).send(errorMsg.noLatLng));
         if (e == errorMsg.noRestaurants)

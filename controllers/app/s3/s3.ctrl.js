@@ -46,7 +46,7 @@ exports.s3Delete = async (req, res) => {
         const filepath = user_id + "/" + filename;
         await awsUtils.deleteS3Bucket(filepath);
     } catch (e) {
-        logger.error("[s3Delete] : ", e);
+        logger.error("[s3Delete] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -71,7 +71,7 @@ exports.getRekog = async (req, res) => {
         const is_food = rekognition.foodOrNot(rekogData)
         rekogData.is_food = is_food;
     } catch (e) {
-        logger.error("[getRekog] : ", e);
+        logger.error("[getRekog] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

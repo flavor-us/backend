@@ -7,7 +7,7 @@ exports.getIdFromUuid = async (uuid) => {
         where: {
             uuid: uuid
         }
-    }).catch((e) => logger.error("[getIdFromUuid] : ", e));
+    }).catch((e) => logger.error("[getIdFromUuid] : " + e));
     if (!user)
         throw (errorMsg.noUser)
     return (user.id)
@@ -18,7 +18,7 @@ exports.getUuidFromKakaoId = async (kakao_id) => {
         where: {
             kakao_id: kakao_id
         }
-    }).catch((e) => logger.error("[getUuidFromKakaoId] : ", e));
+    }).catch((e) => logger.error("[getUuidFromKakaoId] : " + e));
     if (!user)
         throw (errorMsg.noUser)
     return (user.uuid)

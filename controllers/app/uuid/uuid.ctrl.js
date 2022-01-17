@@ -18,7 +18,7 @@ exports.getUuidById = async (req, res) => {
         if (!uuid)
             throw (errorMsg.noUser);
     } catch (e) {
-        logger.error("[getUuidById] : ", e);
+        logger.error("[getUuidById] : " + e);
         if (e == errorMsg.noUser)
             return (res.status(400).send(errorMsg.noUser));
         if (e == errorMsg.notEnoughReq)

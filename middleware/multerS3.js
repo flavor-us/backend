@@ -23,7 +23,7 @@ const storage = multerS3({
         try {
             user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
         } catch (e) {
-            logger.error("[multerS3] : ", e);
+            logger.error("[multerS3] : " + e);
             if (e == errorMsg.noUser)
                 req.error = errorMsg.noUser;
             else

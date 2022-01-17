@@ -77,7 +77,7 @@ exports.updateToken = async (token, kakao_id) => {
 		}
 	}
 	).catch(e => {
-		logger.error("[updateToken] : ", e);
+		logger.error("[updateToken] : " + e);
 	})
 	if (!result[0])
 		throw (errorMsg.updateFail);

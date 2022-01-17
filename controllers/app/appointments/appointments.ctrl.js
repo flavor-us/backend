@@ -29,14 +29,16 @@ exports.requestAppointment = async (req, res) => {
             requested_id: requested_id,
             restname: req.body.restname
         }
-        const result = await dbUpload.uploadAppointment(appointment).catch((e) => {
-            if (e.parent.code && e.parent.code == "ER_DUP_ENTRY")
-                return (res.status(202).send(errorMsg.duplicatedEntry));
-        });
+        const result = await dbUpload.uploadAppointment(appointment);
+        // if (e.parent.code && e.parent.code == "ER_DUP_ENTRY")
+        // return (res.status(202).send(errorMsg.duplicatedEntry));
         // const result = await request.addRequest(requested, { through: { restname: req.body.restname } });
         if (!result)
             throw (errorMsg.appointmentFail);
     } catch (e) {
+        if (e.parent.code && e.parent.code == "ER_DUP_ENTRY")
+            return (res.status(202).send(errorMsg.duplicatedEntry));
+        logger.error("requestAppointment : " + e)
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -73,7 +75,7 @@ exports.checkRequested = async (req, res) => {
             }
         })
     } catch (e) {
-        logger.error("[checkRequested] : ", e);
+        logger.error("[checkRequested] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -103,7 +105,7 @@ exports.removeAppointment = async (req, res) => {
             }
         })
     } catch (e) {
-        logger.error("[removeAppointments] : ", e);
+        logger.error("[removeAppointments] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

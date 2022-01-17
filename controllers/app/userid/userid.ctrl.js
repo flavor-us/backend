@@ -18,7 +18,7 @@ exports.getUserIdByKakaoId = async (req, res) => {
         if (!user_id)
             throw (errorMsg.noUser);
     } catch (e) {
-        logger.error("[getUserIdByKakaoId] : ", e);
+        logger.error("[getUserIdByKakaoId] : " + e);
         if (e == errorMsg.noUser)
             return (res.status(400).send(errorMsg.noUser));
         if (e == errorMsg.notEnoughReq)

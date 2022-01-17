@@ -23,6 +23,6 @@ exports.getContents = async (req, res) => {
 		)]);
 		res.render("admin/contents.html", { contents });
 	} catch (e) {
-		logger.error("[getContents] : ", e);
+		logger.error("[getContents] : " + e);
 	}
 };

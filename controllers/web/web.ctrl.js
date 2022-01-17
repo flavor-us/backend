@@ -10,7 +10,7 @@ exports.getNames = async (req, res) => {
 	var gpsDMS;
 	if (req.file) {
 		gpsDMS = await nameModule.getExif(req.file.path).catch(function (e) {
-			logger.error("[getNames] : ", e);
+			logger.error("[getNames] : " + e);
 			res.send({
 				name: ["Not Found"],
 				msg: "EXIF 정보를 추출할 수 없습니다."
@@ -58,6 +58,6 @@ exports.dbUpload = async (req, res) => {
 		rekognition: req.body.rekog,
 		restname: req.body.restname
 	};
-	dbUploads.uploadContent(contents).catch((e) => logger.error("[dbUpload] : ", e));
+	dbUploads.uploadContent(contents).catch((e) => logger.error("[dbUpload] : " + e));
 	res.render("web/map.html", { name: req.body.restname, lat: req.body.lat, lng: req.body.lng, KakaoApikey: process.env.KAKAO_JAVASCRIPT_KEY });
 };

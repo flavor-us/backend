@@ -22,7 +22,7 @@ exports.addUser = async (req, res) => {
         }
         user_id = await dbUpload.uploadUser(user);
     } catch (e) {
-        logger.error("[addUser] : ", e);
+        logger.error("[addUser] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else
@@ -45,7 +45,7 @@ exports.deleteUser = async (req, res) => {
         if (!result)
             throw (errorMsg.noUser)
     } catch (e) {
-        logger.error("[deleteUser] : ", e);
+        logger.error("[deleteUser] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == noUser)
@@ -69,7 +69,7 @@ exports.editProfile = async (req, res) => {
             profile.profileimg_path = req.body.profileimg_path
         await dbUpload.updateProfile(profile, user_id);
     } catch (e) {
-        logger.error("[editProfile] : ", e);
+        logger.error("[editProfile] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -96,7 +96,7 @@ exports.getProfile = async (req, res) => {
         if (!user_id)
             throw (errorMsg.noUser);
     } catch (e) {
-        logger.error("[getProfile] : ", e);
+        logger.error("[getProfile] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

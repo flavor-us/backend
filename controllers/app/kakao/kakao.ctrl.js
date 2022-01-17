@@ -38,7 +38,7 @@ exports.getProfile = async (req, res) => {
                 profile = JSON.parse(body);
         })
     } catch (e) {
-        logger.error("[getProfile] : ", e);
+        logger.error("[getProfile] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noToken)
@@ -84,7 +84,7 @@ exports.getFriendList = async (req, res) => {
         })
         friends = await social.getUserList(friendList);
     } catch (e) {
-        logger.error("[getFriendList] : ", e);
+        logger.error("[getFriendList] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noToken)
@@ -102,7 +102,7 @@ exports.updateToken = async (req, res) => {
             throw (errorMsg.notEnoughReq);
         await dbUpload.updateToken(req.body.kakaotoken, req.params.kakao_id);
     } catch (e) {
-        logger.error("[updateToken] : ", e);
+        logger.error("[updateToken] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else
