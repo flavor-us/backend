@@ -9,8 +9,6 @@ exports.getNearStation = async function (lat, lng) {
     do {
         stationData = await getStation(parseFloat(lat), parseFloat(lng), moe);
         moe *= 3;
-        if (moe > 0.05) // 약 5000m
-            break;
     } while (!stationData);
     var station = {
         name: stationData ? stationData.dataValues.name : null,
