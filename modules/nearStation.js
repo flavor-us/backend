@@ -22,7 +22,7 @@ exports.getNearStation = async function (lat, lng) {
 getMeterDistance = async function (lat1, lat2, lng1, lng2) {
     var distance = Math.round(Math.sqrt(Number(Number(Math.pow(lat1 - lat2, 2)).toFixed(8)) + Number(Number(Math.pow(lng1 - lng2, 2)).toFixed(8))) * 100000);
     if (distance > 1000)
-        distance = toString(Math.ceil(((distance / 1000) * 10) / 10)) + "K";
+        distance = toString(Math.ceil(((distance / 1000) * 10)) / 10) + "K";
     return (distance + "m");
 }
 
