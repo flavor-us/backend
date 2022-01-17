@@ -35,7 +35,7 @@ exports.requestAppointment = async (req, res) => {
             throw (errorMsg.appointmentFail);
     } catch (e) {
         console.log(e);
-        logger.error(req.kakao_id ? req.kakao_id : req.headers.host, " [requestAppointments] : ", e);
+        logger.error(req.kakao_id ? req.kakao_id : req.headers.host + " [requestAppointments] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
