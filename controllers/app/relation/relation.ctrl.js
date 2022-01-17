@@ -43,16 +43,18 @@ exports.getFollower = async (req, res) => {
         if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
-        const followed = await models.Relation.findAll({
+        const follower = await models.Relation.findAll({
             attributes: ["follower_id"],
             where: {
                 followed_id: user_id
             }
         })
-        const followedList = followed.map((item) => {
-            return (item.dataValues.followed_id);
+        console.log(follower);
+        const followerList = follower.map((item) => {
+            return (item.dataValues.follower_id);
         })
-        followers = await social.getUserListByUserId(followedList);
+        console.log(followerList);
+        followers = await social.getUserListByUserId(followerList);
     } catch (e) {
         logger.error("[getFollower] : ", e);
         if (e == errorMsg.notEnoughReq)
