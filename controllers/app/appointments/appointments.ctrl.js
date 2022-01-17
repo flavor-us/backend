@@ -30,8 +30,6 @@ exports.requestAppointment = async (req, res) => {
             restname: req.body.restname
         }
         const result = await dbUpload.uploadAppointment(appointment);
-        // if (e.parent.code && e.parent.code == "ER_DUP_ENTRY")
-        // return (res.status(202).send(errorMsg.duplicatedEntry));
         // const result = await request.addRequest(requested, { through: { restname: req.body.restname } });
         if (!result)
             throw (errorMsg.appointmentFail);
