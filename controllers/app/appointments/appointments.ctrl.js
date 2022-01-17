@@ -29,15 +29,14 @@ exports.requestAppointment = async (req, res) => {
             requested_id: requested_id,
             restname: req.body.restname
         }
-        const result = await dbUpload.uploadAppointment(appointment);
+        const result = await dbUpload.uploadAppointment(appointment).catch((e) => {
+            if (e.parent.code && e.parent.code == "ER_DUP_ENTRY")
+                return (res.status(202).send(errorMsg.duplicatedEntry));
+        });
         // const result = await request.addRequest(requested, { through: { restname: req.body.restname } });
         if (!result)
             throw (errorMsg.appointmentFail);
     } catch (e) {
-        console.log("e.parent.code : " + e.parent.code);
-        logger.error(req.kakao_id ? req.kakao_id : req.headers.host + " [requestAppointments] : " + e);
-        if (e.parent.code && e.parent.code == "ER_DUP_ENTRY")
-            return (res.status(400).send(errorMsg.duplicatedEntry));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
