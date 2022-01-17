@@ -18,11 +18,12 @@ exports.addUser = async (req, res) => {
             email: req.body.email,
             username: req.body.username,
             kakaotoken: req.body.kakaotoken,
-            kakao_id: req.body.kakao_id
+            kakao_id: req.body.kakao_id,
+            profileimg_path: req.body.profileimg_path
         }
         user_id = await dbUpload.uploadUser(user);
     } catch (e) {
-        if (e.parent.code && e.parent.code == "ER_DUP_ENTRY")
+        if (e.parent !== undefined && e.parent.code == "ER_DUP_ENTRY")
             return (res.status(400).send(errorMsg.duplicatedEntry));
         logger.error("[addUser] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
