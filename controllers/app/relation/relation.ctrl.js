@@ -25,7 +25,7 @@ exports.getFollowing = async (req, res) => {
         })
         followings = await social.getUserListByUserId(followedList);
     } catch (e) {
-        logger.error("[getFollowing] : " + e);
+        logger.error("[getFollowing] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -54,7 +54,7 @@ exports.getFollower = async (req, res) => {
         })
         followers = await social.getUserListByUserId(followerList);
     } catch (e) {
-        logger.error("[getFollower] : " + e);
+        logger.error("[getFollower] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -79,7 +79,7 @@ exports.deleteFollower = async (req, res) => {
             }
         })
     } catch (e) {
-        logger.error("[deleteFollower] : " + e);
+        logger.error("[deleteFollower] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -113,7 +113,7 @@ exports.makeRelation = async (req, res) => {
             throw (errorMsg.noUser);
         await follower.addFollower(followed);
     } catch (e) {
-        logger.error("[makeRelation] : " + e);
+        logger.error("[makeRelation] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

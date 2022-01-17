@@ -33,7 +33,7 @@ exports.uploadContents = async (req, res) => {
         }
         content_id = await dbUpload.uploadContent(content);
     } catch (e) {
-        logger.error("[uploadContents] : " + e);
+        logger.error("[uploadContents] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         if (e == errorMsg.noUser)
@@ -58,7 +58,7 @@ exports.updateContents = async (req, res) => {
             content.locationtag_id = req.body.locationtag_id
         content_id = await dbUpload.updateContents(content, req.params.content_id);
     } catch (e) {
-        logger.error("[updateContents] : " + e);
+        logger.error("[updateContents] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else
@@ -80,7 +80,7 @@ exports.deleteContents = async (req, res) => {
         if (!content)
             throw (errorMsg.noContent);
     } catch (e) {
-        logger.error("[deleteContents] : " + e);
+        logger.error("[deleteContents] : " + JSON.stringify(e));
         if (e == errorMsg.noContent)
             return (res.status(400).send(errorMsg.noContent));
         else if (e == errorMsg.notEnoughReq)
@@ -108,7 +108,7 @@ exports.getMyContents = async (req, res) => {
             where: { user_id: user_id }
         })
     } catch (e) {
-        logger.error("[getMyContents] : " + e);
+        logger.error("[getMyContents] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -148,7 +148,7 @@ exports.getRelevantContents = async (req, res) => {
             limit: maxCnt ? Number(maxCnt) : null
         })
     } catch (e) {
-        logger.error("[getRelevantContents] : " + e);
+        logger.error("[getRelevantContents] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

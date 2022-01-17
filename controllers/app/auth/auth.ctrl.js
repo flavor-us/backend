@@ -30,7 +30,7 @@ exports.getAllToken = async (req, res) => {
         });
         await tokenAuth.uploadRefreshToken(tokens.refreshToken, kakao_id);
     } catch (e) {
-        logger.error("[getAllToken] : " + e);
+        logger.error("[getAllToken] : " + JSON.stringify(e));
         if (e == errorMsg.noUser)
             return (res.status(400).send(errorMsg.noUser));
         else

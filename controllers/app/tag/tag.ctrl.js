@@ -8,7 +8,7 @@ exports.getadj1 = async (req, res) => {
     try {
         adj1 = await models.Tag_FirstAdj.findAll({});
     } catch (e) {
-        logger.error("[getadj1] : " + e);
+        logger.error("[getadj1] : " + JSON.stringify(e));
         return (res.status(400).send(errorMsg.readFail));
     }
     return (res.status(200).send({ result: adj1 }));
@@ -20,7 +20,7 @@ exports.getadj2 = async (req, res) => {
     try {
         adj2 = await models.Tag_SecondAdj.findAll({});
     } catch (e) {
-        logger.error("[getadj2] : " + e);
+        logger.error("[getadj2] : " + JSON.stringify(e));
         return (res.status(400).send(errorMsg.readFail));
     }
     return (res.status(200).send({ result: adj2 }));
@@ -32,7 +32,7 @@ exports.getlocationtag = async (req, res) => {
     try {
         locationtag = await models.Tag_Location.findAll({})
     } catch (e) {
-        logger.error("[getlocationtag] : " + e);
+        logger.error("[getlocationtag] : " + JSON.stringify(e));
         return (res.status(400).send(errorMsg.readFail));
     }
     return (res.status(200).send({ result: locationtag }));

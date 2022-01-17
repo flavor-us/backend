@@ -46,11 +46,11 @@ exports.verifyKakaoToken = async (kakaoToken) => {
                 else
                     profile = JSON.parse(body);
             } catch (e) {
-                logger.error("[verifyKakaoToken] : " + e);
+                logger.error("[verifyKakaoToken] : " + JSON.stringify(e));
             }
         })
     } catch (e) {
-        logger.error("[verifyKakaoToken] : " + e);
+        logger.error("[verifyKakaoToken] : " + JSON.stringify(e));
         return (false);
     }
     return (profile.id)
@@ -75,7 +75,7 @@ exports.uploadRefreshToken = async (refreshToken, kakao_id) => {
             })
         }
     } catch (e) {
-        logger.error("[uploadRefreshToken] : " + e);
+        logger.error("[uploadRefreshToken] : " + JSON.stringify(e));
         if (e == errorMsg.noUser)
             throw (errorMsg.noUser);
         else

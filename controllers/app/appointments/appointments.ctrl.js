@@ -75,7 +75,7 @@ exports.checkRequested = async (req, res) => {
             }
         })
     } catch (e) {
-        logger.error("[checkRequested] : " + e);
+        logger.error("[checkRequested] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
@@ -105,7 +105,7 @@ exports.removeAppointment = async (req, res) => {
             }
         })
     } catch (e) {
-        logger.error("[removeAppointments] : " + e);
+        logger.error("[removeAppointments] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)

@@ -10,7 +10,7 @@ exports.getNames = async (req, res) => {
 	var gpsDMS;
 	if (req.file) {
 		gpsDMS = await nameModule.getExif(req.file.path).catch(function (e) {
-			logger.error("[getNames] : " + e);
+			logger.error("[getNames] : " + JSON.stringify(e));
 			res.send({
 				name: ["Not Found"],
 				msg: "EXIF 정보를 추출할 수 없습니다."
