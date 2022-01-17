@@ -49,11 +49,9 @@ exports.getFollower = async (req, res) => {
                 followed_id: user_id
             }
         })
-        console.log(follower);
         const followerList = follower.map((item) => {
             return (item.dataValues.follower_id);
         })
-        console.log(followerList);
         followers = await social.getUserListByUserId(followerList);
     } catch (e) {
         logger.error("[getFollower] : ", e);
