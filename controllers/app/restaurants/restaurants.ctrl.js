@@ -11,16 +11,15 @@ exports.getNames = async (req, res) => {
         if (!req.file)
             throw (errorMsg.notEnoughReq);
         const gpsDMS = await nameModule.getExif(req.file.path);
-        if (!gpsDMS) {
+        if (!gpsDMS || !gpsDMS[0] || !gpsDMS[1]) {
             throw (errorMsg.noLatLng);
-        }
-        if (gpsDMS) {
+        } else {
             const gpsDegree = nameModule.convertLatLng(gpsDMS[0], gpsDMS[1]);
             [defaultData.lat, defaultData.lng] = [String(gpsDegree[0]), String(gpsDegree[1])];
             do {
                 restList = await nameModule.getNearRestaurants(gpsDegree[0], gpsDegree[1], moe);
-                moe *= 4;
-                if (moe > 0.001) // 약 100m
+                moe *= 3;
+                if (moe > 0.0005) // 약 50m
                     break;
             } while (Object.keys(restList).length < 3);
             restData = restList.map((item) => {
@@ -30,7 +29,7 @@ exports.getNames = async (req, res) => {
             //     throw (errorMsg.noRestaurants);
         }
     } catch (e) {
-        logger.error("[getNames] : " + JSON.stringify(e));
+        logger.error("[getNames] : " + e);
         if (e == errorMsg.noLatLng)
             return (res.status(400).send(errorMsg.noLatLng));
         if (e == errorMsg.noRestaurants)
