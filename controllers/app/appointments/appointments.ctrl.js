@@ -12,25 +12,12 @@ exports.requestAppointment = async (req, res) => {
             throw (errorMsg.notEnoughReq)
         const request_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.request);
         const requested_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.requested);
-        // const request = await models.User.findOne({
-        //     where: {
-        //         id: request_id
-        //     }
-        // })
-        // const requested = await models.User.findOne({
-        //     where: {
-        //         id: requested_id
-        //     }
-        // })
-        // if (!request || !requested)
-        //     throw (res.status(400).send(errorMsg.noUser));
         const appointment = {
             request_id: request_id,
             requested_id: requested_id,
             restname: req.body.restname
         }
         const result = await dbUpload.uploadAppointment(appointment);
-        // const result = await request.addRequest(requested, { through: { restname: req.body.restname } });
         if (!result)
             throw (errorMsg.appointmentFail);
     } catch (e) {

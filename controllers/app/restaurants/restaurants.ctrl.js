@@ -25,8 +25,6 @@ exports.getNames = async (req, res) => {
             restData = restList.map((item) => {
                 return item.dataValues;
             });
-            // if (restData.length == 0)
-            //     throw (errorMsg.noRestaurants);
         }
     } catch (e) {
         logger.error("[getNames] : " + e);
