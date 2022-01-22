@@ -39,3 +39,21 @@ exports.getNames = async (req, res) => {
     }
     return (res.status(200).json({ default_lat: defaultData.lat, default_lng: defaultData.lng, result: restData }));
 }
+
+exports.getRestaurantList = async (req, res) => {
+    if (!req.query.lat || !req.query.lng)
+        return (res.status(400).send(errorMsg.notEnoughReq));
+    const lat = req.query.lat;
+    const lng = req.query.lng;
+    var restList, moe = 0.00004;
+    do {
+        restList = await nameModule.getNearRestaurants(lat, lng, moe);
+        moe *= 3;
+        if (moe > 0.0005) // 약 50m
+            break;
+    } while (Object.keys(restList).length < 3);
+    restData = restList.map((item) => {
+        return item.dataValues;
+    });
+    return (res.status(200).send({ length: restData.length, result: restList }))
+}

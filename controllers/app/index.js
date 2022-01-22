@@ -6,7 +6,7 @@ const jwtAuth = require("../../middleware/jwtAuth");
 const { upload } = require('../../middleware/multerS3');
 
 router.post("/name", local_upload.single("photo"), app.restaurantsCtrl.getNames);
-
+router.get("/near", app.restaurantsCtrl.getRestaurantList);
 router.delete("/contents/:content_id", app.contentsCtrl.deleteContents);
 router.patch("/contents/:content_id", app.contentsCtrl.updateContents);
 router.get("/contents/:kakao_id", jwtAuth.checkToken, app.contentsCtrl.getMyContents);
