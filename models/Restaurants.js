@@ -12,10 +12,10 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: false,
 			},
-			type: {
-				type: DataTypes.STRING,
-				allowNull: true,
-			},
+			// type: {
+			// 	type: DataTypes.STRING,
+			// 	allowNull: true,
+			// },
 			lat: {
 				type: DataTypes.DECIMAL(20, 17),
 				allowNull: false,

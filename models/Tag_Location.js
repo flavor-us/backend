@@ -19,7 +19,7 @@ module.exports = function (sequelize, DataTypes) {
         {
             sequelize,
             tableName: "Tag_Location",
-            timestamps: false,
+            timestamps: true,
         }
     );
 

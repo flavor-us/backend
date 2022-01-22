@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const db = require("./models/index");
 const nunjucks = require("nunjucks");
-const { swaggerUi, specs } = require('./modules/swagger');
 const logger = require("./config/logger");
 
 class App {
@@ -12,7 +11,7 @@ class App {
 		this.app.listen(3000, function () {
 			logger.info("Express listening on port : 3000");
 		});
-		this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+		// this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 		this.app.use(bodyParser.json());
 		this.app.use(bodyParser.urlencoded({ extended: false }));
 
