@@ -51,9 +51,9 @@ exports.getRestaurantList = async (req, res) => {
         do {
             restList = await nameModule.getNearRestaurants(lat, lng, moe);
             moe *= 3;
-            if (moe > 0.0005) // 약 50m
+            if (moe > 0.001) // 약 50m
                 break;
-        } while (Object.keys(restList).length < 3);
+        } while (Object.keys(restList).length < 4);
         restData = restList.map((item) => {
             return item.dataValues;
         });
