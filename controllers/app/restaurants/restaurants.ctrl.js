@@ -44,7 +44,7 @@ exports.getNames = async (req, res) => {
 
 exports.getRestaurantList = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
-    if (!req.query.lat || !req.query.lng)
+    if (req.query.lat == "null" || !req.query.lat || !req.query.lng || req.query.lng == "null")
         return (res.status(400).send(errorMsg.notEnoughReq));
     try {
         const lat = Number(req.query.lat);
