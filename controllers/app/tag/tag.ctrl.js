@@ -6,7 +6,10 @@ exports.getadj1 = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     var adj1;
     try {
-        adj1 = await models.Tag_FirstAdj.findAll({});
+        adj1 = await models.Tag_FirstAdj.findAll({
+            attributes: ['id', 'tagname'],
+            order: [['id', 'ASC']]
+        });
     } catch (e) {
         logger.error("[getadj1] : " + JSON.stringify(e));
         return (res.status(400).send(errorMsg.readFail));
@@ -18,7 +21,10 @@ exports.getadj2 = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     var adj2;
     try {
-        adj2 = await models.Tag_SecondAdj.findAll({});
+        adj2 = await models.Tag_SecondAdj.findAll({
+            attributes: ['id', 'tagname'],
+            order: [['id', 'ASC']]
+        });
     } catch (e) {
         logger.error("[getadj2] : " + JSON.stringify(e));
         return (res.status(400).send(errorMsg.readFail));
@@ -30,7 +36,10 @@ exports.getlocationtag = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     var locationtag;
     try {
-        locationtag = await models.Tag_Location.findAll({})
+        locationtag = await models.Tag_Location.findAll({
+            attributes: ['id', 'tagname'],
+            order: [['id', 'ASC']]
+        })
     } catch (e) {
         logger.error("[getlocationtag] : " + JSON.stringify(e));
         return (res.status(400).send(errorMsg.readFail));

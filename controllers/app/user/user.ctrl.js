@@ -5,6 +5,8 @@ const completeMsg = require("../../../message/complete");
 const { v4: uuidv4 } = require('uuid');
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
 const logger = require("../../../config/logger");
+const relation = require("../../../modules/relation");
+const FOOWINKLE_BIRD_ID = 19;
 
 exports.addUser = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
@@ -22,12 +24,16 @@ exports.addUser = async (req, res) => {
             profileimg_path: req.body.profileimg_path
         }
         user_id = await dbUpload.uploadUser(user);
+        await relation.makerelation(user_id, FOOWINKLE_BIRD_ID);
     } catch (e) {
+        console.log(e);
         if (e.parent !== undefined && e.parent.code == "ER_DUP_ENTRY")
             return (res.status(400).send(errorMsg.duplicatedEntry));
         logger.error("[addUser] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
+        else if (e == errorMsg.noUser)
+            return (res.status(400).send(errorMsg.noUser));
         else
             return (res.status(400).send(errorMsg.uploadFail));
     };

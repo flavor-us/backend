@@ -6,6 +6,7 @@ const completeMsg = require("../../../message/complete");
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert")
 const social = require("../../../modules/social");
 const logger = require("../../../config/logger");
+const relation = require("../../../modules/relation");
 
 exports.getFollowing = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
@@ -99,19 +100,20 @@ exports.makeRelation = async (req, res) => {
         const follower_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.follower_id);
         if (!followed_id || !follower_id)
             throw (errorMsg.noUser);
-        const followed = await models.User.findOne({
-            where: {
-                id: followed_id
-            }
-        })
-        const follower = await models.User.findOne({
-            where: {
-                id: follower_id
-            }
-        })
-        if (!followed || !follower)
-            throw (errorMsg.noUser);
-        await follower.addFollower(followed);
+        await relation.makerelation(follower_id, followed_id);
+        // const followed = await models.User.findOne({
+        //     where: {
+        //         id: followed_id
+        //     }
+        // })
+        // const follower = await models.User.findOne({
+        //     where: {
+        //         id: follower_id
+        //     }
+        // })
+        // if (!followed || !follower)
+        //     throw (errorMsg.noUser);
+        // await follower.addFollower(followed);
     } catch (e) {
         logger.error("[makeRelation] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)

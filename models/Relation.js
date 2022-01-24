@@ -14,7 +14,7 @@ module.exports = function (sequelize, DataTypes) {
         {
             sequelize,
             tableName: "Relation",
-            timestamps: false,
+            timestamps: true,
         }
     );
     return Relation;
