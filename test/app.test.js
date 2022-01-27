@@ -57,6 +57,18 @@ describe("POST /user", () => {
             expect(response.statusCode).toBe(400);
         })
     })
+    describe("duplicated entry", () => {
+        test("should respond with a 400 status", async () => {
+            const response = await request(app).post("/app/user").send({
+                username: "jest",
+                email: "jest@jest.com",
+                kakaotoken: "testtoken",
+                kakao_id: id.kakao + 1 // prevent duplication
+            })
+            expect(response.statusCode).toBe(400);
+            expect(response.body).toEqual(errorMsg.duplicatedEntry);
+        })
+    })
 })
 
 describe("PATCH /user", () => {
@@ -76,6 +88,23 @@ describe("PATCH /user", () => {
                 })
                 expect(response.body).toEqual(errorMsg.updateFail);
                 expect(response.statusCode).toBe(400);
+            })
+        })
+    })
+})
+
+describe("GET /user", () => {
+    describe("valid Value -> get profile information successfully", () => {
+        test("get profile successfully", async () => {
+            const response = await request(app).get("/app/user/" + id.kakao).send({});
+            expect(response.statusCode).toBe(200);
+            expect(response.body.username).not.toBeNull();
+        })
+        describe("get unposted user", () => {
+            test("read Fail", async () => {
+                const response = await request(app).get("/app/user/" + -1).send({});
+                expect(response.statusCode).toBe(400);
+                expect(response.body).toEqual(errorMsg.noUser);
             })
         })
     })
@@ -127,21 +156,31 @@ describe("GET /contents/relevant/:kakao_id", () => {
     })
 })
 
-describe("GET /contents/:kakao_id", () => {
-    describe("given valid kakao_id", () => {
-        test("should respond with statusCode 200", async () => {
-            const response = await request(app).get("/app/contents/" + id.kakao).send()
-            expect(response.statusCode).toBe(200);
-        })
-    })
-    describe("given invalid kakao_id", () => {
-        test("should respond with statusCode 400", async () => {
-            const response = await request(app).get("/app/contents/" + 0).send()
-            expect(response.statusCode).toBe(400);
-            expect(response.body).toEqual(errorMsg.noUser);
+describe("delete Contents", () => {
+    describe("given correct contents", () => {
+        test("should respond status 204", async () => {
+            const response = await request(app).get("/app/contents/" + id.content);
+            expect(response.statusCode).toBe(204);
         })
     })
 })
+
+
+// describe("GET /contents/:kakao_id", () => {
+//     describe("given valid kakao_id", () => {
+//         test("should respond with statusCode 200", async () => {
+//             const response = await request(app).get("/app/contents/" + id.kakao).send()
+//             expect(response.statusCode).toBe(200);
+//         })
+//     })
+//     describe("given invalid kakao_id", () => {
+//         test("should respond with statusCode 400", async () => {
+//             const response = await request(app).get("/app/contents/" + 0).send()
+//             expect(response.statusCode).toBe(400);
+//             expect(response.body).toEqual(errorMsg.noUser);
+//         })
+//     })
+// })
 
 describe("PATCH /contents/:content_id", () => {
     describe("valid value -> contents update successfully", () => {
@@ -172,16 +211,16 @@ describe("POST /relation", () => {
     describe("given full requirement", () => {
         test("should respond with a status 201", async () => {
             const response = await request(app).post("/app/relation").send({
-                followed_id: 1,
-                follower_id: id.user
+                followed_id: id.kakao,
+                follower_id: id.kakao + 1// made by adduser test code
             })
             expect(response.statusCode).toBe(201);
         })
     })
     describe("given only followerId", () => {
-        test("should respond with a status 201", async () => {
+        test("should respond with a status 400", async () => {
             const response = await request(app).post("/app/relation").send({
-                follower_id: id.user
+                follower_id: id.kakao
             })
             expect(response.statusCode).toBe(400);
         })
@@ -221,21 +260,41 @@ describe("POST /Appointments", () => {
     describe("valid value -> make Appointments", () => {
         test("upload successfully", async () => {
             const response = await request(app).post("/app/appointments").send({
-                request: 1,
-                requested: id.user,
+                request: id.kakao + 1,//made by addUser test code
+                requested: id.kakao,
                 restname: "약속의 식당"
             })
             expect(response.statusCode).toBe(201);
         })
     })
+    describe("duplicated appointment", () => {
+        test("upload fail", async () => {
+            const response = await request(app).post("/app/appointments").send({
+                request: id.kakao + 1,//made by addUser test code
+                requested: id.kakao,
+                restname: "약속의 식당"
+            })
+            expect(response.statusCode).toBe(400);
+            expect(response.body).toEqual(errorMsg.duplicatedEntry);
+        })
+    })
+    describe("not Enough requirement", () => {
+        test("upload fail", async () => {
+            const response = await request(app).post("/app/appointments").send({
+                request: id.kakao + 1,//made by addUser test code
+                restname: "약속의 식당"
+            })
+            expect(response.statusCode).toBe(400);
+            expect(response.body).toEqual(errorMsg.notEnoughReq);
+        })
+    })
+
 })
 
 describe("GET /Appointments", () => {
     describe("valid value -> read Appointments list successfully", () => {
         test("정상 GET", async () => {
-            const response = await request(app).get("/app/appointments").send({
-                user_id: id.user
-            })
+            const response = await request(app).get("/app/appointments/" + id.kakao).send({})
             expect(response.statusCode).toBe(200);
         })
     })
@@ -243,10 +302,8 @@ describe("GET /Appointments", () => {
 
 describe("DELETE /Appointments", () => {
     describe("valid value -> remove Appointments list", () => {
-        test("정상 GET", async () => {
-            const response = await request(app).delete("/app/appointments").send({
-                user_id: id.user
-            })
+        test("정상 DELETE", async () => {
+            const response = await request(app).delete("/app/appointments/" + id.kakao).send({})
             expect(response.statusCode).toBe(204);
         })
     })
@@ -293,3 +350,54 @@ describe("MODULE TEST : Station Module", () => {
         })
     })
 })
+
+
+//restaurants
+describe("get near restaurants API", () => {
+    describe("valid lat, lng", () => {
+        test("정상 요청", async () => {
+            const response = await request(app).get("/app/near?lat=37.54652332&lng=126.79348611").send({});
+            expect(response.statusCode).toBe(200);
+        })
+    })
+    describe("only lat", () => {
+        test("경도 쿼리 X", async () => {
+            const response = await request(app).get("/app/near?lat=37.54652332").send({});
+            expect(response.statusCode).toBe(400);
+            expect(response.body).toEqual(errorMsg.notEnoughReq);
+        })
+    })
+    describe("lat, lng == null", () => {
+        test("null string", async () => {
+            const response = await request(app).get("/app/near?lat=null&lng=null").send({});
+            expect(response.statusCode).toBe(400);
+            expect(response.body).toEqual(errorMsg.notEnoughReq);
+        })
+    })
+})
+
+//tag
+describe("GET /tag/adj1", () => {
+    describe("get first adj tags", () => {
+        test("정상 GET", async () => {
+            const response = await request(app).get("/app/tag/adj1").send({});
+            expect(response.statusCode).toBe(200);
+            expect(response.body).not.toBeNull();
+        })
+    })
+    describe("get second adj tags", () => {
+        test("정상 GET", async () => {
+            const response = await request(app).get("/app/tag/adj1").send({});
+            expect(response.statusCode).toBe(200);
+            expect(response.body).not.toBeNull();
+        })
+    })
+    describe("get location tags", () => {
+        test("정상 GET", async () => {
+            const response = await request(app).get("/app/tag/locationtag").send({});
+            expect(response.statusCode).toBe(200);
+            expect(response.body).not.toBeNull();
+        })
+    })
+})
+

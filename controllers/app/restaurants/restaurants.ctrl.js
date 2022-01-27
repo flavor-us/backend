@@ -14,7 +14,6 @@ exports.getNames = async (req, res) => {
         if (!gpsDMS || !gpsDMS[0] || !gpsDMS[1]) {
             throw (errorMsg.noLatLng);
         } else {
-
             const gpsDegree = nameModule.convertLatLng(gpsDMS[0], gpsDMS[1]);
             console.log(gpsDegree);
             [defaultData.lat, defaultData.lng] = [String(gpsDegree[0]), String(gpsDegree[1])];

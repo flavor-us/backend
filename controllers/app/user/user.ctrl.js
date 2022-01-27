@@ -93,16 +93,16 @@ exports.getProfile = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     var profile;
     try {
-        if (!req.params.user_id)
+        if (!req.params.kakao_id)
             throw (errorMsg.notEnoughReq);
-        const user_id = req.params.user_id;
+        const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
         profile = await models.User.findOne({
             attributes: ["username", "profileimg_path"],
             where: {
                 id: user_id
             }
         })
-        if (!user_id)
+        if (!profile)
             throw (errorMsg.noUser);
     } catch (e) {
         logger.error("[getProfile] : " + JSON.stringify(e));
