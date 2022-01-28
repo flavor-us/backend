@@ -20,9 +20,9 @@ exports.getNames = async (req, res) => {
             do {
                 restList = await nameModule.getNearRestaurants(gpsDegree[0], gpsDegree[1], moe);
                 moe *= 3;
-                if (moe > 0.0005) // 약 50m
+                if (moe > 0.003) // 약100m
                     break;
-            } while (Object.keys(restList).length < 3 || moe < 0.0002);
+            } while (Object.keys(restList).length < 3 || moe < 0.0005);
             restData = restList.map((item) => {
                 return item.dataValues;
             });
@@ -51,10 +51,10 @@ exports.getRestaurantList = async (req, res) => {
         var restList, moe = 0.00004;
         do {
             restList = await nameModule.getNearRestaurants(lat, lng, moe);
-            moe *= 3;
-            if (moe > 0.0005) // 약 50m
+            moe *= 2;
+            if (moe > 0.001) // 약 100m
                 break;
-        } while (Object.keys(restList).length < 3);
+        } while (Object.keys(restList).length < 5);
         restData = restList.map((item) => {
             return item.dataValues;
         });
