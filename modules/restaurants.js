@@ -1,5 +1,3 @@
-
-
 exports.addDistanceElements = function (restList, defaultPoint) {
     restList = restList.map((item) => {
         item.dataValues.distance = Math.abs(Number(item.dataValues.lat) - defaultPoint[0] + Number(item.dataValues.lng) - defaultPoint[1]);

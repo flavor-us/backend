@@ -52,7 +52,7 @@ exports.checkRequested = async (req, res) => {
         if (!user)
             return (res.status(400).send(errorMsg.noUser));
         requested = await models.Appointments.findAll({
-            attributes: ["restname"],
+            attributes: ["id", "restname"],
             include: [
                 { attributes: ["username"], model: models.User },
             ],
@@ -72,7 +72,7 @@ exports.checkRequested = async (req, res) => {
     return (res.status(200).json({ result: requested }));
 }
 
-exports.removeAppointment = async (req, res) => {
+exports.removeAllAppointments = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
     try {
         if (!req.params.kakao_id)
@@ -91,13 +91,32 @@ exports.removeAppointment = async (req, res) => {
             }
         })
     } catch (e) {
-        logger.error("[removeAppointments] : " + JSON.stringify(e));
+        logger.error("[removeAllAppointments] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         else if (e == errorMsg.noUser)
             return (res.status(400).send(errorMsg.noUser));
         else
             return (res.status(400).send(errorMsg.readFail));
+    }
+    return (res.status(204).send());
+}
+
+exports.removeAppointment = async (req, res) => {
+    logger.info(`${req.method} ${req.url}`);
+    try {
+        const appointment_id = req.params.appointment_id;
+        await models.Appointments.destroy({
+            where: {
+                id: appointment_id
+            }
+        })
+    } catch (e) {
+        logger.error("[removeAppointment] : " + JSON.stringify(e));
+        if (e == errorMsg.notEnoughReq)
+            return (res.status(400).send(errorMsg.notEnoughReq));
+        else
+            return (res.status(400).send(errorMsg.deleteFail));
     }
     return (res.status(204).send());
 }

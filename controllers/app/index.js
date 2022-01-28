@@ -1,11 +1,11 @@
 const { Router } = require("express");
 const router = Router();
 const app = require("./app.ctrl");
-const local_upload = require("../../middleware/multer");
+// const local_upload = require("../../middleware/multer");
 const jwtAuth = require("../../middleware/jwtAuth");
 const multerTransform = require('../../middleware/multerTransform');
 
-router.post("/name", local_upload.single("photo"), app.restaurantsCtrl.getNames);
+// router.post("/name", local_upload.single("photo"), app.restaurantsCtrl.getNames);
 router.get("/near", app.restaurantsCtrl.getRestaurantList);
 router.delete("/contents/:content_id", app.contentsCtrl.deleteContents);
 router.patch("/contents/:content_id", app.contentsCtrl.updateContents);
@@ -38,7 +38,8 @@ router.get("/jwt", jwtAuth.checkToken, (req, res) => {
 
 router.post("/appointments", app.appointmentsCtrl.requestAppointment);
 router.get("/appointments/:kakao_id", app.appointmentsCtrl.checkRequested);
-router.delete("/appointments/:kakao_id", app.appointmentsCtrl.removeAppointment);
+router.delete("/appointments/:kakao_id", app.appointmentsCtrl.removeAllAppointments);
+router.delete("/appointment/:appointment_id", app.appointmentsCtrl.removeAppointment);
 
 router.get("/uuid/:user_id", app.uuidCtrl.getUuidById);
 router.get("/userid/:kakao_id", app.useridCtrl.getUserIdByKakaoId);

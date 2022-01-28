@@ -34,7 +34,7 @@ const ImageUpload = multer({
                     cb(null, `${user_id}/${Date.now()}.${file.mimetype.split('/')[1]}`);
                 },
                 transform: function (req, file, cb) {
-                    cb(null, sharp().resize({ width: 1080 }).withMetadata());//비율 유지한 채 변경
+                    cb(null, sharp().resize({ width: 1080 }).withMetadata());//비율 유지한 채 변경, metadata 유지 (사진 방향 정보 기억)
                 },
             },
         ],
