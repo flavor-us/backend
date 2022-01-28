@@ -30,7 +30,7 @@ exports.s3MulterUpload = async (req, res) => {
     if (req.error)
         return (res.status(400).send(req.error));
     if (req.file) {
-        return (res.status(201).send({ filepath: req.file.location }));
+        return (res.status(201).send({ filepath: req.file.transforms[0].location }));
     }
     else
         return (res.status(400).send(errorMsg.s3UploadFail));

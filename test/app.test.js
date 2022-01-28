@@ -155,17 +155,6 @@ describe("GET /contents/relevant/:kakao_id", () => {
         })
     })
 })
-
-describe("delete Contents", () => {
-    describe("given correct contents", () => {
-        test("should respond status 204", async () => {
-            const response = await request(app).get("/app/contents/" + id.content);
-            expect(response.statusCode).toBe(204);
-        })
-    })
-})
-
-
 // describe("GET /contents/:kakao_id", () => {
 //     describe("given valid kakao_id", () => {
 //         test("should respond with statusCode 200", async () => {
@@ -186,8 +175,8 @@ describe("PATCH /contents/:content_id", () => {
     describe("valid value -> contents update successfully", () => {
         test("update Successful", async () => {
             const response = await request(app).patch("/app/contents/" + id.content).send({
-                adj1_id: 2,
-                adj2_id: 1,
+                adj1_id: 3,
+                adj2_id: 2,
                 locationtag_id: 1
             })
             expect(response.statusCode).toBe(201);
@@ -196,8 +185,8 @@ describe("PATCH /contents/:content_id", () => {
     describe("same value -> update fail", () => {
         test("수정 불가", async () => {
             const response = await request(app).patch("/app/contents/" + id.content).send({
-                adj1_id: 2,
-                adj2_id: 1,
+                adj1_id: 3,
+                adj2_id: 2,
                 locationtag_id: 1
             })
             expect(response.statusCode).toBe(400);
@@ -205,7 +194,14 @@ describe("PATCH /contents/:content_id", () => {
         })
     })
 })
-
+describe("delete Contents", () => {
+    describe("given correct contents", () => {
+        test("should respond status 204", async () => {
+            const response = await request(app).delete("/app/contents/" + id.content);
+            expect(response.statusCode).toBe(204);
+        })
+    })
+})
 //RELATION
 describe("POST /relation", () => {
     describe("given full requirement", () => {

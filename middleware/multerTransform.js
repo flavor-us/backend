@@ -1,7 +1,16 @@
 const multer = require("multer");
 const multerS3 = require("multer-s3-transform");
 const sharp = require("sharp");
+const AWS = require("aws-sdk");
+const logger = require("../config/logger");
+const errorMsg = require("../message/error");
+const kakaoIdConvert = require("../modules/kakaoIdConvert");
 
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+});
 const ImageUpload = multer({
     storage: multerS3({
         s3,
@@ -10,13 +19,22 @@ const ImageUpload = multer({
         shouldTransform: true,
         transforms: [
             {
-                id: "resized",
-                key: function (req, file, cb) {
-                    let extension = path.extname(file.originalname);
-                    cb(null, Date.now().toString() + extension);
+                id: "resizeimage",
+                key: async function (req, file, cb) {
+                    var user_id;
+                    try {
+                        user_id = await kakaoIdConvert.getUserIdByKakaoId(req.params.kakao_id);
+                    } catch (e) {
+                        logger.error("[multerresizeS3] : " + e);
+                        if (e == errorMsg.noUser)
+                            req.error = errorMsg.noUser;
+                        else
+                            req.error = errorMsg.uploadFail;
+                    }
+                    cb(null, `${user_id}/${Date.now()}.${file.mimetype.split('/')[1]}`);
                 },
                 transform: function (req, file, cb) {
-                    cb(null, sharp().resize(100, 100));
+                    cb(null, sharp().resize({ width: 1080 }));//비율 유지한 채 변경
                 },
             },
         ],
@@ -24,4 +42,4 @@ const ImageUpload = multer({
     }),
 });
 
-const uploadImageMulterMiddleware = ImageUpload.single("file");
+exports.uploadImageMulterMiddleware = ImageUpload.single("photo");

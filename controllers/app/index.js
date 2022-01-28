@@ -1,11 +1,11 @@
 const { Router } = require("express");
 const router = Router();
 const app = require("./app.ctrl");
-const local_upload = require("../../middleware/multer");
+// const local_upload = require("../../middleware/multer");
 const jwtAuth = require("../../middleware/jwtAuth");
-const { upload } = require('../../middleware/multerS3');
+const multerTransform = require('../../middleware/multerTransform');
 
-router.post("/name", local_upload.single("photo"), app.restaurantsCtrl.getNames);
+// router.post("/name", local_upload.single("photo"), app.restaurantsCtrl.getNames);
 router.get("/near", app.restaurantsCtrl.getRestaurantList);
 router.delete("/contents/:content_id", app.contentsCtrl.deleteContents);
 router.patch("/contents/:content_id", app.contentsCtrl.updateContents);
@@ -18,8 +18,7 @@ router.post("/user", app.userCtrl.addUser);
 router.patch("/user/:kakao_id", app.userCtrl.editProfile);
 router.get("/user/:kakao_id", app.userCtrl.getProfile);
 
-router.post("/s3/:kakao_id", upload.single("photo"), app.s3Ctrl.s3MulterUpload);
-// router.post("/s3/:user_id", upload.single("photo"), app.s3Ctrl.s3Upload);
+router.post("/s3/:kakao_id", multerTransform.uploadImageMulterMiddleware, app.s3Ctrl.s3MulterUpload);
 
 router.delete("/s3/:kakao_id/:filename", app.s3Ctrl.s3Delete)
 router.get("/rekog", app.s3Ctrl.getRekog);
