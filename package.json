@@ -7,7 +7,7 @@
 		"test": "jest --setupFiles dotenv/config --forceExit --coverage",
 		"start": "nodemon app --trace-warningsc",
 		"auto": "node auto",
-		"restart": "pm2 restart app.js --watch --ignore-watch=\"node_modules/* uploads/* .git/*\" --time"
+		"restart": "pm2 restart app.js --watch --ignore-watch=\"node_modules/* uploads/* .git/* logs/*\" --time"
 	},
 	"author": "limchanyeop",
 	"license": "ISC",
