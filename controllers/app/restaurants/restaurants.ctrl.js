@@ -2,6 +2,7 @@ const nameModule = require("../../../modules/getName");
 const errorMsg = require("../../../message/error");
 const deleteFileModule = require("../../../modules/deleteFile");
 const logger = require("../../../config/logger");
+const restModule = require("../../../modules/restaurants");
 
 exports.getNames = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
@@ -46,21 +47,19 @@ exports.getRestaurantList = async (req, res) => {
     if (req.query.lat == "null" || !req.query.lat || !req.query.lng || req.query.lng == "null")
         return (res.status(400).send(errorMsg.notEnoughReq));
     try {
-        const lat = Number(req.query.lat);
-        const lng = Number(req.query.lng);
+        const defaultLat = Number(req.query.lat);
+        const defaultLng = Number(req.query.lng);
         var restList, moe = 0.00004;
         do {
-            restList = await nameModule.getNearRestaurants(lat, lng, moe);
+            restList = await nameModule.getNearRestaurants(defaultLat, defaultLng, moe);
             moe *= 2;
             if (moe > 0.001) // 약 100m
                 break;
         } while (Object.keys(restList).length < 5);
-        restData = restList.map((item) => {
-            return item.dataValues;
-        });
+        restList = restModule.sortRestaurantList(restModule.addDistanceElements(restList, [defaultLat, defaultLng]));
     } catch (e) {
         logger.error("[getRestaurantList] : " + e);
         return (res.status(400).send(errorMsg.readFail));
     }
-    return (res.status(200).send({ length: restData.length, result: restList }))
+    return (res.status(200).send({ length: restList.length, result: restList }))
 }
