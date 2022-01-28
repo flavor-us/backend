@@ -22,7 +22,7 @@ exports.getNames = async (req, res) => {
                 moe *= 3;
                 if (moe > 0.0005) // 약 50m
                     break;
-            } while (Object.keys(restList).length < 3 && moe < 0.0002);
+            } while (Object.keys(restList).length < 3 || moe < 0.0002);
             restData = restList.map((item) => {
                 return item.dataValues;
             });
