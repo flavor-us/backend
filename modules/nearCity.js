@@ -1,26 +1,20 @@
 const models = require("../models");
+const logger = require("../config/logger");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
-const logger = require("../config/logger");
 
-exports.getNearStation = async function (lat, lng) {
-    var moe = 0.0004;
-    var stationData, station = {};
+exports.getNearCity = async function (lat, lng) {
+    var moe = 0.005;
+    var cityData, city = {};
     do {
-        stationData = await getStation(parseFloat(lat), parseFloat(lng), moe);
+        cityData = await getCity(parseFloat(lat), parseFloat(lng), moe);
         moe *= 3;
-        if (moe > 0.01)
-            break;
-    } while (!stationData);
-    if (stationData) {
-        station = {
-            name: stationData.dataValues.name,
-            distance: await getMeterDistance(lat, stationData.dataValues.lat, lng, stationData.dataValues.lng)
-        }
-        return (station);
+    } while (!cityData);
+    city = {
+        name: cityData ? cityData.dataValues.name : null,
+        distance: cityData ? await getMeterDistance(lat, cityData.dataValues.lat, lng, cityData.dataValues.lng) : null
     }
-    else
-        return (null);
+    return (city);
 }
 
 getMeterDistance = async function (lat1, lat2, lng1, lng2) {
@@ -30,10 +24,10 @@ getMeterDistance = async function (lat1, lat2, lng1, lng2) {
     return (distance + "m");
 }
 
-getStation = async function (lat, lng, moe) {
-    var station = {};
+getCity = async function (lat, lng, moe) {
+    var city = {};
     try {
-        station = await models.Stations.findOne({
+        city = await models.City.findOne({
             attributes: ["name", "lat", "lng"],
             where: {
                 lat: { [Op.between]: [lat - moe, lat + moe] },
@@ -43,5 +37,5 @@ getStation = async function (lat, lng, moe) {
     } catch (error) {
         logger.error(error);
     }
-    return station;
+    return city;
 };

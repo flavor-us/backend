@@ -54,6 +54,10 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 			},
+			near_station: {
+				type: DataTypes.STRING,
+				allowNull: true
+			},
 			station_distance: {
 				type: DataTypes.STRING,
 				allowNull: true
@@ -70,13 +74,6 @@ module.exports = function (sequelize, DataTypes) {
 			targetKey: "id",
 			unique: false,
 			comment: "Restaurants 테이블 식당 id의 외래키입니다."
-		})
-
-		Contents.belongsTo(models.Stations, {
-			foreignKey: "near_station",
-			targetKey: "name",
-			unique: false,
-			comment: "Station 테이블 역 이름 외래키입니다."
 		})
 
 		Contents.belongsTo(models.Tag_FirstAdj, {

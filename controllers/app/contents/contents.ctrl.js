@@ -5,16 +5,19 @@ const completeMsg = require("../../../message/complete");
 const Sequelize = require("sequelize");
 const nearStation = require("../../../modules/nearStation");
 const kakaoIdConvert = require("../../../modules/kakaoIdConvert");
+const nearCity = require("../../../modules/nearCity");
 const Op = Sequelize.Op;
 const logger = require("../../../config/logger");
 
 exports.uploadContents = async (req, res) => {
-    var content_id;
+    var content_id, city;
     try {
         if (!req.body.lat || !req.body.lng || !req.body.filename || !req.body.restname)
             throw (errorMsg.notEnoughReq);
         const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.kakao_id);
         const station = await nearStation.getNearStation(req.body.lat, req.body.lng);
+        if (!station)
+            city = await nearCity.getNearCity(req.body.lat, req.body.lng);
         const content = {
             user_id: user_id,
             rest_id: req.body.rest_id,
@@ -28,12 +31,13 @@ exports.uploadContents = async (req, res) => {
             adj1_id: req.body.adj1_id,
             adj2_id: req.body.adj2_id,
             locationtag_id: req.body.locationtag_id,
-            near_station: station.name,
-            station_distance: station.distance
+            near_station: station ? station.name : city.name,
+            station_distance: station ? station.distance : city.distance //나중에 변수명 변경해야함
         }
         content_id = await dbUpload.uploadContent(content);
     } catch (e) {
-        logger.error("[uploadContents] : " + JSON.stringify(e));
+        console.log(e);
+        logger.error("[uploadContents] : " + e);
         if (e == errorMsg.notEnoughReq)
             return (res.status(400).send(errorMsg.notEnoughReq));
         if (e == errorMsg.noUser)
