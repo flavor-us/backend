@@ -32,9 +32,9 @@ exports.uploadContents = async (req, res) => {
             adj2_id: req.body.adj2_id,
             locationtag_id: req.body.locationtag_id,
             near_station: station ? station.name : city.name,
-            near_info: station ? station.name : city.name,
-            station_distance: station ? station.distance : city.distance, 
-            near_distance: station ? station.distance : city.distance //나중에 변수명 변경해야함 -> api 명세 변ㅕㅇ
+            near_point: station ? station.name : city.name,
+            station_distance: station ? station.distance : city.distance,
+            point_distance: station ? station.distance : city.distance //나중에 변수명 변경해야함 -> api 명세 변ㅕㅇ
         }
         content_id = await dbUpload.uploadContent(content);
     } catch (e) {
@@ -153,6 +153,13 @@ exports.getRelevantContents = async (req, res) => {
             order: [['date', 'DESC']],
             limit: maxCnt ? Number(maxCnt) : null
         })
+        contents = contents.map((content) => {
+            if (content.dataValues.near_station && content.dataValues.station_distance) {
+                content.dataValues.near_point = content.dataValues.near_station;
+                content.dataValues.point_distance = content.dataValues.station_distance;
+            }
+            return (content);
+        });
     } catch (e) {
         logger.error("[getRelevantContents] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
