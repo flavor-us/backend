@@ -34,7 +34,7 @@ exports.uploadContents = async (req, res) => {
             near_station: station ? station.name : city.name,
             near_point: station ? station.name : city.name,
             station_distance: station ? station.distance : city.distance,
-            point_distance: station ? station.distance : city.distance //나중에 변수명 변경해야함 -> api 명세 변ㅕㅇ
+            point_distance: station ? station.distance : city.distance
         }
         content_id = await dbUpload.uploadContent(content);
     } catch (e) {
