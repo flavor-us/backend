@@ -101,19 +101,6 @@ exports.makeRelation = async (req, res) => {
         if (!followed_id || !follower_id)
             throw (errorMsg.noUser);
         await relation.makerelation(follower_id, followed_id);
-        // const followed = await models.User.findOne({
-        //     where: {
-        //         id: followed_id
-        //     }
-        // })
-        // const follower = await models.User.findOne({
-        //     where: {
-        //         id: follower_id
-        //     }
-        // })
-        // if (!followed || !follower)
-        //     throw (errorMsg.noUser);
-        // await follower.addFollower(followed);
     } catch (e) {
         logger.error("[makeRelation] : " + JSON.stringify(e));
         if (e == errorMsg.notEnoughReq)
