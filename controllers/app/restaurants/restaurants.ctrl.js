@@ -10,7 +10,7 @@ exports.getRestaurantList = async (req, res) => {
     try {
         const defaultLat = Number(req.query.lat);
         const defaultLng = Number(req.query.lng);
-        var restList, moe = 0.0008; // 약 8m
+        var restList, moe = 0.0004; // 약 8m
         do {
             restList = await nameModule.getNearRestaurants(defaultLat, defaultLng, moe);
             moe *= 2;
