@@ -10,13 +10,13 @@ exports.getRestaurantList = async (req, res) => {
     try {
         const defaultLat = Number(req.query.lat);
         const defaultLng = Number(req.query.lng);
-        var restList, moe = 0.0004; // 약 8m
+        var restList, moe = 0.0004; // 약 4m
         do {
             restList = await nameModule.getNearRestaurants(defaultLat, defaultLng, moe);
             moe *= 2;
             if ((moe > 0.001 && req.query.option != "more") || moe > 0.02) // 약 100m, more 옵션 있을 경우 1km
                 break;
-        } while ((Object.keys(restList).length < 5 && req.query.option != "more") && Object.keys(restList).length < 20);
+        } while ((Object.keys(restList).length < 5 || req.query.option == "more") && Object.keys(restList).length < 20);
         restList = restModule.sortRestaurantList(restModule.addDistanceElements(restList, [defaultLat, defaultLng]));
     } catch (e) {
         logger.error("[getRestaurantList] : " + e);
