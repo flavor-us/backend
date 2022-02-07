@@ -14,7 +14,7 @@ exports.getRestaurantList = async (req, res) => {
         do {
             restList = await nameModule.getNearRestaurants(defaultLat, defaultLng, moe);
             moe *= 2;
-            if ((moe > 0.001 && req.query.option != "more") || moe > 0.02) // 약 100m, more 옵션 있을 경우 1km
+            if ((moe > 0.001 && req.query.option != "more") || moe > 0.01) // 약 100m, more 옵션 있을 경우 1km
                 break;
         } while ((Object.keys(restList).length < 5 || req.query.option == "more") && Object.keys(restList).length < 20);
         restList = restModule.sortRestaurantList(restModule.addDistanceElements(restList, [defaultLat, defaultLng]));
