@@ -14,7 +14,7 @@ exports.getNearStation = async function (lat, lng) {
     } while (!stationData);
     if (stationData) {
         station = {
-            name: stationData.dataValues.name,
+            name: stationData.dataValues.name + "역",
             distance: await getMeterDistance(lat, stationData.dataValues.lat, lng, stationData.dataValues.lng)
         }
         return (station);

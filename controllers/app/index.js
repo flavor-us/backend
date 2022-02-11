@@ -1,11 +1,9 @@
 const { Router } = require("express");
 const router = Router();
 const app = require("./app.ctrl");
-// const local_upload = require("../../middleware/multer");
 const jwtAuth = require("../../middleware/jwtAuth");
 const multerTransform = require('../../middleware/multerTransform');
 
-// router.post("/name", local_upload.single("photo"), app.restaurantsCtrl.getNames);
 router.get("/near", app.restaurantsCtrl.getRestaurantList);
 router.delete("/contents/:content_id", app.contentsCtrl.deleteContents);
 router.patch("/contents/:content_id", app.contentsCtrl.updateContents);
