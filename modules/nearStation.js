@@ -4,12 +4,12 @@ const Op = Sequelize.Op;
 const logger = require("../config/logger");
 
 exports.getNearStation = async function (lat, lng) {
-    var moe = 0.0004;
+    var moe = 0.0004;//0.0012 -> 0.0036 -> 0.0108
     var stationData, station = {};
     do {
         stationData = await getStation(parseFloat(lat), parseFloat(lng), moe);
         moe *= 3;
-        if (moe > 0.01)
+        if (moe > 0.011)//1.1km
             break;
     } while (!stationData);
     if (stationData) {
