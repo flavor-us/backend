@@ -1,7 +1,6 @@
 const nameModule = require("../../../modules/getName");
 const errorMsg = require("../../../message/error");
 const logger = require("../../../config/logger");
-const restModule = require("../../../modules/restaurants");
 const distanceModule = require("../../../modules/distance");
 
 exports.getRestaurantList = async (req, res) => {

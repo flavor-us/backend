@@ -9,12 +9,13 @@ exports.getNearStation = async function (lat, lng) {
     var stationList, station = {};
     do {
         stationList = await searchNearStation(parseFloat(lat), parseFloat(lng), moe);
-        if (moe > 0.011)//1.1km
+        if (moe > 0.11)//1.1km
             break;
         moe *= 3;
     } while ((Object.keys(stationList).length < 1))
-    if (Object.keys(stationList).length > 1) {
+    if (Object.keys(stationList).length > 0) {
         stationList = distanceModule.sortListByDistance(distanceModule.addDistanceElements(stationList, [lat, lng]));
+        console.log(stationList);
         station = {
             name: stationList[0].name + "역",
             distance: await distanceModule.getMeterDistance(lat, stationList[0].lat, lng, stationList[0].lng)
