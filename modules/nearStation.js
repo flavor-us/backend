@@ -8,10 +8,10 @@ exports.getNearStation = async function (lat, lng) {
     var moe = 0.0004;//0.0012 -> 0.0036 -> 0.0108
     var stationList, station = {};
     do {
-        stationList = await searchNearStation(parseFloat(lat), parseFloat(lng), moe);
-        moe *= 3;
         if (moe > 0.011)//1.1km
             break;
+        stationList = await searchNearStation(parseFloat(lat), parseFloat(lng), moe);
+        moe *= 3;
     } while ((Object.keys(stationList).length < 1))
     if (Object.keys(stationList).length > 1) {
         stationList = distanceModule.sortListByDistance(distanceModule.addDistanceElements(stationList, [lat, lng]));
