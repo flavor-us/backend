@@ -2,20 +2,22 @@ const models = require("../models");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 const logger = require("../config/logger");
+const distanceModule = require("../modules/distance");
 
 exports.getNearStation = async function (lat, lng) {
     var moe = 0.0004;//0.0012 -> 0.0036 -> 0.0108
-    var stationData, station = {};
+    var stationList, station = {};
     do {
-        stationData = await getStation(parseFloat(lat), parseFloat(lng), moe);
+        stationList = await searchNearStation(parseFloat(lat), parseFloat(lng), moe);
         moe *= 3;
         if (moe > 0.011)//1.1km
             break;
-    } while (!stationData);
-    if (stationData) {
+    } while ((Object.keys(stationList).length < 1))
+    if (Object.keys(stationList).length > 1) {
+        stationList = distanceModule.sortListByDistance(distanceModule.addDistanceElements(stationList, [lat, lng]));
         station = {
-            name: stationData.dataValues.name + "역",
-            distance: await getMeterDistance(lat, stationData.dataValues.lat, lng, stationData.dataValues.lng)
+            name: stationList[0].name + "역",
+            distance: await distanceModule.getMeterDistance(lat, stationList[0].lat, lng, stationList[0].lng)
         }
         return (station);
     }
@@ -23,17 +25,10 @@ exports.getNearStation = async function (lat, lng) {
         return (null);
 }
 
-getMeterDistance = async function (lat1, lat2, lng1, lng2) {
-    var distance = Math.round(Math.sqrt(Number(Number(Math.pow(lat1 - lat2, 2)).toFixed(8)) + Number(Number(Math.pow(lng1 - lng2, 2)).toFixed(8))) * 100000);
-    if (distance > 1000)
-        distance = Math.ceil((distance / 1000) * 10) / 10 + "k";
-    return (distance + "m");
-}
-
-getStation = async function (lat, lng, moe) {
+searchNearStation = async function (lat, lng, moe) {
     var station = {};
     try {
-        station = await models.Stations.findOne({
+        station = await models.Stations.findAll({
             attributes: ["name", "lat", "lng"],
             where: {
                 lat: { [Op.between]: [lat - moe, lat + moe] },
@@ -43,5 +38,6 @@ getStation = async function (lat, lng, moe) {
     } catch (error) {
         logger.error(error);
     }
+    console.log(station);
     return station;
 };

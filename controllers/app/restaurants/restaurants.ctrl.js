@@ -2,6 +2,7 @@ const nameModule = require("../../../modules/getName");
 const errorMsg = require("../../../message/error");
 const logger = require("../../../config/logger");
 const restModule = require("../../../modules/restaurants");
+const distanceModule = require("../../../modules/distance");
 
 exports.getRestaurantList = async (req, res) => {
     logger.info(`${req.method} ${req.url}`);
@@ -17,7 +18,7 @@ exports.getRestaurantList = async (req, res) => {
             if ((moe > 0.001 && req.query.option != "more") || moe > 0.01) // 약 100m, more 옵션 있을 경우 1km
                 break;
         } while ((Object.keys(restList).length < 5 || req.query.option == "more") && Object.keys(restList).length < 20);
-        restList = restModule.sortRestaurantList(restModule.addDistanceElements(restList, [defaultLat, defaultLng]));
+        restList = distanceModule.sortListByDistance(distanceModule.addDistanceElements(restList, [defaultLat, defaultLng]));
     } catch (e) {
         logger.error("[getRestaurantList] : " + e);
         return (res.status(400).send(errorMsg.readFail));
