@@ -95,6 +95,11 @@ module.exports = function (sequelize, DataTypes) {
 			foreignKey: "user_id",
 			targetKey: "id"
 		})
+
+		Contents.hasMany(models.Comments, {
+			foreignKey: "content_id",
+			sourceKey: "id",
+		})
 	}
 	return Contents;
 };

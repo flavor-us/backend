@@ -50,4 +50,7 @@ router.get("/kakao/friend/:kakao_id", app.kakaoCtrl.getFriendList);
 router.patch("/kakao/token/:kakao_id", app.kakaoCtrl.updateToken);
 router.get("/kakao/profile/:kakao_id", app.kakaoCtrl.getProfile);
 
+router.post("/comment/:content_id", app.commentCtrl.uploadComments);
+router.delete("/comment/:comment_id", app.commentCtrl.deleteComments);
+
 module.exports = router;

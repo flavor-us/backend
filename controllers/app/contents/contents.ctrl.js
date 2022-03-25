@@ -109,7 +109,8 @@ exports.getMyContents = async (req, res) => {
                 { attributes: ["username", "profileimg_path", "kakao_id"], model: models.User },
                 { attributes: ["tagname"], model: models.Tag_FirstAdj },
                 { attributes: ["tagname"], model: models.Tag_SecondAdj },
-                { attributes: ["tagname"], model: models.Tag_Location }
+                { attributes: ["tagname"], model: models.Tag_Location },
+                { attributes: ["id", "user_id", "content"], model: models.Comments }
             ],
             where: { user_id: user_id }
         })
@@ -147,7 +148,8 @@ exports.getRelevantContents = async (req, res) => {
                 { attributes: ["username", "profileimg_path", "kakao_id"], model: models.User },
                 { attributes: ["tagname"], model: models.Tag_FirstAdj },
                 { attributes: ["tagname"], model: models.Tag_SecondAdj },
-                { attributes: ["tagname"], model: models.Tag_Location }
+                { attributes: ["tagname"], model: models.Tag_Location },
+                { attributes: ["id", "user_id", "content"], model: models.Comments }
             ],
             where: { [Op.or]: [{ user_id: { [Op.in]: friendList } }, { user_id: user_id }] },
             order: [['date', 'DESC']],

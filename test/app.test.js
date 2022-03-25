@@ -397,3 +397,23 @@ describe("GET /tag/adj1", () => {
     })
 })
 
+
+//comment
+describe("/POST comment", () => {
+    test("success", async () => {
+        const response = await request(app).post("/app/comment/" + 475).send({
+            kakao_id: id.kakao,
+            content: "test comment"
+        });
+        expect(response.statusCode).toBe(201);
+    })
+})
+
+// describe("/DELETE comment", () => {
+//     describe("success", async () => {
+//         const response = await request(app).delete("/app/comment/" + id.content + "/").send({
+//             content: "test comment"
+//         });
+//         expect(response.statusCode).toBe(201);
+//     })
+// })

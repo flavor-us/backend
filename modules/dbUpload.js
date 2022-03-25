@@ -63,3 +63,11 @@ exports.uploadAppointment = async (appointment) => {
 	})
 	return id;
 }
+
+
+exports.uploadComment = async (comment) => {
+	const id = await models.Comments.create(comment).then((uploadedColumn) => {
+		return uploadedColumn.dataValues.id;
+	})
+	return (id);
+}

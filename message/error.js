@@ -42,6 +42,10 @@ exports.noContent = {
     msg: "해당하는 컨텐츠가 없습니다."
 }
 
+exports.noComment = {
+    msg: "해당하는 댓글이 없습니다."
+}
+
 exports.noRestaurants = {
     msg: "근처에 추정되는 식당이 없습니다."
 }

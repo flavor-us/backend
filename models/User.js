@@ -59,6 +59,11 @@ module.exports = function (sequelize, DataTypes) {
             foreignKey: "followed_id"
         })
 
+        User.hasMany(models.Comments, {
+            foreignKey: "user_id",
+            sourceKey: "id",
+        })
+
         // User.belongsToMany(User, {
         //     as: "Request",
         //     through: "Appointments",
