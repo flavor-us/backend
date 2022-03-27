@@ -31,6 +31,6 @@ npm start
 
 ## API LIST 
   
-<img width="308" alt="스크린샷 2022-03-27 오후 9 06 39" src="https://user-images.githubusercontent.com/58672664/160280721-a11824f7-5b6c-46b0-a82e-e6b0145ec883.png">
+<img width="308" alt="스크린샷 2022-03-27 오후 9 06 39" src="https://user-images.githubusercontent.com/58672664/160280721-a11824f7-5b6c-46b0-a82e-e6b0145ec883.png"><br>
 <img width="308" alt="스크린샷 2022-03-27 오후 9 06 08" src="https://user-images.githubusercontent.com/58672664/160280714-bdd26095-8c64-42e1-b467-971414b7c077.png">
 
