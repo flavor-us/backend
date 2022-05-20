@@ -5,9 +5,11 @@
 	"main": "app.js",
 	"scripts": {
 		"test": "jest --setupFiles dotenv/config --forceExit --coverage",
-		"start": "nodemon app --trace-warningsc",
 		"auto": "node auto",
-		"restart": "pm2 restart app.js --watch --ignore-watch=\"node_modules/* uploads/* .git/* logs/*\" --time"
+		"start": "SYNC=false nodemon app --trace-warningsc",
+		"start_s": "SYNC=false nodemon app --trace-warningsc",
+		"restart": "SYNC=true pm2 restart app.js --watch --ignore-watch=\"node_modules/* uploads/* .git/* logs/*\" --time",
+		"restart_s": "SYNC=true pm2 restart app.js --watch --ignore-watch=\"node_modules/* uploads/* .git/* logs/*\" --time"
 	},
 	"author": "limchanyeop",
 	"license": "ISC",
@@ -31,7 +33,7 @@
 		"request-promise-native": "^1.0.9",
 		"sequelize": "^6.6.5",
 		"sharp": "^0.29.3",
-		"supertest": "^6.1.6",
+		"supertest": "^6.2.3",
 		"swagger-jsdoc": "^6.1.0",
 		"swagger-ui-express": "^4.1.6",
 		"uuid": "^8.3.2",

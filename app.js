@@ -21,7 +21,11 @@ class App {
 				.authenticate()
 				.then(() => {
 					logger.info("Connection has been established successfully.");
-					// return db.sequelize.sync({ alter: true });
+					if (process.env.SYNC && process.env.SYNC == "true") {
+						console.log("__________");
+						return db.sequelize.sync({ alter: true });
+					}
+					console.log("~~~~~~~~~~~~~~");
 				})
 				.then(() => {
 					logger.info("DB Sync complete.");
