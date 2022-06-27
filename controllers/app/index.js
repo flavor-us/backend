@@ -29,9 +29,9 @@ router.post("/relation", app.relationCtrl.makeRelation);
 router.get("/auth/login/:kakaotoken", app.authCtrl.getAllToken);
 router.get("/auth/refresh/:kakao_id/:refreshtoken", app.authCtrl.getAccessToken);
 router.get("/jwt", jwtAuth.checkToken, (req, res) => {
-    console.log(JSON.stringify(req.body));
-    console.log(req.kakao_id);
-    res.send("complete");
+	console.log(JSON.stringify(req.body));
+	console.log(req.kakao_id);
+	res.send("complete");
 })
 
 router.post("/appointments", app.appointmentsCtrl.requestAppointment);
@@ -50,7 +50,7 @@ router.get("/kakao/friend/:kakao_id", app.kakaoCtrl.getFriendList);
 router.patch("/kakao/token/:kakao_id", app.kakaoCtrl.updateToken);
 router.get("/kakao/profile/:kakao_id", app.kakaoCtrl.getProfile);
 
-router.post("/comment/:content_id", app.commentCtrl.uploadComments);
-router.delete("/comment/:comment_id", app.commentCtrl.deleteComments);
+router.post("/comments/:content_id", app.commentCtrl.uploadComments);
+router.delete("/comments/:comment_id", app.commentCtrl.deleteComments);
 
 module.exports = router;
