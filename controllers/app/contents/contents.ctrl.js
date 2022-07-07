@@ -149,7 +149,7 @@ exports.getRelevantContents = async (req, res) => {
 				{ attributes: ["tagname"], model: models.Tag_FirstAdj },
 				{ attributes: ["tagname"], model: models.Tag_SecondAdj },
 				{ attributes: ["tagname"], model: models.Tag_Location },
-				{ attributes: ["id", "kakao_id", "content"], model: models.Comments },
+				{ attributes: ["id", "kakao_id", "content", "createdAt"], model: models.Comments },
 			],
 			where: { [Op.or]: [{ user_id: { [Op.in]: friendList } }, { user_id: user_id }] },
 			order: [['date', 'DESC']],
