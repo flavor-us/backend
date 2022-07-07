@@ -8,7 +8,7 @@ const logger = require("../../../config/logger");
 exports.uploadComments = async (req, res) => {
 	var comment_id;
 	logger.info(`${req.method} ${req.url}`);
-	if (!req.body.kakao_id || !req.body.content || req.params.content_id)
+	if (!req.body.kakao_id || !req.body.content || !req.params.content_id)
 		return (res.status(400).send(errorMsg.notEnoughReq));
 	try {
 		const user_id = await kakaoIdConvert.getUserIdByKakaoId(req.body.kakao_id);
