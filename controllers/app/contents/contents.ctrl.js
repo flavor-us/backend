@@ -149,7 +149,7 @@ exports.getRelevantContents = async (req, res) => {
 				{ attributes: ["tagname"], model: models.Tag_FirstAdj },
 				{ attributes: ["tagname"], model: models.Tag_SecondAdj },
 				{ attributes: ["tagname"], model: models.Tag_Location },
-				{ attributes: ["id", "kakao_id", "content", "createdAt"], model: models.Comments },
+				{ attributes: ["id", "user_id", "content", "createdAt"], model: models.Comments },
 			],
 			where: { [Op.or]: [{ user_id: { [Op.in]: friendList } }, { user_id: user_id }] },
 			order: [['date', 'DESC']],
@@ -163,19 +163,22 @@ exports.getRelevantContents = async (req, res) => {
 			}
 			return (content);
 		});
-		// contents = await Promise.all(contents.map(async (content) => {
-		// 	if (content.dataValues.near_station && content.dataValues.station_distance) {
-		// 		content.dataValues.near_point = content.dataValues.near_station;
-		// 		content.dataValues.point_distance = content.dataValues.station_distance;
-		// 	}
-		// 	content.Comments = content.Comments.map(async (comment) => {
-		// 		// console.log("BEFORE: " + JSON.stringify(comment));
-		// 		comment.dataValues.kakao_id = await kakaoIdConvert.getKakaoIdByUserId(comment.dataValues.user_id);
-		// 		// console.log("AFTER: " + JSON.stringify(comment));
-		// 		return (JSON.stringify(comment));
-		// 	})
-		// 	return (content);
-		// }));
+		var i = -1, j = -1;
+		while (contents && contents[++i]) {
+			j = -1;
+			while (contents[i].Comments && contents[i].Comments[++j]) {
+				console.log(contents[i].Comments && contents[i].Comments[j]);
+
+				var writer = await models.User.findOne({
+					where: {
+						id: contents[i].Comments[j].dataValues.user_id
+					}
+				})
+				contents[i].Comments[j].dataValues.username = writer.dataValues.username;
+				contents[i].Comments[j].dataValues.profileimg_path = writer.dataValues.profileimg_path;
+				contents[i].Comments[j].dataValues.kakao_id = writer.dataValues.kakao_id;
+			}
+		}
 	} catch (e) {
 		logger.error("[getRelevantContents] : " + JSON.stringify(e));
 		if (e == errorMsg.notEnoughReq)
