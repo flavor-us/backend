@@ -8,8 +8,8 @@
 		"auto": "node auto",
 		"start": "SYNC=false nodemon app --trace-warningsc",
 		"start_s": "SYNC=true nodemon app --trace-warningsc",
-		"restart": "SYNC=false pm2 restart app.js --watch --ignore-watch=\"node_modules/* uploads/* .git/* logs/*\" --time",
-		"restart_s": "SYNC=true pm2 restart app.js --watch --ignore-watch=\"node_modules/* uploads/* .git/* logs/*\" --time"
+		"restart": "SYNC=false pm2 restart app.js --time",
+		"restart_s": "SYNC=true pm2 restart app.js --time"
 	},
 	"author": "limchanyeop",
 	"license": "ISC",
