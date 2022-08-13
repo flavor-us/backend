@@ -4,6 +4,7 @@ const app = require("./app.ctrl");
 const jwtAuth = require("../../middleware/jwtAuth");
 const multerTransform = require('../../middleware/multerTransform');
 
+
 router.get("/near", app.restaurantsCtrl.getRestaurantList);
 router.delete("/contents/:content_id", app.contentsCtrl.deleteContents);
 router.patch("/contents/:content_id", app.contentsCtrl.updateContents);
