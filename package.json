@@ -6,8 +6,8 @@
 	"scripts": {
 		"test": "jest --setupFiles dotenv/config --forceExit --coverage",
 		"auto": "node auto",
-		"start": "SYNC=false pm2 start app --trace-warningsc",
-		"start_s": "SYNC=true pm2 start app --trace-warningsc",
+		"start": "SYNC=false pm2 start app",
+		"start_s": "SYNC=true pm2 start app",
 		"restart": "SYNC=false pm2 restart app.js --time",
 		"restart_s": "SYNC=true pm2 restart app.js --time"
 	},
