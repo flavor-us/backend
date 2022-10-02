@@ -20,7 +20,6 @@ jobs:
        run: |
          echo "AWS_DEFAULT_REGION=ap-southeast-1" >> $GITHUB_ENV
          echo "AWS_SG_NAME=launch-wizard-2" >> $GITHUB_ENV
-         aws ec2 describe-security-groups
          
      - name: Configure AWS credentials
        uses: aws-actions/configure-aws-credentials@v1
