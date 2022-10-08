@@ -175,29 +175,29 @@ exports.getRelevantContents = async (req, res) => {
 				offset: offset,
 				limit: count
 			})
+		}
 
-			contents = contents.map((content) => {
-				if (content.dataValues.near_station && content.dataValues.station_distance) {
-					content.dataValues.near_point = content.dataValues.near_station;
-					content.dataValues.point_distance = content.dataValues.station_distance;
-				}
-				return (content);
-			});
-			var i = -1, j = -1;
-			while (contents && contents[++i]) {
-				j = -1;
-				while (contents[i].Comments && contents[i].Comments[++j]) {
-					console.log(contents[i].Comments && contents[i].Comments[j]);
+		contents = contents.map((content) => {
+			if (content.dataValues.near_station && content.dataValues.station_distance) {
+				content.dataValues.near_point = content.dataValues.near_station;
+				content.dataValues.point_distance = content.dataValues.station_distance;
+			}
+			return (content);
+		});
+		var i = -1, j = -1;
+		while (contents && contents[++i]) {
+			j = -1;
+			while (contents[i].Comments && contents[i].Comments[++j]) {
+				console.log(contents[i].Comments && contents[i].Comments[j]);
 
-					var writer = await models.User.findOne({
-						where: {
-							id: contents[i].Comments[j].dataValues.user_id
-						}
-					})
-					contents[i].Comments[j].dataValues.username = writer.dataValues.username;
-					contents[i].Comments[j].dataValues.profileimg_path = writer.dataValues.profileimg_path;
-					contents[i].Comments[j].dataValues.kakao_id = writer.dataValues.kakao_id;
-				}
+				var writer = await models.User.findOne({
+					where: {
+						id: contents[i].Comments[j].dataValues.user_id
+					}
+				})
+				contents[i].Comments[j].dataValues.username = writer.dataValues.username;
+				contents[i].Comments[j].dataValues.profileimg_path = writer.dataValues.profileimg_path;
+				contents[i].Comments[j].dataValues.kakao_id = writer.dataValues.kakao_id;
 			}
 		}
 	} catch (e) {
